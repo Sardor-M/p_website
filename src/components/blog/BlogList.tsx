@@ -1,0 +1,31 @@
+import React from 'react';
+import { BlogContainer, BlogCard, Tag } from './BlogListStyles';
+import { BlogPost } from '../../types';
+
+
+type Props = {
+  posts: BlogPost[];
+  selectedTag: string | null;
+};
+
+const BlogList: React.FC<Props> = ({ posts, selectedTag }) => {
+  const filteredPosts = selectedTag 
+    ? posts.filter((post) => post.tags.includes(selectedTag))
+    : posts;
+
+  return (
+    <BlogContainer>
+      {filteredPosts.map((post) => (
+        <BlogCard key={post.id}>
+          <h3>{post.title}</h3>
+          <p>{post.date}</p>
+          {post.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </BlogCard>
+      ))}
+    </BlogContainer>
+  );
+};
+
+export default BlogList;
