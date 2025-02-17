@@ -30,7 +30,7 @@ const NavContainer = styled.div`
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  padding: 0 35px;
+  padding: 0 60px;
 `;
 
 const Logo = styled(Link)`

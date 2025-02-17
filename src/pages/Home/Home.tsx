@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Mail } from "lucide-react";
 import Card from "../../components/Card/Card";
-import { GithubFilled, InstagramFilled } from "@ant-design/icons";
 import { Button } from "../../components/common/Button";
-import { AppProps } from "../../types";
 
 interface BlogPost {
   id: number;
@@ -33,28 +30,24 @@ const Container = styled.div`
   scrollbar-width: none;
 `;
 
-const Header = styled.header`
-  margin-top: -50px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
+// const Header = styled.header`
+//   margin-top: -50px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 1rem;
+// `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: bold;
-`;
+// const Title = styled.h1`
+//   font-size: 2.5rem;
+//   font-weight: bold;
+// `;
 
-const Description = styled.p`
-  font-size: 1.125rem;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
+// const Description = styled.p`
+//   font-size: 1.125rem;
+// `;
 
 const Section = styled.section`
+  margin-top: -30px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -150,7 +143,7 @@ const SAMPLE_BLOGS: BlogPost[] = [
 
 const TAGS = ["React", "Frontend", "Node.js", "Backend"];
 
-export default function Home({ onToggleTheme, theme }: AppProps) {
+export default function Home() {
   const { t, i18n } = useTranslation();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
@@ -164,64 +157,11 @@ export default function Home({ onToggleTheme, theme }: AppProps) {
 
   return (
     <Container>
-      <Header>
+      {/* <Header>
         <Title>{t("welcome")}</Title>
-        <Description>{t("description")}</Description>
-
-        <ButtonGroup>
-          <Button onClick={onToggleTheme} variant="outline">
-            Toggle Theme
-          </Button>
-          <Button onClick={() => switchLanguage("en")} variant="outline">
-            EN
-          </Button>
-          <Button onClick={() => switchLanguage("ko")} variant="outline">
-            KO
-          </Button>
-        </ButtonGroup>
-      </Header>
-
-      <Section>
-        <SectionTitle>Contact</SectionTitle>
-        <ButtonGroup>
-          <Button variant="outline" asChild>
-            <a
-              href="https://github.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GithubFilled
-                style={{ width: "1rem", height: "1rem", marginRight: "0.5rem" }}
-              />
-              Github
-            </a>
-          </Button>
-          <Button variant="outline" asChild>
-            <a
-              href="https://instagram.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <InstagramFilled
-                style={{ width: "1rem", height: "1rem", marginRight: "0.5rem" }}
-              />
-              Instagram
-            </a>
-          </Button>
-          <Button variant="outline" asChild>
-            <a href="mailto:example@domain.com">
-              <Mail
-                style={{ width: "1rem", height: "1rem", marginRight: "0.5rem" }}
-              />
-              Email
-            </a>
-          </Button>
-        </ButtonGroup>
-      </Section>
-
+      </Header> */}
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
-
         <TagContainer>
           {TAGS.map((tag) => (
             <Button
@@ -233,7 +173,6 @@ export default function Home({ onToggleTheme, theme }: AppProps) {
             </Button>
           ))}
         </TagContainer>
-
         <BlogContainer>
           <BlogGrid>
             {filteredPosts.map((post) => (

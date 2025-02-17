@@ -35,7 +35,7 @@ const ContentWrapper = styled.div`
 `;
 
 const LeftSidebar = styled.aside`
-  width: 280px;
+  width: 350px;
   padding: 2rem 1rem;
   position: fixed;
   left: 0;
@@ -49,8 +49,8 @@ const LeftSidebar = styled.aside`
 const MainContent = styled.main`
   position: fixed;
   top: 60px;
-  left: 250px;
-  right: 300px;
+  left: 320px;
+  right: 320px;
   bottom: 0;
   overflow-y: auto;
   padding: 2rem;
@@ -64,7 +64,7 @@ const MainContent = styled.main`
 `;
 
 const RightSidebar = styled.aside`
-  width: 330px;
+  width: 350px;
   padding: 2rem 1rem;
   position: fixed;
   right: 0;
@@ -77,8 +77,8 @@ const RightSidebar = styled.aside`
 
 // tag components (left)
 const TagSection = styled.section`
-  margin: 2rem auto;
-  padding-left: 35px;
+  margin: 1rem auto;
+  padding-left: 60px;
 `;
 
 const TagTitle = styled.h2`
@@ -106,6 +106,7 @@ const TagItem = styled.li`
 const ProfileSection = styled.section`
   text-align: center;
   margin-top: 30px;
+  padding-right: 60px;
 `;
 
 const ProfileImage = styled.img`
