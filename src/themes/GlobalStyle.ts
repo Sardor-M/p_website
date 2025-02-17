@@ -8,9 +8,24 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
 
-  body {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
     margin: 0;
-    font-family: 'DepartureMono-Regular', sans-serif;  
+    padding: 0;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'DepartureMono-Regular', sans-serif;
+    overscroll-behavior: none;
+  }
+
+  #root {
+    height: 100%;
   }
 `;
 

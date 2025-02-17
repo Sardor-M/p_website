@@ -1,13 +1,20 @@
-
 import { ReactNode } from "react";
 import styled from "styled-components";
-import Navigation from "./Navigation/Navigation";
+import Navbar from "./Navbar";
 
 type LayoutProps = {
   children: ReactNode;
   onToggleTheme: () => void;
-  theme: 'light' | 'dark';
-}
+  theme: "light" | "dark";
+};
+
+const MaxWidthContainer = styled.div`
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+`;
 
 const LayoutContainer = styled.div`
   background-color: ${({ theme }) => theme.bodyBg};
@@ -15,45 +22,56 @@ const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-//   overflow: hidden;
+  overflow: hidden;
+  position: relative;
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   flex: 1;
-  height: calc(100vh - 60px); 
+  position: relative;
+  // height: calc(100vh - 60px);
+  // margin-top: 60px;
 `;
 
 const LeftSidebar = styled.aside`
-  width: 250px;
+  width: 280px;
   padding: 2rem 1rem;
   position: fixed;
   left: 0;
   top: 60px;
   bottom: 0;
   overflow-y: auto;
-  border-right:  1px solid #E0E0E0;
+  border-right: 0.2px solid rgb(211, 211, 211);
   background-color: ${({ theme }) => theme.sidebarBg || theme.bodyBg};
 `;
 
 const MainContent = styled.main`
-  flex: 1;
-  margin-left: 250px; 
-  margin-right: 300px;
-  padding: 2rem;
+  position: fixed;
+  top: 60px;
+  left: 250px;
+  right: 300px;
+  bottom: 0;
   overflow-y: auto;
-  min-height: 100%;
+  padding: 2rem;
+  
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
 `;
 
 const RightSidebar = styled.aside`
-  width: 265px;
+  width: 330px;
   padding: 2rem 1rem;
   position: fixed;
   right: 0;
-  top: 60px; 
+  top: 60px;
   bottom: 0;
   overflow-y: auto;
-  border-left: 1px solid #E0E0E0;
+  border-left: 0.2px solid rgb(211, 211, 211);
   background-color: ${({ theme }) => theme.sidebarBg || theme.bodyBg};
 `;
 
@@ -79,7 +97,7 @@ const TagItem = styled.li`
   padding: 0.5rem 0;
   cursor: pointer;
   transition: color 0.2s;
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
   }
@@ -108,11 +126,15 @@ const ProfileBio = styled.p`
   margin-bottom: 1.5rem;
 `;
 
-export default function Layout({ children, onToggleTheme, theme}: LayoutProps) {
-    
+export default function Layout({
+  children,
+  onToggleTheme,
+  theme,
+}: LayoutProps) {
   return (
     <LayoutContainer>
-      <Navigation onToggleTheme={onToggleTheme} theme={theme}/>
+      <Navbar onToggleTheme={onToggleTheme} theme={theme} />
+      <MaxWidthContainer>
       <ContentWrapper>
         {/* chap tomon sibebar (tags filter uchun) */}
         <LeftSidebar>
@@ -129,20 +151,32 @@ export default function Layout({ children, onToggleTheme, theme}: LayoutProps) {
           </TagSection>
         </LeftSidebar>
         {/* body content shu yerda  */}
-        <MainContent>
-          {children}
-        </MainContent>
+        <MainContent>{children}</MainContent>
         {/* o'ng tomon contenti shu yerda */}
         <RightSidebar>
           <ProfileSection>
-            <ProfileImage src="https://avatars.githubusercontent.com/u/65296404?v=4" alt="Profile" />
+            <ProfileImage
+              src="https://avatars.githubusercontent.com/u/65296404?v=4"
+              alt="Profile"
+            />
             <ProfileName>Sardor-M</ProfileName>
             <ProfileBio>Sardor Madaminov</ProfileBio>
-            
+
             {/* {// tags  */}
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
-              <span className="px-2 py-1 text-sm bg-gray-100 rounded-full">i18n-react</span>
-              <span className="px-2 py-1 text-sm bg-gray-100 rounded-full">React Js</span>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.5rem",
+                justifyContent: "center",
+                marginBottom: "1.5rem",
+              }}
+            >
+              <span className="px-2 py-1 text-sm bg-gray-100 rounded-full">
+                i18n-react
+              </span>
+              <span className="px-2 py-1 text-sm bg-gray-100 rounded-full">
+                React Js
+              </span>
             </div>
 
             {/* // social media section */}
@@ -157,7 +191,7 @@ export default function Layout({ children, onToggleTheme, theme}: LayoutProps) {
           </ProfileSection>
         </RightSidebar>
       </ContentWrapper>
+      </MaxWidthContainer>
     </LayoutContainer>
   );
-};
-
+}

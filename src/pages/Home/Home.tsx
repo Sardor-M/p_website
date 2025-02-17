@@ -34,6 +34,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  margin-top: -50px;
   display: flex;
   flex-direction: column;
   gap: 1rem;

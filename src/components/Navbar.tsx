@@ -1,24 +1,27 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { AppProps } from "../../types/index.ts";
-import { Button } from "../common/Button.tsx";
+import { AppProps } from "../types/index.ts";
+import { Button } from "./common/Button.tsx";
 import { useTranslation } from "react-i18next";
 import { Sun, Moon, Languages } from "lucide-react";
 import { useState } from "react";
-import { themeColor } from "../../tools/index.ts";
+import { themeColor } from "../tools/index.ts";
 
 const Nav = styled.nav`
   padding: 1rem;
   background-color: ${({ theme }) =>
-    theme.mode === "dark" ? themeColor.gray_background : themeColor.light_gray_background};
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: ${({ theme }) =>
     theme.mode === "dark"
-      ? "0 0.5px 4px rgba(0, 0, 0, 0.3)"
-      : "0 0.5px 4px rgba(0, 0, 0, 0.1)"};
-  color: ${({ theme }) => (theme.mode === "dark" ? themeColor.light_gray_text_color : themeColor.gray_text_color)};
+      ? themeColor.gray_background
+      : themeColor.light_gray_background};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.light_gray_text_color
+      : themeColor.gray_text_color};
 `;
 
 const NavContainer = styled.div`
@@ -32,7 +35,10 @@ const NavContainer = styled.div`
 const Logo = styled(Link)`
   font-size: 1.25rem;
   font-weight: 600;
-  color: ${({ theme }) => (theme.mode === "dark" ? themeColor.gray_text_color : themeColor.light_gray_text_color)};
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
   text-decoration: none;
 `;
 
@@ -46,7 +52,10 @@ const NavList = styled.ul`
 `;
 
 const NavItem = styled(Link)`
-  color: ${({ theme }) => theme.mode === 'dark' ? themeColor.gray_text_color : themeColor.light_gray_text_color};
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
   text-decoration: none;
   font-weight: 500;
 
@@ -91,7 +100,7 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
   z-index: 10;
 `;
 
-export default function Navigation({ onToggleTheme, theme }: AppProps) {
+export default function Navbar({ onToggleTheme, theme }: AppProps) {
   const { t, i18n } = useTranslation();
   const [showLanguages, setShowLanguages] = useState(false);
 
@@ -104,20 +113,18 @@ export default function Navigation({ onToggleTheme, theme }: AppProps) {
     <Nav>
       <NavContainer>
         <Logo to="/">sardor-m blog</Logo>
-
-        <NavList>
-          <li>
-            <NavItem to="/">Home</NavItem>
-          </li>
-          <li>
-            <NavItem to="/portfolio">Portfolio</NavItem>
-          </li>
-          <li>
-            <NavItem to="/blog">Blog</NavItem>
-          </li>
-        </NavList>
-
         <Controls>
+          <NavList>
+            <li>
+              <NavItem to="/">Home</NavItem>
+            </li>
+            <li>
+              <NavItem to="/portfolio">Portfolio</NavItem>
+            </li>
+            <li>
+              <NavItem to="/blog">Blog</NavItem>
+            </li>
+          </NavList>
           <ThemeToggle onClick={onToggleTheme} variant="ghost">
             {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
           </ThemeToggle>
@@ -131,10 +138,10 @@ export default function Navigation({ onToggleTheme, theme }: AppProps) {
             </LanguageButton>
             <LanguageOptions $isVisible={showLanguages}>
               <Button variant="ghost" onClick={() => switchLanguage("en")}>
-                English
+                eng
               </Button>
               <Button variant="ghost" onClick={() => switchLanguage("uz")}>
-                O'zbek
+                o'zb
               </Button>
             </LanguageOptions>
           </LanguageDropdown>
