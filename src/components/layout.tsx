@@ -1,23 +1,13 @@
 
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import styled from "styled-components";
-import Navigation from "./navigation/Navigation";
+import Navigation from "./Navigation/Navigation";
 
-interface LayoutProps {
+type LayoutProps = {
   children: ReactNode;
+  onToggleTheme: () => void;
+  theme: 'light' | 'dark';
 }
-
-// const LayoutContainer = styled.div`
-//   background-color: ${({ theme }) => theme.bodyBg};
-//   color: ${({ theme }) => theme.textColor};
-//   min-height: 100vh;
-// //   padding: 1rem;
-// `;
-
-// const MainContent = styled.main`
-//     padding: 1rem;
-// `
-
 
 const LayoutContainer = styled.div`
   background-color: ${({ theme }) => theme.bodyBg};
@@ -25,12 +15,13 @@ const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+//   overflow: hidden;
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   flex: 1;
-  height: calc(100vh - 60px); // Adjust based on your navigation height
+  height: calc(100vh - 60px); 
 `;
 
 const LeftSidebar = styled.aside`
@@ -38,37 +29,38 @@ const LeftSidebar = styled.aside`
   padding: 2rem 1rem;
   position: fixed;
   left: 0;
-  top: 60px; // Adjust based on your navigation height
+  top: 60px;
   bottom: 0;
   overflow-y: auto;
-  border-right: 1px solid ${({ theme }) => theme.borderColor};
+  border-right:  1px solid #E0E0E0;
   background-color: ${({ theme }) => theme.sidebarBg || theme.bodyBg};
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  margin-left: 250px; // Same as LeftSidebar width
-  margin-right: 300px; // Same as RightSidebar width
+  margin-left: 250px; 
+  margin-right: 300px;
   padding: 2rem;
   overflow-y: auto;
   min-height: 100%;
 `;
 
 const RightSidebar = styled.aside`
-  width: 300px;
+  width: 265px;
   padding: 2rem 1rem;
   position: fixed;
   right: 0;
-  top: 60px; // Adjust based on your navigation height
+  top: 60px; 
   bottom: 0;
   overflow-y: auto;
-  border-left: 1px solid ${({ theme }) => theme.borderColor};
+  border-left: 1px solid #E0E0E0;
   background-color: ${({ theme }) => theme.sidebarBg || theme.bodyBg};
 `;
 
-// Tag components for the left sidebar
+// tag components (left)
 const TagSection = styled.section`
-  margin-bottom: 2rem;
+  margin: 2rem auto;
+  padding-left: 7px;
 `;
 
 const TagTitle = styled.h2`
@@ -93,9 +85,9 @@ const TagItem = styled.li`
   }
 `;
 
-// Profile components for the right sidebar
 const ProfileSection = styled.section`
   text-align: center;
+  margin-top: 30px;
 `;
 
 const ProfileImage = styled.img`
@@ -116,11 +108,13 @@ const ProfileBio = styled.p`
   margin-bottom: 1.5rem;
 `;
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+export default function Layout({ children, onToggleTheme, theme}: LayoutProps) {
+    
   return (
     <LayoutContainer>
-      <Navigation />
+      <Navigation onToggleTheme={onToggleTheme} theme={theme}/>
       <ContentWrapper>
+        {/* chap tomon sibebar (tags filter uchun) */}
         <LeftSidebar>
           <TagSection>
             <TagTitle>📌 Tags</TagTitle>
@@ -134,11 +128,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </TagList>
           </TagSection>
         </LeftSidebar>
-
+        {/* body content shu yerda  */}
         <MainContent>
           {children}
         </MainContent>
-
+        {/* o'ng tomon contenti shu yerda */}
         <RightSidebar>
           <ProfileSection>
             <ProfileImage src="https://avatars.githubusercontent.com/u/65296404?v=4" alt="Profile" />
@@ -167,4 +161,3 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-export default Layout;

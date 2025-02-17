@@ -1,19 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { ThemeProvider } from "styled-components";
-import { darkTheme, lightTheme } from "./themes";
 import GlobalStyle from "./themes/GlobalStyle";
 
 const Root = () => {
-  const [isDark, setIsDark] = React.useState(false);
-  const toggleTheme = () => setIsDark((prev) => !prev);
-
   return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <>
       <GlobalStyle />
-      <App onToggleTheme={toggleTheme} />
-    </ThemeProvider>
+      <App />
+    </>
   );
 };
 

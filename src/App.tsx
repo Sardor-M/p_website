@@ -1,15 +1,20 @@
+import { ThemeProvider } from "styled-components";
 import AppRoutes from "./routes";
-import { AppProps } from "./types";
+import { darkTheme, lightTheme } from "./themes/theme";
+import { useState } from "react";
 
+function App() {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
-function App({ onToggleTheme }: AppProps) {
-  // const { t, i18n } = useTranslation();
+  const handleToggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
 
-  // const switchLanguage = (lang: string) => {
-  //   void i18n.changeLanguage(lang);
-  // };
-
-  return <AppRoutes onToggleTheme={onToggleTheme}/>
+  return (
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <AppRoutes onToggleTheme={handleToggleTheme} theme={theme} />;
+    </ThemeProvider>
+  );
 }
 
 export default App;
