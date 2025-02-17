@@ -78,7 +78,7 @@ const RightSidebar = styled.aside`
 // tag components (left)
 const TagSection = styled.section`
   margin: 2rem auto;
-  padding-left: 7px;
+  padding-left: 35px;
 `;
 
 const TagTitle = styled.h2`

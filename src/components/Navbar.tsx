@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { AppProps } from "../types/index.ts";
 import { Button } from "./common/Button.tsx";
@@ -30,6 +30,7 @@ const NavContainer = styled.div`
   align-items: center;
   width: 100%;
   margin: 0 auto;
+  padding: 0 35px;
 `;
 
 const Logo = styled(Link)`
@@ -58,9 +59,41 @@ const NavItem = styled(Link)`
       : themeColor.light_gray_text_color};
   text-decoration: none;
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  transition: all 0.2s ease-out;
 
-  &:hover {
-    color: ${({ theme }) => theme.primary};
+  &:hover,
+  &.active {
+    background-color: ${({ theme }) =>
+      theme.mode === "dark"
+        ? "rgba(255, 255, 255, 0.05)"
+        : "rgba(0, 0, 0, 0.07)"};
+    transform: translateY(-3px);
+    box-shadow: 0 2px 8px
+      ${({ theme }) =>
+        theme.mode === "dark"
+          ? "rgba(255, 255, 255, 0.05)"
+          : "rgba(0, 0, 0, 0.03)"};
+  }
+  &.active {
+    background-color: ${({ theme }) =>
+      theme.mode === "dark"
+        ? "rgba(255, 255, 255, 0.08)"
+        : "rgba(0, 0, 0, 0.07)"};
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50px;
+      background-color: ${({ theme }) => theme.primary};
+      transition: all 0.2s ease-in-out;
+    }
   }
 `;
 
@@ -71,38 +104,111 @@ const Controls = styled.div`
 `;
 
 const ThemeToggle = styled(Button)`
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
 `;
 
 const LanguageDropdown = styled.div`
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
   position: relative;
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
 `;
 
 const LanguageButton = styled(Button)`
   padding: 0.5rem;
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
+  background-color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? "rgba(255, 255, 255, 0.05)"
+      : "rgba(0, 0, 0, 0.07)"};
+  border-radius: 14px;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.mode === "dark"
+        ? "rgba(255, 255, 255, 0.08)"
+        : "rgba(0, 0, 0, 0.09)"};
+    transform: translateY(-2px);
+  }
 `;
 
 const LanguageOptions = styled.div<{ $isVisible: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: ${({ theme }) => theme.navBg};
-  border: 1px solid ${({ theme }) => theme.borderColor};
-  border-radius: 4px;
+  background-color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_background
+      : themeColor.light_gray_background};
+  border: 1px solid
+    ${({ theme }) =>
+      theme.mode === "dark"
+        ? "rgba(255, 255, 255, 0.1)"
+        : "rgba(0, 0, 0, 0.1)"};
+  border-radius: 14px;
   padding: 0.5rem;
   display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
   flex-direction: column;
   gap: 0.5rem;
   min-width: 100px;
   z-index: 10;
+  box-shadow: 0 4px 12px
+    ${({ theme }) =>
+      theme.mode === "dark" ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.1)"};
+`;
+
+const LanguageOptionButton = styled(Button)`
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  transition: all 0.2s ease-out;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.mode === "dark"
+        ? "rgba(255, 255, 255, 0.05)"
+        : "rgba(0, 0, 0, 0.07)"};
+    transform: translateX(2px);
+  }
 `;
 
 export default function Navbar({ onToggleTheme, theme }: AppProps) {
   const { t, i18n } = useTranslation();
   const [showLanguages, setShowLanguages] = useState(false);
+  const location = useLocation();
+
+  const handleMouseEnter = () => {
+    setShowLanguages(true);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    const relatedTarget = e.relatedTarget as HTMLElement;
+    if (!relatedTarget?.closest(".language-dropdown")) {
+      setShowLanguages(false);
+    }
+  };
 
   const switchLanguage = (lang: string) => {
     void i18n.changeLanguage(lang);
@@ -116,13 +222,28 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
         <Controls>
           <NavList>
             <li>
-              <NavItem to="/">Home</NavItem>
+              <NavItem
+                to="/"
+                className={location.pathname === "/" ? "active" : ""}
+              >
+                Home
+              </NavItem>
             </li>
             <li>
-              <NavItem to="/portfolio">Portfolio</NavItem>
+              <NavItem
+                to="/portfolio"
+                className={location.pathname === "/portfolio" ? "active" : ""}
+              >
+                Portfolio
+              </NavItem>
             </li>
             <li>
-              <NavItem to="/blog">Blog</NavItem>
+              <NavItem
+                to="/blog"
+                className={location.pathname === "/blog" ? "active" : ""}
+              >
+                Blog
+              </NavItem>
             </li>
           </NavList>
           <ThemeToggle onClick={onToggleTheme} variant="ghost">
@@ -130,19 +251,26 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
           </ThemeToggle>
 
           <LanguageDropdown
-            onMouseEnter={() => setShowLanguages(true)}
-            onMouseLeave={() => setShowLanguages(false)}
+            className="language-dropdown"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <LanguageButton variant="ghost">
               <Languages size={20} />
             </LanguageButton>
             <LanguageOptions $isVisible={showLanguages}>
-              <Button variant="ghost" onClick={() => switchLanguage("en")}>
+              <LanguageOptionButton
+                variant="ghost"
+                onClick={() => switchLanguage("en")}
+              >
                 eng
-              </Button>
-              <Button variant="ghost" onClick={() => switchLanguage("uz")}>
+              </LanguageOptionButton>
+              <LanguageOptionButton
+                variant="ghost"
+                onClick={() => switchLanguage("uz")}
+              >
                 o'zb
-              </Button>
+              </LanguageOptionButton>
             </LanguageOptions>
           </LanguageDropdown>
         </Controls>
