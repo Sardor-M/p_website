@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Mail } from "lucide-react";
-import Card from "../../components/Card";
+import Card from "../../components/Card/Card";
 import { GithubFilled, InstagramFilled } from "@ant-design/icons";
 import { Button } from "../../components/common/Button";
 import { AppProps } from "../../types";
@@ -18,18 +18,20 @@ interface BlogPost {
 
 const Container = styled.div`
   min-height: 100vh;
-  padding: 1rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-`;
 
-// const Container = styled.div`
-//   background-color: ${({ theme }) => theme.bodyBg};
-//   color: ${({ theme }) => theme.textColor};
-//   min-height: 100vh;
-//   padding: 1rem;
-// `;
+  // we hide the scrollbar for chrome and safari
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // other web browsers
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`;
 
 const Header = styled.header`
   display: flex;
@@ -55,6 +57,7 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 `;
 
 const SectionTitle = styled.h2`
@@ -68,22 +71,15 @@ const TagContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const BlogGrid = styled.div`
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+const BlogContainer = styled.div`
+  width: 100%;
 `;
-
-const StyledCard = styled(Card)`
-  padding: 1rem;
+const BlogGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100%;
 `;
 
 const BlogTitle = styled.h3`
@@ -133,11 +129,27 @@ const SAMPLE_BLOGS: BlogPost[] = [
     category: "Node",
     description: "Backend optimization",
   },
+  {
+    id: 3,
+    title: "Node.js ",
+    date: "2025-02-01",
+    tags: ["Node.js", "Backend"],
+    category: "Node",
+    description: "Backend optimization",
+  },
+  {
+    id: 4,
+    title: "React Best Practices",
+    date: "2025-02-01",
+    tags: ["Node.js", "Backend"],
+    category: "Node",
+    description: "Backend optimization",
+  },
 ];
 
 const TAGS = ["React", "Frontend", "Node.js", "Backend"];
 
-const Home = ({ onToggleTheme }: AppProps) => {
+export default function Home({ onToggleTheme, theme }: AppProps) {
   const { t, i18n } = useTranslation();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
@@ -221,23 +233,29 @@ const Home = ({ onToggleTheme }: AppProps) => {
           ))}
         </TagContainer>
 
-        <BlogGrid>
-          {filteredPosts.map((post) => (
-            <StyledCard key={post.id}>
-              <BlogTitle>{post.title}</BlogTitle>
-              <BlogDate>{post.date}</BlogDate>
-              <BlogDescription>{post.description}</BlogDescription>
-              <TagList>
-                {post.tags.map((tag) => (
-                  <Tag key={tag}>{tag}</Tag>
-                ))}
-              </TagList>
-            </StyledCard>
-          ))}
-        </BlogGrid>
+        <BlogContainer>
+          <BlogGrid>
+            {filteredPosts.map((post) => (
+              <Card
+                title="Darkish Gray Card"
+                variant="light"
+                padding="md"
+                key={post.id}
+                hoverable
+              >
+                <BlogTitle>{post.title}</BlogTitle>
+                <BlogDate>{post.date}</BlogDate>
+                <BlogDescription>{post.description}</BlogDescription>
+                <TagList>
+                  {post.tags.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
+                </TagList>
+              </Card>
+            ))}
+          </BlogGrid>
+        </BlogContainer>
       </Section>
     </Container>
   );
-};
-
-export default Home;
+}

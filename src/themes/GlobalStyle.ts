@@ -10,8 +10,6 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
-    background-color: ${({ theme }) => theme.bodyBg};
-    color: ${({ theme }) => theme.textColor};
     font-family: 'DepartureMono-Regular', sans-serif;  
   }
 `;

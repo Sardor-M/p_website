@@ -9,4 +9,5 @@ export type BlogPost = {
 
 export type AppProps = {
   onToggleTheme: () => void;
+  theme: 'light' | 'dark';
 };
