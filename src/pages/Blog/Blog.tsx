@@ -5,6 +5,7 @@ import StyledCard from "../../components/Card/StyledCard";
 import TagFilterSystem from "./BlogFilterTags";
 import { Link } from "react-router-dom";
 import { sample_fake_blogs } from "./fakeData";
+import { themeColor } from "@/tools";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -77,22 +78,63 @@ const TagList = styled.div`
 `;
 
 const Tag = styled.span`
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  border-radius: 9999px;
-  background-color: ${(props) => props.theme.tagBg};
-  color: ${(props) => props.theme.tagText};
+  padding: 0.25rem 0.8rem;
+  font-size: 0.6rem;
+  border-radius: 6px;
+   background-color: ${({ theme }) =>
+    theme.mode === "dark" ? "#2D2D2D" : "rgb(235, 235, 235)"};
+  color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};
 `;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
+const BlogPostCard = styled(StyledCard)`
+  color: ${props => props.theme.textColor};
+`;
+
+// const BlogTitle = styled.h3`
+//   font-size: 1.2rem;
+//   margin: 0;
+//   color: ${props => props.theme.textColor};
+// `;
+
+// const BlogDate = styled.p`
+//   font-size: 0.875rem;
+//   color: ${props => props.theme.textMuted};
+// `;
+
+// const BlogDescription = styled.p`
+//   margin-top: 0.5rem;
+//   color: ${props => props.theme.textColor};
+// `;
+
+// const TagList = styled.div`
+//   display: flex;
+//   gap: 0.5rem;
+//   margin-top: 0.75rem;
+//   flex-wrap: wrap;
+// `;
+
+// const Tag = styled.span`
+//   padding: 0.25rem 0.75rem;
+//   font-size: 0.875rem;
+//   border-radius: 9999px;
+//   background-color: ${props => props.theme.tagBg};
+//   color: ${props => props.theme.tagText};
+// `;
 
 const TAGS = ["React", "Frontend", "TypeScript", "Backend"];
 
 export default function Blog() {
-  const { t, i18n } = useTranslation();
+  // const { t, i18n } = useTranslation();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-
-  const switchLanguage = (lang: string) => {
-    void i18n.changeLanguage(lang);
-  };
 
   const filteredPosts = selectedTag
     ? sample_fake_blogs.filter((post) => post.tags.includes(selectedTag))
@@ -100,9 +142,6 @@ export default function Blog() {
 
   return (
     <Container>
-      {/* <Header>
-        <Title>{t("welcome")}</Title>
-      </Header> */}
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
         <TagContainer>
@@ -115,29 +154,26 @@ export default function Blog() {
         <BlogContainer>
           <BlogGrid>
             {filteredPosts.map((post) => (
-              <div key={`blog-wrapper-${post.id}`}>
-                <Link
-                  to={`/${post.id}`}
-                  state={{ blogData: post }} // cliked datani butunlay juantamiz
-                  className={"no-underline"}
+              <StyledLink
+                key={`blog-${post.id}`}
+                to={`/${post.id}`}
+                state={{ blogData: post }}
+              >
+                <BlogPostCard
+                  variant="light"
+                  padding="sm"
+                  hoverable={true}
                 >
-                  <StyledCard
-                    key={`blog-card-${post.id}`}
-                    variant="light"
-                    padding="sm"
-                    hoverable={true}
-                  >
-                    <BlogTitle>{post.title}</BlogTitle>
-                    <BlogDate>{post.date}</BlogDate>
-                    <BlogDescription>{post.description}</BlogDescription>
-                    <TagList>
-                      {post.tags.map((tag, index) => (
-                        <Tag key={`${post.id}-tag-${index}`}>{tag}</Tag>
-                      ))}
-                    </TagList>
-                  </StyledCard>
-                </Link>
-              </div>
+                  <BlogTitle>{post.title}</BlogTitle>
+                  <BlogDate>{post.date}</BlogDate>
+                  <BlogDescription>{post.description}</BlogDescription>
+                  <TagList>
+                    {post.tags.map((tag, index) => (
+                      <Tag key={`${post.id}-${tag}-${index}`}>{tag}</Tag>
+                    ))}
+                  </TagList>
+                </BlogPostCard>
+              </StyledLink>
             ))}
           </BlogGrid>
         </BlogContainer>

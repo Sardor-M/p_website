@@ -139,10 +139,10 @@ const TagContainer = styled.div`
 `;
 
 const Tag = styled.span`
-  padding: 5px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.6rem;
+  border-radius: 6px;
   margin: 0;
-  border-radius: 8px;
-  width: 40%;
   background-color: ${({ theme }) =>
     theme.mode === "dark" ? "#2D2D2D" : "rgb(235, 235, 235)"};
   color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};

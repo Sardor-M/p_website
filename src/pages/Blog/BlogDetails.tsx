@@ -134,12 +134,12 @@ const TopicList = styled.div`
   flex-wrap: wrap;
 `;
 
-const Topic = styled.span`
+const StyledTag = styled.span`
   margin-top: 10px;
-  padding: 0.3rem 0.7rem;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.6rem;
+  border-radius: 6px;
   background: ${({ theme }) => (theme.mode === "dark" ? "#2D2D2D" : "#f2f2f2")};
-  border-radius: 10px;
-  font-size: 0.8rem;
   color: ${({ theme }) => theme.textColor};
 `;
 
@@ -167,7 +167,7 @@ export default function BlogDetails() {
         <Content dangerouslySetInnerHTML={{ __html: post.content }} />
         <TopicList>
           {post.tags.map((tag) => (
-            <Topic key={tag}>{tag}</Topic>
+            <StyledTag key={tag}>{tag}</StyledTag>
           ))}
         </TopicList>
       </StyledCard>
