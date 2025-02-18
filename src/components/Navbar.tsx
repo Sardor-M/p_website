@@ -48,7 +48,7 @@ const Logo = styled(Link)`
 
 const NavList = styled.ul`
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -102,7 +102,7 @@ const NavItem = styled(Link)`
 
 const Controls = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.4rem;
   align-items: center;
 `;
 
@@ -115,21 +115,23 @@ const ThemeToggle = styled(Button)`
   color: ${({ theme }) =>
     theme.mode === "dark"
       ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
+      : themeColor.light_gray_text_color
+    };
 `;
 
 const LanguageDropdown = styled.div`
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
   border-radius: 14px;
   position: relative;
   color: ${({ theme }) =>
     theme.mode === "dark"
       ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
+      : themeColor.light_gray_text_color
+  };
 `;
 
 const LanguageButton = styled(Button)`
-  padding: 0.5rem;
+  padding: 0.5rem 0.7rem;
   color: ${({ theme }) =>
     theme.mode === "dark"
       ? themeColor.gray_text_color
@@ -229,7 +231,7 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
                 to="/"
                 className={location.pathname === "/" ? "active" : ""}
               >
-                Home
+                Blogs
               </NavItem>
             </li>
             <li>
@@ -238,14 +240,6 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
                 className={location.pathname === "/portfolio" ? "active" : ""}
               >
                 Portfolio
-              </NavItem>
-            </li>
-            <li>
-              <NavItem
-                to="/blog"
-                className={location.pathname === "/blog" ? "active" : ""}
-              >
-                Blog
               </NavItem>
             </li>
           </NavList>
