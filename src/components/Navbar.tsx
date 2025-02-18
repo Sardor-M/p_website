@@ -18,6 +18,8 @@ const Nav = styled.nav`
   left: 0;
   right: 0;
   z-index: 1000;
+  border-bottom: 0.5px rgb(211, 211, 211);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   color: ${({ theme }) =>
     theme.mode === "dark"
       ? themeColor.light_gray_text_color
@@ -27,10 +29,11 @@ const Nav = styled.nav`
 const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
+
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 70px;
 `;
 
 const Logo = styled(Link)`

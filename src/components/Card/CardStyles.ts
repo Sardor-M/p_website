@@ -17,7 +17,7 @@ export const cardPadding = {
     padding: 0;
   `,
   sm: css`
-    padding: 0.5rem;
+    padding: 0.3rem;
   `,
   md: css`
     padding: 1rem;

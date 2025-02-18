@@ -29,11 +29,12 @@ const CardContainer = styled.div<{
   ${({ $size }) => cardSizes[$size]};
   ${({ $padding }) => cardPadding[$padding]};
 
+
   border-radius: 15px;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   overflow: hidden;
   width: 100%;
-  margin: 0;
+  margin: 10px 0;
 
   ${({ $hoverable }) =>
     $hoverable &&
@@ -68,7 +69,7 @@ const CardBody = styled.div`
   padding: 1rem;
 `;
 
-const Card: React.FC<CardProps> = ({
+const StyledCard: React.FC<CardProps> = ({
   title,
   children,
   variant = "elevated",
@@ -103,7 +104,8 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-// predefined card configs
+// predefined card configs 
+// this is i think not bvery smart way to do so 
 export const cardPresets = {
   blogPost: {
     variant: "elevated" as CardVariant,
@@ -128,4 +130,4 @@ export const cardPresets = {
   },
 };
 
-export default Card;
+export default StyledCard;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import Card from "../../components/Card/Card";
+import StyledCard from "../../components/Card/StyledCard";
 import { Button } from "../../components/common/Button";
 
 interface BlogPost {
@@ -50,7 +50,7 @@ const Section = styled.section`
   margin-top: -30px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: rem;
   width: 100%;
 `;
 
@@ -71,15 +71,14 @@ const BlogContainer = styled.div`
 const BlogGrid = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.6rem;
   width: 100%;
   max-width: 100%;
 `;
 
 const BlogTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  margin: 0;
 `;
 
 const BlogDate = styled.p`
@@ -176,10 +175,9 @@ export default function Home() {
         <BlogContainer>
           <BlogGrid>
             {filteredPosts.map((post) => (
-              <Card
-                title="Darkish Gray Card"
+              <StyledCard
                 variant="light"
-                padding="md"
+                padding="sm"
                 key={post.id}
                 hoverable
               >
@@ -191,7 +189,7 @@ export default function Home() {
                     <Tag key={tag}>{tag}</Tag>
                   ))}
                 </TagList>
-              </Card>
+              </StyledCard>
             ))}
           </BlogGrid>
         </BlogContainer>

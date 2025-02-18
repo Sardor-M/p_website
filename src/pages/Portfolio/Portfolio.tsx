@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ExternalLink, Code, Server } from "lucide-react";
-import Card from "../../components/Card/Card";
+import StyledCard from "../../components/Card/StyledCard";
 import { GithubFilled } from "@ant-design/icons";
 
 type SkillSection = {
@@ -29,8 +29,8 @@ const SectionTitle = styled.h2`
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 3fr));
-  gap: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.6rem;
   margin-bottom: 2rem;
   width: 100%;
 `;
@@ -38,7 +38,7 @@ const SkillsGrid = styled.div`
 const ProjectsGrid = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.7rem;
 `;
 
 const LinkIcon = styled.a`
@@ -67,6 +67,7 @@ const SkillTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin: 0;
 `;
 
 const SkillList = styled.ul`
@@ -149,7 +150,7 @@ const Portfolio: React.FC = () => {
         <SectionTitle>Technical Skills</SectionTitle>
         <SkillsGrid>
           {skillSections.map((section) => (
-            <Card key={section.id} variant="light" padding="md">
+            <StyledCard key={section.id} variant="light" padding="md">
               <SkillCategory>
                 <SkillTitle>
                   {section.icon}
@@ -163,7 +164,7 @@ const Portfolio: React.FC = () => {
                   ))}
                 </SkillList>
               </SkillCategory>
-            </Card>
+            </StyledCard>
           ))}
         </SkillsGrid>
       </Section>
@@ -172,7 +173,7 @@ const Portfolio: React.FC = () => {
         <SectionTitle>Featured Projects</SectionTitle>
         <ProjectsGrid>
           {projects.map((project) => (
-            <Card key={project.title} variant="light" padding="md" hoverable>
+            <StyledCard key={project.title} variant="light" padding="md" hoverable>
               <h3
                 style={{
                   fontSize: "1.3rem",
@@ -206,7 +207,7 @@ const Portfolio: React.FC = () => {
                   <ExternalLink size={20} />
                 </LinkIcon>
               </IconContainer>
-            </Card>
+            </StyledCard>
           ))}
         </ProjectsGrid>
       </Section>
