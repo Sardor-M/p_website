@@ -1,16 +1,23 @@
 import styled from "styled-components";
+import StyledCard from "../../components/Card/StyledCard";
 
 const BlogContainer = styled.div`
   margin-top: -36px;
   padding: 2rem;
 `;
 
+const BlogTitle = styled.h2`
+  padding-top: 15px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+`;
+
 const Post = styled.div`
   margin-bottom: 2rem;
 `;
 
-const PostTitle = styled.h2`
-  font-size: 1.5rem;
+const PostTitle = styled.h3`
   font-weight: bold;
 `;
 
@@ -27,18 +34,9 @@ const PostContent = styled.p`
 function Blog() {
   return (
     <BlogContainer>
-      <h1>Blog</h1>
+      <BlogTitle>Blog</BlogTitle>
       <Post>
-        <PostTitle>Understanding React Hooks</PostTitle>
-        <PostDate>January 1, 2025</PostDate>
-        <PostContent>
-          React Hooks are functions that let you use state and other React
-          features without writing a class. They were introduced in React 16.8.
-          Hooks allow you to reuse stateful logic without changing your
-          component hierarchy.
-        </PostContent>
-      </Post>
-      <Post>
+      <StyledCard key={"id"} variant="light" padding="sm" size="sm">
         <PostTitle>Node.js Best Practices</PostTitle>
         <PostDate>February 1, 2025</PostDate>
         <PostContent>
@@ -62,6 +60,7 @@ function Blog() {
           maintainable code. This includes using asynchronous programming,
           handling errors properly, and optimizing performance.
         </PostContent>
+        </StyledCard>
       </Post>
     </BlogContainer>
   );

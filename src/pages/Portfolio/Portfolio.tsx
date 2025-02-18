@@ -21,7 +21,8 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.8rem;
+  padding-top: 15px;
+  font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
   color: ${({ theme }) => theme.textColor};
@@ -173,7 +174,12 @@ const Portfolio: React.FC = () => {
         <SectionTitle>Featured Projects</SectionTitle>
         <ProjectsGrid>
           {projects.map((project) => (
-            <StyledCard key={project.title} variant="light" padding="md" hoverable>
+            <StyledCard
+              key={project.title}
+              variant="light"
+              padding="md"
+              hoverable
+            >
               <h3
                 style={{
                   fontSize: "1.3rem",

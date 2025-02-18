@@ -2,6 +2,12 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
+import {
+  GithubFilled,
+  LinkedinFilled,
+  MailFilled,
+} from "@ant-design/icons";
+import { themeColor } from "../tools";
 
 type LayoutProps = {
   children: ReactNode;
@@ -78,7 +84,7 @@ const RightSidebar = styled.aside`
 
 // tag components (left)
 const TagSection = styled.section`
-  margin: 1rem auto;
+  margin: 1.5rem auto;
   padding-left: 70px;
 `;
 
@@ -120,20 +126,77 @@ const ProfileImage = styled.img`
 
 const ProfileName = styled.h2`
   font-size: 1rem;
-  // margin-bottom: 0.1rem;
   margin: 8px 8px;
 `;
 
 const ProfileBio = styled.p`
-  color: ${({ theme }) => theme.textMuted};
+  color: rgb(165, 165, 165);
   margin: 10px 20px;
 `;
+
 const TagContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+`;
+
+const Tag = styled.span`
+  padding: 5px;
+  margin:0;
+  border-radius: 8px;
+  width: 40%;
+  background-color: ${({ theme }) =>
+    theme.mode === "dark" ? "#2D2D2D" :"rgb(235, 235, 235)"};
+  color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};
+  text-align: center;
+  font-size: 12px;
+`;
+
+const ContactTitle = styled.h2`
+  font-size: 1.1rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: ${({ theme }) => theme.textColor};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    color: #6b7280;
+  }
+`;
+
+const ContactList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const ContactItem = styled.li`
+  font-weight: 14px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: ${({ theme }) =>
+    theme.mode === "dark"
+      ? themeColor.gray_text_color
+      : themeColor.light_gray_text_color};
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.mode === "dark" ? "#2D2D2D" : "#E5E7EB"};
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
 `;
 
 export default function Layout({
@@ -170,29 +233,34 @@ export default function Layout({
                   src="https://avatars.githubusercontent.com/u/65296404?v=4"
                   alt="Profile"
                 />
-                <ProfileName>Sardor-M</ProfileName>
+                <ProfileName>sardor-m</ProfileName>
                 <ProfileBio>Sardor Madaminov</ProfileBio>
-
                 {/* {// tags  */}
                 <TagContainer>
-                  <span className="px-2 py-1 text-sm bg-gray-100 rounded-full">
-                    i18n-react
-                  </span>
-                  <span className="px-2 py-1 text-sm bg-gray-100 rounded-full">
-                    React Js
-                  </span>
+                  <Tag>frontend</Tag>
+                  <Tag>react-js</Tag>
                 </TagContainer>
               </StyledCard>
-
-              {/* // social media section */}
-              <TagSection>
-                <TagTitle>✉️ Contact</TagTitle>
-                <TagList>
-                  <TagItem>github</TagItem>
-                  <TagItem>instagram</TagItem>
-                  <TagItem>email</TagItem>
-                </TagList>
-              </TagSection>
+              <ContactTitle>
+                <MailFilled size={18} />
+                Contact
+              </ContactTitle>
+              <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                <ContactList>
+                  <ContactItem>
+                    <GithubFilled />
+                    github
+                  </ContactItem>
+                  <ContactItem>
+                    <LinkedinFilled />
+                    instagram
+                  </ContactItem>
+                  <ContactItem>
+                    <MailFilled />
+                    email
+                  </ContactItem>
+                </ContactList>
+              </StyledCard>
             </ProfileSection>
           </RightSidebar>
         </ContentWrapper>

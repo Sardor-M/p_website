@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import StyledCard from "../../components/Card/StyledCard";
-import { Button } from "../../components/common/Button";
+import TagFilterSystem from "./FilterTags";
 
 interface BlogPost {
   id: number;
@@ -55,8 +55,10 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
+padding-top: 15px;
   font-size: 1.5rem;
   font-weight: 600;
+  margin-bottom: 8px;
 `;
 
 const TagContainer = styled.div`
@@ -140,7 +142,7 @@ const SAMPLE_BLOGS: BlogPost[] = [
   },
 ];
 
-const TAGS = ["React", "Frontend", "Node.js", "Backend"];
+const TAGS = ["React", "Frontend", "TypeScript", "Backend"];
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -162,25 +164,16 @@ export default function Home() {
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
         <TagContainer>
-          {TAGS.map((tag) => (
-            <Button
-              key={tag}
-              variant={selectedTag === tag ? "default" : "outline"}
-              onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-            >
-              {tag}
-            </Button>
-          ))}
+          <TagFilterSystem
+            tags={TAGS}
+            selectedTag={selectedTag}
+            onTagSelect={setSelectedTag}
+          />
         </TagContainer>
         <BlogContainer>
           <BlogGrid>
             {filteredPosts.map((post) => (
-              <StyledCard
-                variant="light"
-                padding="sm"
-                key={post.id}
-                hoverable
-              >
+              <StyledCard variant="light" padding="sm" key={post.id} hoverable>
                 <BlogTitle>{post.title}</BlogTitle>
                 <BlogDate>{post.date}</BlogDate>
                 <BlogDescription>{post.description}</BlogDescription>
