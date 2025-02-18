@@ -139,7 +139,7 @@ const Portfolio: React.FC = () => {
       title: "Sample Project",
       description:
         "A static blog platform built with React and Typescript. Features include, markdown support, and comment system.",
-      tags: ["Next.js", "TypeScript", "Prisma", "Tailwind CSS"],
+      tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
       github: "https://github.com/",
       demo: "https://demo.com",
     },
