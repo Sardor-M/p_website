@@ -2,11 +2,7 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
-import {
-  GithubFilled,
-  LinkedinFilled,
-  MailFilled,
-} from "@ant-design/icons";
+import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
 import { themeColor } from "../tools";
 
 type LayoutProps = {
@@ -144,11 +140,11 @@ const TagContainer = styled.div`
 
 const Tag = styled.span`
   padding: 5px;
-  margin:0;
+  margin: 0;
   border-radius: 8px;
   width: 40%;
   background-color: ${({ theme }) =>
-    theme.mode === "dark" ? "#2D2D2D" :"rgb(235, 235, 235)"};
+    theme.mode === "dark" ? "#2D2D2D" : "rgb(235, 235, 235)"};
   color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};
   text-align: center;
   font-size: 12px;
@@ -241,10 +237,7 @@ export default function Layout({
                   <Tag>react-js</Tag>
                 </TagContainer>
               </StyledCard>
-              <ContactTitle>
-                <MailFilled size={18} />
-                Contact
-              </ContactTitle>
+              <ContactTitle>🔗 Contact</ContactTitle>
               <StyledCard key={"id"} variant="light" padding="sm" size="sm">
                 <ContactList>
                   <ContactItem>

@@ -30,22 +30,6 @@ const Container = styled.div`
   scrollbar-width: none;
 `;
 
-// const Header = styled.header`
-//   margin-top: -50px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
-// `;
-
-// const Title = styled.h1`
-//   font-size: 2.5rem;
-//   font-weight: bold;
-// `;
-
-// const Description = styled.p`
-//   font-size: 1.125rem;
-// `;
-
 const Section = styled.section`
   margin-top: -30px;
   display: flex;
