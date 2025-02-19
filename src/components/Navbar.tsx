@@ -4,7 +4,7 @@ import { AppProps } from "@/types/index.ts";
 import { useTranslation } from "react-i18next";
 import { Sun, Moon, Languages } from "lucide-react";
 import { useState } from "react";
-import { getHoverStyles, getThemeStyles, themeColor } from "@/themes";
+import { getHoverStyles, getThemeStyles } from "@/themes";
 import { Button } from "./common/Button";
 
 //shared common button styles
