@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { X } from "lucide-react";
 import { getThemeStyles } from "@/themes";
+import { themeColor } from "@/themes/color";
 
 type TagsProps = {
   tags: string[];
@@ -32,16 +33,21 @@ const TagItem = styled.span<{ $isSelected: boolean }>`
   background-color: ${(props) =>
     props.$isSelected
       ? props.theme.mode === "dark"
-        ? "#2D2D2D"
-        : "#E5E7EB"
+        ? themeColor.backgroundSpan.dark
+        : themeColor.backgroundSpan.light
       : "transparent"};
   color: ${(props) => props.theme.textColor};
   border: 1px transparent
-    ${(props) => (props.theme.mode === "dark" ? "#3F3F3F" : "#E5E7EB")};
+    ${(props) =>
+      props.theme.mode === "dark"
+        ? themeColor.borderSpan.dark
+        : themeColor.borderSpan.dark};
 
   &:hover {
     background-color: ${(props) =>
-      props.theme.mode === "dark" ? "#2D2D2D" : "#E5E7EB"};
+      props.theme.mode === "dark"
+        ? themeColor.backgroundSpan.dark
+        : themeColor.backgroundSpan.light};
   }
 `;
 
@@ -56,12 +62,17 @@ const ResetButton = styled.button`
   background-color: transparent;
   ${({ theme }) => getThemeStyles(theme, "text")};
   border: 1px
-    ${(props) => (props.theme.mode === "dark" ? "#3F3F3F" : "#E5E7EB")};
+    ${(props) =>
+      props.theme.mode === "dark"
+        ? themeColor.borderSpan.dark
+        : themeColor.borderSpan.light};
   transition: all 0.2s ease;
 
   &:hover {
     background-color: ${(props) =>
-      props.theme.mode === "dark" ? "#2D2D2D" : "#E5E7EB"};
+      props.theme.mode === "dark"
+        ? themeColor.backgroundSpan.dark
+        : themeColor.backgroundSpan.light};
   }
 
   svg {

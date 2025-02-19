@@ -65,16 +65,9 @@ const NavItem = styled(Link)`
     ${({ theme }) => getHoverStyles(theme)};
     transform: translateY(-3px);
     box-shadow: 0 2px 8px
-      ${({ theme }) =>
-        theme.mode === "dark"
-          ? "rgba(255, 255, 255, 0.05)"
-          : "rgba(0, 0, 0, 0.03)"};
-  }
+      ${({ theme }) => getThemeStyles(theme, "shadow")}
   &.active {
-    background-color: ${({ theme }) =>
-      theme.mode === "dark"
-        ? "rgba(255, 255, 255, 0.08)"
-        : "rgba(0, 0, 0, 0.07)"};
+    ${({ theme }) => getHoverStyles(theme)};
 
     &::after {
       content: "";
@@ -85,7 +78,6 @@ const NavItem = styled(Link)`
       width: 4px;
       height: 4px;
       border-radius: 50px;
-      background-color: ${({ theme }) => theme.primary};
       transition: all 0.2s ease-in-out;
     }
   }
@@ -120,10 +112,7 @@ const LanguageButton = styled(Button)`
   transition: all 0.2s ease-out;
 
   &:hover {
-    background-color: ${({ theme }) =>
-      theme.mode === "dark"
-        ? "rgba(255, 255, 255, 0.08)"
-        : "rgba(0, 0, 0, 0.09)"};
+    ${({ theme }) => getHoverStyles(theme)};
     transform: translateY(-2px);
   }
 `;
@@ -133,11 +122,7 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
   top: 100%;
   right: 0;
   ${({ theme }) => getThemeStyles(theme, "background")};
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === "dark"
-        ? "rgba(255, 255, 255, 0.1)"
-        : "rgba(0, 0, 0, 0.1)"};
+  border: 1px solid ${({ theme }) => getThemeStyles(theme, "border")};
   border-radius: 14px;
   padding: 0.5rem;
   display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
@@ -146,8 +131,7 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
   min-width: 100px;
   z-index: 10;
   box-shadow: 0 4px 12px
-    ${({ theme }) =>
-      theme.mode === "dark" ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.1)"};
+    ${({ theme }) => getThemeStyles(theme, 'shadow')};
 `;
 
 const LanguageOptionButton = styled(Button)`
@@ -161,10 +145,7 @@ const LanguageOptionButton = styled(Button)`
   text-align: left;
 
   &:hover {
-    background-color: ${({ theme }) =>
-      theme.mode === "dark"
-        ? "rgba(255, 255, 255, 0.05)"
-        : "rgba(0, 0, 0, 0.07)"};
+    ${({ theme }) => getHoverStyles(theme)};
     transform: translateX(2px);
   }
 `;

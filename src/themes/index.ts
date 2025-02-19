@@ -1,30 +1,31 @@
-type ThemeProperty = "background" | "text";
+import { themeColor } from "./color";
 
-export const themeColor = {
-  background: {
-    dark: "#1C1C1C",
-    light: "#F8F8F8",
-  },
-  text: {
-    dark: "#FFFFFF",
-    light: "#282828",
-  },
-  hover: {
-    dark: "#ffffff0d",
-    light: "#00000012",
-  },
-  activeHover: {
-    dark: "#ffffff14",
-    light: "#00000017",
-  },
-  border: {
-    dark: "#ffffff1a",
-    light: "#0000001a",
-  },
-  shadow: {
-    dark: "#0000004d",
-    light: "#0000001a",
-  },
+type ThemeProperty =
+  | "background"
+  | "text"
+  | "hover"
+  | "activeHover"
+  | "border"
+  | "shadow";
+
+// theme property ga asoslanib  css propertyni olamiz
+const getCSSProperty = (property: ThemeProperty) => {
+  switch (property) {
+    case "background":
+      return "background-color";
+    case "text":
+      return "color";
+    case "hover":
+      return "background-color";
+    case "activeHover":
+      return "background-color";
+    case "border":
+      return "border-color";
+    case "shadow":
+      return "box-shadow";
+    default:
+      return property;
+  }
 };
 
 // mixin yaratamiz ( ikki xil turdagi)
@@ -38,6 +39,22 @@ const getThemeValue = (theme: any, property: ThemeProperty) => {
       return theme.mode === "dark"
         ? themeColor.text.dark
         : themeColor.text.light;
+    case "hover":
+      return theme.mode === "dark"
+        ? themeColor.hover.dark
+        : themeColor.hover.light;
+    case "activeHover":
+      return theme.mode === "dark"
+        ? themeColor.activeHover.dark
+        : themeColor.activeHover.light;
+    case "border":
+      return theme.mode === "dark"
+        ? themeColor.border.dark
+        : themeColor.border.light;
+    case "shadow":
+      return theme.mode === "dark"
+        ? themeColor.shadow.dark
+        : themeColor.shadow.light;
     default:
       return "";
   }
@@ -47,28 +64,29 @@ export const getThemeStyles = (
   theme: any,
   properties: ThemeProperty | ThemeProperty[]
 ) => {
-   // bu esa single property uchun
+  // bu esa single property uchun
   if (typeof properties === "string") {
     const value = getThemeValue(theme, properties);
-    return properties === "background"
-      ? `background-color : ${value};`
-      : `color: ${value};`;
+    const cssProperty = getCSSProperty(properties);
+    return `${cssProperty}: ${value};\n`;
   }
 
   // agar ikkila propertylar pass qilinsa
   return properties
     .map((prop) => {
       const value = getThemeValue(theme, prop);
-      return prop === "background"
-        ? `background-color: ${value};`
-        : `color: ${value};`;
+      const cssProperty = getCSSProperty(prop);
+      return `${cssProperty}: ${value};`;
     })
-    .join(" ");
+    .join("\n");
 };
 
-// hover effect for mixin
+// adashib ketmaslik uchun alohida wrapper getHoverStyle yaratildi
 export const getHoverStyles = (theme: any) => `
-    background-color: ${
-      theme.mode === "dark" ? themeColor.hover.dark : themeColor.hover.light
-    };
+    background-color: ${getThemeValue(theme, "hover")};
   `;
+
+// tepadagidek bunga ham wrapper qo'yildi
+export const getActiveHoverStyles = (theme: any) => `
+    background-color: ${getThemeValue(theme, "activeHover")};
+`;

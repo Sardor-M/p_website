@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
-import { getThemeStyles } from "@/themes";
+import { getHoverStyles, getThemeStyles } from "@/themes";
 
 type LayoutProps = {
   children: ReactNode;
@@ -99,7 +99,7 @@ const TagItem = styled.li`
   transition: color 0.2s;
 
   &:hover {
-    color: ${({ theme }) => theme.primary};
+    ${({theme}) => getHoverStyles(theme)};
   }
 `;
 
@@ -179,8 +179,7 @@ const ContactItem = styled.li`
   ${({ theme }) => getThemeStyles(theme, "text")};
 
   &:hover {
-    background-color: ${({ theme }) =>
-      theme.mode === "dark" ? "#2D2D2D" : "#E5E7EB"};
+    ${({theme}) => getThemeStyles(theme, 'hover')};
   }
 
   svg {

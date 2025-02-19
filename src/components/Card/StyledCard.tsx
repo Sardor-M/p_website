@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { cardSizes, cardPadding, cardVariants } from "./CardStyles";
 import { CardPadding, CardSize, CardVariant } from "./CardTypes";
+import { getThemeStyles} from "@/themes/index"
 
 type CardProps = {
   title?: string;
@@ -17,6 +18,7 @@ type CardProps = {
   bodyStyle?: React.CSSProperties;
   extra?: React.ReactNode;
 };
+
 
 const CardContainer = styled.div<{
   $variant: CardVariant;

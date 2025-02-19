@@ -1,10 +1,12 @@
 import { ThemeProvider } from "styled-components";
 import AppRoutes from "./routes";
-import { darkTheme, lightTheme } from "./themes/themes/theme";
+import { darkTheme, lightTheme } from "@/themes/themes/themes";
 import { useState } from "react";
 
-function App() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+type ThemeTypes = "light" | "dark";
+
+export default function App() {
+  const [theme, setTheme] = useState<ThemeTypes>("light");
 
   const handleToggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
@@ -16,5 +18,3 @@ function App() {
     </ThemeProvider>
   );
 }
-
-export default App;
