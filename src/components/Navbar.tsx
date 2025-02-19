@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { AppProps } from "../types/index.ts";
-import { Button } from "./common/Button.tsx";
+import { AppProps } from "@/types/index.ts";
 import { useTranslation } from "react-i18next";
 import { Sun, Moon, Languages } from "lucide-react";
 import { useState } from "react";
-import { themeColor } from "../tools/index.ts";
+import { themeColor } from "@/tools/index.ts";
+import { Button } from "./common/Button";
 
 const Nav = styled.nav`
   padding: 1rem;

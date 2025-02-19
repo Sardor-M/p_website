@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import StyledCard from "../../components/Card/StyledCard";
+import StyledCard from "@/components/Card/StyledCard";
 import TagFilterSystem from "./BlogFilterTags";
 import { Link } from "react-router-dom";
 import { sample_fake_blogs } from "./fakeData";
-import { themeColor } from "@/tools";
 
 const Container = styled.div`
   min-height: 100vh;

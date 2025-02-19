@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
-import { themeColor } from "../tools";
+import { themeColor } from "@/tools";
 
 type LayoutProps = {
   children: ReactNode;

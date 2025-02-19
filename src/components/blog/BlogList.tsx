@@ -1,6 +1,6 @@
 import React from 'react';
 import { BlogContainer, BlogCard, Tag } from './BlogListStyles';
-import { BlogPost } from '../../types';
+import { BlogPost } from '@/types/blog';
 
 
 type Props = {

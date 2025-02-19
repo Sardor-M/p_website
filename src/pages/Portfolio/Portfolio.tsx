@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ExternalLink, Code, Server } from "lucide-react";
-import StyledCard from "../../components/Card/StyledCard";
+import StyledCard from "@/components/Card/StyledCard";
 import { GithubFilled } from "@ant-design/icons";
 
 type SkillSection = {

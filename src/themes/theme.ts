@@ -1,5 +1,5 @@
 import { DefaultTheme } from 'styled-components';
-import { themeColor } from '../tools';
+import { themeColor } from '@/tools';
 
 export const lightTheme: DefaultTheme = {
   name: "light",

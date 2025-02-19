@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "../components/Layout";
-import Portfolio from "../pages/Portfolio/Portfolio";
-import { AppProps } from "../types";
-import Blog from "../pages/Blog/Blog";
-import BlogDetails from "../pages/Blog/BlogDetails";
+import Layout from "@/components/Layout";
+import Portfolio from "@/pages/Portfolio/Portfolio";
+import { AppProps } from "@/types";
+import Blog from "@/pages/Blog/Blog";
+import BlogDetails from "@/pages/Blog/BlogDetails";
 
 
 export default function AppRoutes({onToggleTheme, theme}: AppProps) {

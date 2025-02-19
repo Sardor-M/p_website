@@ -14,12 +14,12 @@ const BlogContainer = styled.div`
 
 const ArticleHeader = styled.div`
   margin-bottom: 1rem;
+   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 `;
 
 const Title = styled.h3`
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.3;
