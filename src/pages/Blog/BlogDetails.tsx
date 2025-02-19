@@ -4,6 +4,7 @@ import StyledCard from "../../components/Card/StyledCard";
 import AuthorSectionWithShare from "./BlogShareLink";
 import { BlogPost } from "../../types/blog";
 import { useLocation, useParams } from "react-router-dom";
+import { getThemeStyles } from "@/themes";
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -14,7 +15,7 @@ const BlogContainer = styled.div`
 
 const ArticleHeader = styled.div`
   margin-bottom: 1rem;
-   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Roboto",
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Roboto",
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 `;
@@ -25,7 +26,7 @@ const Title = styled.h3`
   line-height: 1.3;
   margin-top: 0;
   margin-bottom: 1.25rem;
-  color: ${({ theme }) => theme.textColor};
+  ${({ theme }) => getThemeStyles(theme, "text")};
   letter-spacing: -0.02em;
   padding-top: 0;
 `;
@@ -44,7 +45,7 @@ const Content = styled.div`
     sans-serif;
   font-size: 1.125rem;
   line-height: 1.7;
-  color: ${({ theme }) => theme.textColor};
+  ${({ theme }) => getThemeStyles(theme, "text")};
   font-weight: 400;
   letter-spacing: -0.003em;
 

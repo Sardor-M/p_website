@@ -4,15 +4,19 @@ import { AppProps } from "@/types/index.ts";
 import { useTranslation } from "react-i18next";
 import { Sun, Moon, Languages } from "lucide-react";
 import { useState } from "react";
-import { themeColor } from "@/tools/index.ts";
+import { getHoverStyles, getThemeStyles, themeColor } from "@/themes";
 import { Button } from "./common/Button";
+
+//shared common button styles
+const commonButtonStyles = `
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  transition: all 0.2s ease-out;
+`;
 
 const Nav = styled.nav`
   padding: 1rem;
-  background-color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_background
-      : themeColor.light_gray_background};
+  ${({ theme }) => getThemeStyles(theme, ["background", "text"])};
   position: fixed;
   top: 0;
   left: 0;
@@ -20,10 +24,6 @@ const Nav = styled.nav`
   z-index: 1000;
   border-bottom: 0.5px rgb(211, 211, 211);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.light_gray_text_color
-      : themeColor.gray_text_color};
 `;
 
 const NavContainer = styled.div`
@@ -39,10 +39,7 @@ const NavContainer = styled.div`
 const Logo = styled(Link)`
   font-size: 1.25rem;
   font-weight: 600;
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
+  ${({ theme }) => getThemeStyles(theme, "text")};
   text-decoration: none;
 `;
 
@@ -56,22 +53,16 @@ const NavList = styled.ul`
 `;
 
 const NavItem = styled(Link)`
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
+  ${({ theme }) => getThemeStyles(theme, "text")};
   text-decoration: none;
   font-weight: 500;
-  padding: 0.5rem 1rem;
+  ${commonButtonStyles};
   border-radius: 14px;
   transition: all 0.2s ease-out;
 
   &:hover,
   &.active {
-    background-color: ${({ theme }) =>
-      theme.mode === "dark"
-        ? "rgba(255, 255, 255, 0.05)"
-        : "rgba(0, 0, 0, 0.07)"};
+    ${({ theme }) => getHoverStyles(theme)};
     transform: translateY(-3px);
     box-shadow: 0 2px 8px
       ${({ theme }) =>
@@ -107,39 +98,24 @@ const Controls = styled.div`
 `;
 
 const ThemeToggle = styled(Button)`
-  padding: 0.5rem 1rem;
+  ${commonButtonStyles};
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color
-    };
+  ${({ theme }) => getThemeStyles(theme, "text")};
 `;
 
 const LanguageDropdown = styled.div`
   padding: 0.5rem 0.7rem;
   border-radius: 14px;
   position: relative;
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color
-  };
+  ${({ theme }) => getThemeStyles(theme, "text")};
 `;
 
 const LanguageButton = styled(Button)`
   padding: 0.5rem 0.7rem;
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
-  background-color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? "rgba(255, 255, 255, 0.05)"
-      : "rgba(0, 0, 0, 0.07)"};
+  ${({ theme }) => getThemeStyles(theme, ["background", "text"])};
   border-radius: 14px;
   transition: all 0.2s ease-out;
 
@@ -156,10 +132,7 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_background
-      : themeColor.light_gray_background};
+  ${({ theme }) => getThemeStyles(theme, "background")};
   border: 1px solid
     ${({ theme }) =>
       theme.mode === "dark"
@@ -178,11 +151,8 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
 `;
 
 const LanguageOptionButton = styled(Button)`
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
-  padding: 0.5rem 1rem;
+  ${({ theme }) => getThemeStyles(theme, "text")};
+  ${commonButtonStyles};
   border-radius: 10px;
   transition: all 0.2s ease-out;
   text-transform: uppercase;

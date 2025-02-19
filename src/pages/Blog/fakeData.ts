@@ -11,7 +11,7 @@ export const sample_fake_blogs: BlogPost[] = [
         image: "/api/placeholder/48/48",
         bio: "Senior Frontend Developer",
       },
-      readTime: "5 min read",
+      readTime: "4 min read",
       tags: ["React", "Frontend", "Web Development"],
       description:
         "Learn how to use React Hooks effectively in your applications",
@@ -32,7 +32,7 @@ export const sample_fake_blogs: BlogPost[] = [
         image: "/api/placeholder/48/48",
         bio: "Backend Architecture Specialist",
       },
-      readTime: "8 min read",
+      readTime: "2 min read",
       tags: ["Node.js", "Backend", "Performance"],
       description:
         "Essential practices for building scalable Node.js applications",

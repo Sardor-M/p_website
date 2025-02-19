@@ -26,7 +26,7 @@ const Section = styled.section`
   margin-top: -30px;
   display: flex;
   flex-direction: column;
-  gap: rem;
+  // gap: rem;
   width: 100%;
 `;
 
@@ -96,37 +96,6 @@ const StyledLink = styled(Link)`
 const BlogPostCard = styled(StyledCard)`
   color: ${props => props.theme.textColor};
 `;
-
-// const BlogTitle = styled.h3`
-//   font-size: 1.2rem;
-//   margin: 0;
-//   color: ${props => props.theme.textColor};
-// `;
-
-// const BlogDate = styled.p`
-//   font-size: 0.875rem;
-//   color: ${props => props.theme.textMuted};
-// `;
-
-// const BlogDescription = styled.p`
-//   margin-top: 0.5rem;
-//   color: ${props => props.theme.textColor};
-// `;
-
-// const TagList = styled.div`
-//   display: flex;
-//   gap: 0.5rem;
-//   margin-top: 0.75rem;
-//   flex-wrap: wrap;
-// `;
-
-// const Tag = styled.span`
-//   padding: 0.25rem 0.75rem;
-//   font-size: 0.875rem;
-//   border-radius: 9999px;
-//   background-color: ${props => props.theme.tagBg};
-//   color: ${props => props.theme.tagText};
-// `;
 
 const TAGS = ["React", "Frontend", "TypeScript", "Backend"];
 

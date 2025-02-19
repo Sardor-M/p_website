@@ -1,6 +1,6 @@
 import { ThemeProvider } from "styled-components";
 import AppRoutes from "./routes";
-import { darkTheme, lightTheme } from "./themes/theme";
+import { darkTheme, lightTheme } from "./themes/themes/theme";
 import { useState } from "react";
 
 function App() {

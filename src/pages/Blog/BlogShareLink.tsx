@@ -1,3 +1,4 @@
+import { getThemeStyles } from "@/themes";
 import {
   CheckCircleFilled,
   LinkedinFilled,
@@ -77,7 +78,7 @@ const ShareButton = styled.button`
   border: 1px transparent;
     ${({ theme }) => (theme.mode === "dark" ? "#404040" : "#e5e5e5")};
   background: transparent;
-  color: ${({ theme }) => theme.textColor};
+ ${({ theme }) => getThemeStyles(theme, "text")};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -101,7 +102,7 @@ const DropdownMenu = styled.div`
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  background: ${({ theme }) => (theme.mode === "dark" ? "#1E1E1E" : "#FFFFFF")};
+  ${({ theme }) => getThemeStyles(theme, "background")};
   border: 1px solid
     ${({ theme }) => (theme.mode === "dark" ? "#404040" : "#e5e5e5")};
   border-radius: 8px;
@@ -119,7 +120,7 @@ const DropdownItem = styled.button`
   padding: 0.5rem 0.75rem;
   border: none;
   background: transparent;
-  color: ${({ theme }) => theme.textColor};
+  ${({ theme }) => getThemeStyles(theme, "text")};
   font-size: 0.875rem;
   cursor: pointer;
   border-radius: 4px;
@@ -141,7 +142,7 @@ const CopyNotification = styled.div`
   top: 6rem;
   left: 50%;
   transform: translateX(-50%);
-  background: ${({ theme }) => (theme.mode === "dark" ? "#1E1E1E" : "#FFFFFF")};
+  ${({ theme }) => getThemeStyles(theme, "background")};
   border: 1px solid
     ${({ theme }) => (theme.mode === "dark" ? "#404040" : "#e5e5e5")};
   padding: 0.75rem 1rem;

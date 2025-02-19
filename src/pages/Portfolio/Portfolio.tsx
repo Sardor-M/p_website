@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ExternalLink, Code, Server } from "lucide-react";
 import StyledCard from "@/components/Card/StyledCard";
 import { GithubFilled } from "@ant-design/icons";
+import { getThemeStyles } from "@/themes";
 
 type SkillSection = {
   id: string;
@@ -25,7 +26,7 @@ const SectionTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: ${({ theme }) => theme.textColor};
+  ${({ theme }) => getThemeStyles(theme, "text")};
 `;
 
 const SkillsGrid = styled.div`

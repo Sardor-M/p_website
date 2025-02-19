@@ -1,13 +1,13 @@
-import styled from 'styled-components';
-import { X } from 'lucide-react';
-
+import styled from "styled-components";
+import { X } from "lucide-react";
+import { getThemeStyles } from "@/themes";
 
 type TagsProps = {
-    tags: string[];
-    selectedTag: string | null;
-    onTagSelect: (tag: string | null) => void;
-  };
-  
+  tags: string[];
+  selectedTag: string | null;
+  onTagSelect: (tag: string | null) => void;
+};
+
 const FilterContainer = styled.div`
   display: flex;
   align-items: center;
@@ -29,26 +29,19 @@ const TagItem = styled.span<{ $isSelected: boolean }>`
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: ${props => 
-    props.$isSelected 
-      ? props.theme.mode === 'dark' 
-        ? '#2D2D2D' 
-        : '#E5E7EB'
-      : 'transparent'
-  };
-  color: ${props => props.theme.textColor};
-  border: 1px transparent ${props => 
-    props.theme.mode === 'dark' 
-      ? '#3F3F3F' 
-      : '#E5E7EB'
-  };
+  background-color: ${(props) =>
+    props.$isSelected
+      ? props.theme.mode === "dark"
+        ? "#2D2D2D"
+        : "#E5E7EB"
+      : "transparent"};
+  color: ${(props) => props.theme.textColor};
+  border: 1px transparent
+    ${(props) => (props.theme.mode === "dark" ? "#3F3F3F" : "#E5E7EB")};
 
   &:hover {
-    background-color: ${props => 
-      props.theme.mode === 'dark' 
-        ? '#2D2D2D' 
-        : '#E5E7EB'
-    };
+    background-color: ${(props) =>
+      props.theme.mode === "dark" ? "#2D2D2D" : "#E5E7EB"};
   }
 `;
 
@@ -61,20 +54,14 @@ const ResetButton = styled.button`
   font-size: 0.875rem;
   cursor: pointer;
   background-color: transparent;
-  color: ${props => props.theme.textColor};
-  border: 1px  ${props => 
-    props.theme.mode === 'dark' 
-      ? '#3F3F3F' 
-      : '#E5E7EB'
-  };
+  ${({ theme }) => getThemeStyles(theme, "text")};
+  border: 1px
+    ${(props) => (props.theme.mode === "dark" ? "#3F3F3F" : "#E5E7EB")};
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${props => 
-      props.theme.mode === 'dark' 
-        ? '#2D2D2D' 
-        : '#E5E7EB'
-    };
+    background-color: ${(props) =>
+      props.theme.mode === "dark" ? "#2D2D2D" : "#E5E7EB"};
   }
 
   svg {
@@ -83,7 +70,11 @@ const ResetButton = styled.button`
   }
 `;
 
-export default function BlogFilterTags  ({ tags, selectedTag, onTagSelect }: TagsProps) {
+export default function BlogFilterTags({
+  tags,
+  selectedTag,
+  onTagSelect,
+}: TagsProps) {
   return (
     <FilterContainer>
       <TagsWrapper>
@@ -98,11 +89,10 @@ export default function BlogFilterTags  ({ tags, selectedTag, onTagSelect }: Tag
         ))}
       </TagsWrapper>
       {selectedTag && (
-      
         <ResetButton onClick={() => onTagSelect(null)}>
           <X /> Reset
         </ResetButton>
       )}
     </FilterContainer>
   );
-};
+}

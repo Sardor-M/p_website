@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
-import { themeColor } from "@/tools";
+import { getThemeStyles, themeColor } from "@/themes";
 
 type LayoutProps = {
   children: ReactNode;
@@ -20,8 +20,7 @@ const MaxWidthContainer = styled.div`
 `;
 
 const LayoutContainer = styled.div`
-  background-color: ${({ theme }) => theme.bodyBg};
-  color: ${({ theme }) => theme.textColor};
+  ${({ theme }) => getThemeStyles(theme, ["background", "text"])};
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -46,7 +45,6 @@ const LeftSidebar = styled.aside`
   bottom: 0;
   overflow-y: auto;
   // border-right: 0.2px solid rgb(211, 211, 211);
-  background-color: ${({ theme }) => theme.sidebarBg || theme.bodyBg};
 `;
 
 const MainContent = styled.main`
@@ -75,7 +73,6 @@ const RightSidebar = styled.aside`
   bottom: 0;
   overflow-y: auto;
   // border-left: 0.2px solid rgb(211, 211, 211);
-  background-color: ${({ theme }) => theme.sidebarBg || theme.bodyBg};
 `;
 
 // tag components (left)
@@ -154,7 +151,7 @@ const ContactTitle = styled.h2`
   font-size: 1.1rem;
   margin-top: 40px;
   margin-bottom: 20px;
-  color: ${({ theme }) => theme.textColor};
+  ${({ theme }) => getThemeStyles(theme, "text")};
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -179,10 +176,7 @@ const ContactItem = styled.li`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: ${({ theme }) =>
-    theme.mode === "dark"
-      ? themeColor.gray_text_color
-      : themeColor.light_gray_text_color};
+  ${({ theme }) => getThemeStyles(theme, "text")};
 
   &:hover {
     background-color: ${({ theme }) =>
