@@ -10,7 +10,7 @@ import { Button } from "./common/Button";
 //shared common button styles
 const commonButtonStyles = `
   padding: 0.5rem 1rem;
-  border-radius: 14px;
+  border-radius: 10px;
   transition: all 0.2s ease-out;
 `;
 

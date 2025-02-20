@@ -4,12 +4,25 @@ import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
 import { getHoverStyles, getThemeStyles } from "@/themes";
+import { useFilter } from "@/context/FilterContext";
 
 type LayoutProps = {
   children: ReactNode;
   onToggleTheme: () => void;
   theme: "light" | "dark";
 };
+
+const TAG_LIST = [
+  "JavaScript",
+  "Frontend",
+  "PostgreSQL",
+  "Daily",
+  "TypeScript",
+  "Blog",
+  "Database",
+  "React",
+  "Next.js",
+];
 
 const MaxWidthContainer = styled.div`
   width: 100%;
@@ -94,12 +107,16 @@ const TagList = styled.ul`
 `;
 
 const TagItem = styled.li`
-  padding: 0.5rem 0;
+  padding: 0.7rem 0.6rem;
+  border-radius: 14px;
+  font-size: 0.8rem;
   cursor: pointer;
-  transition: color 0.2s;
+  gap: 0.2rem;
+  margin: 0;
+  transition: all 0.2s ease;
 
   &:hover {
-    ${({theme}) => getHoverStyles(theme)};
+    ${({ theme }) => getHoverStyles(theme)};
   }
 `;
 
@@ -172,14 +189,14 @@ const ContactItem = styled.li`
   padding: 0.75rem;
   cursor: pointer;
   transition: all 0.2s;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   ${({ theme }) => getThemeStyles(theme, "text")};
 
   &:hover {
-    ${({theme}) => getThemeStyles(theme, 'hover')};
+    ${({ theme }) => getThemeStyles(theme, "hover")};
   }
 
   svg {
@@ -193,6 +210,13 @@ export default function Layout({
   onToggleTheme,
   theme,
 }: LayoutProps) {
+  const { selectedTag, setSelectedTag, setSelectedGroup } = useFilter();
+
+  const handleTagsClick = (tag: string) => {
+    setSelectedTag(tag === selectedTag ? "" : tag);
+    setSelectedGroup("All");
+  };
+
   return (
     <LayoutContainer>
       <Navbar onToggleTheme={onToggleTheme} theme={theme} />
@@ -203,12 +227,16 @@ export default function Layout({
             <TagSection>
               <TagTitle>📌 Tags</TagTitle>
               <TagList>
-                <TagItem>Daily</TagItem>
-                <TagItem>Blog</TagItem>
-                <TagItem>Network</TagItem>
-                <TagItem>React.js</TagItem>
-                <TagItem>Next.js</TagItem>
-                <TagItem>Troubleshooting</TagItem>
+                {TAG_LIST.map((tag) => (
+                  <TagItem
+                    key={tag}
+                    onClick={() => handleTagsClick(tag)}
+                    className={tag === selectedTag ? "active" : ""}
+                  >
+                    {" "}
+                    {tag}
+                  </TagItem>
+                ))}
               </TagList>
             </TagSection>
           </LeftSidebar>

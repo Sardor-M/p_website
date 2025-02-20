@@ -1,9 +1,10 @@
-import { useState } from "react";
 import styled from "styled-components";
 import StyledCard from "@/components/Card/StyledCard";
-import TagFilterSystem from "./BlogFilterTags";
 import { Link } from "react-router-dom";
 import { sample_fake_blogs } from "./fakeData";
+import { Group } from "@/types/blog";
+import { themeColor } from "@/themes/color";
+import { useFilter } from "@/context/FilterContext";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -61,7 +62,10 @@ const BlogTitle = styled.h3`
 
 const BlogDate = styled.p`
   font-size: 0.875rem;
-  color: ${(props) => props.theme.textMuted};
+  color: ${({ theme }) =>
+    theme.mode === "dark" ? "rgb(138, 138, 138)" : "rgb(154, 154, 154) "};
+  margin-bottom: 0.8rem;
+  font-weight: 500;
 `;
 
 const BlogDescription = styled.p`
@@ -79,7 +83,7 @@ const Tag = styled.span`
   padding: 0.25rem 0.8rem;
   font-size: 0.6rem;
   border-radius: 6px;
-   background-color: ${({ theme }) =>
+  background-color: ${({ theme }) =>
     theme.mode === "dark" ? "#2D2D2D" : "rgb(235, 235, 235)"};
   color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};
 `;
@@ -87,37 +91,141 @@ const Tag = styled.span`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-  
+
   &:hover {
     text-decoration: none;
   }
 `;
 
 const BlogPostCard = styled(StyledCard)`
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
 `;
 
-const TAGS = ["React", "Frontend", "TypeScript", "Backend"];
+const GroupsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+`;
 
-export default function Blog() {
+const GroupItem = styled.button<{ active: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 12px;
+  border: none;
+  background-color: ${({ active, theme }) =>
+    active ? (theme.mode === "dark" ? "#3a3a3a" : "#e5e5e5") : "transparent"};
+  color: ${({ theme }) =>
+    theme.mode === "dark" ? themeColor.text.dark : themeColor.text.light};
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+
+  &:hover {
+    background-color: ${({ theme }) =>
+      theme.mode === "dark" ? "#3a3a3a" : "#e5e5e5"};
+  }
+`;
+
+const GroupIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // padding: 0.3rem;
+  margin: 0;
+`;
+
+const GroupCount = styled.span`s
+  font-size: 0.8rem;
+  color: ${({ theme }) =>
+    theme.mode === "dark" ? themeColor.text.dark : themeColor.text.light};
+  background-color: ${({ theme }) =>
+    theme.mode === "dark" ? "#2d2d2d" : "#f0f0f0"};
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+`;
+
+const GROUPS: Group[] = [
+  {
+    name: "All",
+    count: sample_fake_blogs.length,
+    icon: "📑",
+  },
+  {
+    name: "Frontend",
+    count: sample_fake_blogs.filter((post) => post.tags.includes("Frontend"))
+      .length,
+    icon: "🎨",
+  },
+  {
+    name: "Backend",
+    count: sample_fake_blogs.filter((post) => post.tags.includes("Backend"))
+      .length,
+    icon: "⚙️",
+  },
+  {
+    name: "Web Development",
+    count: sample_fake_blogs.filter((post) =>
+      post.tags.includes("Web Development")
+    ).length,
+    icon: "🌐",
+  },
+];
+
+export default function Blog({}) {
   // const { t, i18n } = useTranslation();
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const filteredPosts = selectedTag
-    ? sample_fake_blogs.filter((post) => post.tags.includes(selectedTag))
-    : sample_fake_blogs;
+  const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } =
+    useFilter();
+
+  const filteredPosts = sample_fake_blogs.filter((post) => {
+    const matchedTag = selectedTag ? post.tags.includes(selectedTag) : true;
+    const matchedGroup =
+      selectedGroup === "All" ? true : post.tags.includes(selectedGroup);
+    return matchedTag && matchedGroup;
+  });
+
+  // we handle the group selection
+  const handleGroupClick = (group: string) => {
+    if (group === selectedGroup) {
+      setSelectedGroup("All");
+    } else {
+      setSelectedGroup(group);
+    }
+
+    // here we reset the tag selection when changing to groups
+    setSelectedTag(null);
+  };
+
+  // const tagsData = Array.from(
+  //   new Set(sample_fake_blogs.flatMap((post) => post.tags))
+  // );
 
   return (
     <Container>
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
-        <TagContainer>
+        <GroupsContainer>
+          {GROUPS.map((group) => (
+            <GroupItem
+              key={group.name}
+              active={selectedGroup === group.name}
+              onClick={() => handleGroupClick(group.name)}
+            >
+              <GroupIcon>{group.icon}</GroupIcon> {group.name}
+              <GroupCount>{group.count}</GroupCount>
+            </GroupItem>
+          ))}
+        </GroupsContainer>
+        {/* <TagContainer>
           <TagFilterSystem
-            tags={TAGS}
+            tags={tagsData}
             selectedTag={selectedTag}
             onTagSelect={setSelectedTag}
           />
-        </TagContainer>
+        </TagContainer> */}
         <BlogContainer>
           <BlogGrid>
             {filteredPosts.map((post) => (
@@ -126,17 +234,22 @@ export default function Blog() {
                 to={`/${post.id}`}
                 state={{ blogData: post }}
               >
-                <BlogPostCard
-                  variant="light"
-                  padding="sm"
-                  hoverable={true}
-                >
+                <BlogPostCard variant="light" padding="sm" hoverable={true}>
                   <BlogTitle>{post.title}</BlogTitle>
                   <BlogDate>{post.date}</BlogDate>
                   <BlogDescription>{post.description}</BlogDescription>
                   <TagList>
                     {post.tags.map((tag, index) => (
-                      <Tag key={`${post.id}-${tag}-${index}`}>{tag}</Tag>
+                      <Tag
+                        key={`${post.id}-${tag}-${index}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedTag(tag);
+                          setSelectedGroup("All");
+                        }}
+                      >
+                        {tag}
+                      </Tag>
                     ))}
                   </TagList>
                 </BlogPostCard>
