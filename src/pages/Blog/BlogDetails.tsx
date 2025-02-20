@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import StyledCard from "../../components/Card/StyledCard";
 import AuthorSectionWithShare from "./BlogShareLink";
 import { BlogPost } from "../../types/blog";
 import { useLocation, useParams } from "react-router-dom";
 import { getThemeStyles } from "@/themes";
+import UtterancesComment from "./UtteranceComment";
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -144,10 +145,27 @@ const StyledTag = styled.span`
   color: ${({ theme }) => theme.textColor};
 `;
 
+const CommentsSection = styled.div`
+  margin-top: 2rem;
+  // padding-top: 2rem;
+  border-top: 1px solid ${({ theme }) => 
+    theme.mode === "dark" ? "#2D2D2D" : "#f0f0f0"
+  };
+`;
+
+const CommentsTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  ${({ theme }) => getThemeStyles(theme, "text")};
+`;
+
 export default function BlogDetails() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+
+  const theme = useTheme();
 
   useEffect(() => {
     const stateData = location.state?.blogData;
@@ -171,6 +189,14 @@ export default function BlogDetails() {
             <StyledTag key={tag}>{tag}</StyledTag>
           ))}
         </TopicList>
+        <CommentsSection>
+          <CommentsTitle>Comments</CommentsTitle>
+          <UtterancesComment
+            repo="Sardor-M/p_website"
+            issueTerm="title"
+            theme={theme.mode === "dark" ? "github-dark" : "github-light"}          
+            />
+        </CommentsSection>
       </StyledCard>
     </BlogContainer>
   );
