@@ -176,6 +176,7 @@ const GroupCount = styled.span`s
 //     icon: "🌐",
 //   },
 // ];
+
 const getIconForTag = (tag: string): string => {
   const iconMap: Record<string, string> = {
     Frontend: "🎨",
@@ -200,6 +201,7 @@ export default function Blog() {
 
   // we get the items from the response
   const blogs = data?.items || [];
+  console.log("Blog data is here", blogs);
 
   useEffect(() => {
     if (blogs.length > 0) {

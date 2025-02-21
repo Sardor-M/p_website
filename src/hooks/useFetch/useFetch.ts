@@ -47,7 +47,7 @@ export function useFetch<T>(url: string, options: FetchOptions = {}) {
         if (!signal.aborted) {
           // stateni update qilamiz
           setState({
-            data,
+            data: data.data,
             loading: false,
             error: null,
           });
@@ -76,7 +76,7 @@ export function useFetch<T>(url: string, options: FetchOptions = {}) {
       const response = await fetch(url, options);
       const data = await response.json();
       setState({
-        data,
+        data: data.data,
         loading: false,
         error: null,
       });
