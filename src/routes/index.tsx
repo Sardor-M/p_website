@@ -6,18 +6,17 @@ import Blog from "@/pages/Blog/Blog";
 import BlogDetails from "@/pages/Blog/BlogDetails";
 import { FilterProvider } from "@/context/FilterContext";
 
-
-export default function AppRoutes({onToggleTheme, theme}: AppProps) {
+export default function AppRoutes({ onToggleTheme, theme }: AppProps) {
   return (
     <BrowserRouter>
-    <FilterProvider>
-      <Layout onToggleTheme={onToggleTheme} theme={theme} >
-        <Routes>
-          <Route path="/" element={<Blog />} />
-          <Route path="/:id" element={<BlogDetails />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-        </Routes>
-      </Layout>
+      <FilterProvider>
+        <Layout onToggleTheme={onToggleTheme} theme={theme}>
+          <Routes>
+            <Route path="/" element={<Blog />} />
+            <Route path="/:id" element={<BlogDetails />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+          </Routes>
+        </Layout>
       </FilterProvider>
     </BrowserRouter>
   );

@@ -1,33 +1,55 @@
-export type BlogPost = {
-    id: number;
-    title: string;
-    subtitle: string;
-    date: string;
-    author: {
-      name: string;
-      image: string;
-      bio: string;
-    };
-    readTime: string;
-    tags: string[];
-    content: string;
-    description: string;
+export interface BlogContent {
+  type: string;
+  text?: string;
+  level?: number;
+  language?: string;
+  content?: string;
+}
+
+export interface BlogAuthor {
+  name: string;
+  image: string;
+  bio: string;
+}
+
+export interface BlogPost {
+  id: number;
+  title: string;
+  subtitle: string;
+  date: string;
+  author: BlogAuthor;
+  readTime: string;
+  topics: string[];
+  content: BlogContent[];
+  createdAt: string;
+  updatedAt: string;
+  description?: string;
+}
+
+export interface Group {
+  name: string;
+  count: number;
+  icon?: string;
+}
+
+export type FilterType = {
+  selectedTag: string | null;
+  selectedGroup: string | null;
+};
+
+export type BlogResponse = {
+  items: BlogPost[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
   };
+};
 
-  export interface Group {
-    name: string;
-    count: number;
-    icon?: string; 
-  }
-  
-  export type FilterType = {
-    selectedTag: string | null;
-    selectedGroup: string | null;
-  }
-
-  // export type BlogProps = {
-  //   selectedTag: string | null;
-  //   setSelectedTag: (tag: string | null) => void;
-  //   selectedGroup: string;
-  //   setSelectedGroup: (group: string) => void;
-  // }
+// export type BlogProps = {
+//   selectedTag: string | null;
+//   setSelectedTag: (tag: string | null) => void;
+//   selectedGroup: string;
+//   setSelectedGroup: (group: string) => void;
+// }

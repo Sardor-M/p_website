@@ -185,7 +185,7 @@ export default function BlogDetails() {
 
         <Content dangerouslySetInnerHTML={{ __html: post.content }} />
         <TopicList>
-          {post.tags.map((tag) => (
+          {post.topics.map((tag) => (
             <StyledTag key={tag}>{tag}</StyledTag>
           ))}
         </TopicList>
