@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
-import StyledCard from "../../components/Card/StyledCard";
+import StyledCard from "@/components/Card/StyledCard";
 import AuthorSectionWithShare from "./BlogShareLink";
-import { BlogPost } from "../../types/blog";
+import { BlogPost } from "@/types/blog";
 import { useLocation, useParams } from "react-router-dom";
 import { getThemeStyles } from "@/themes";
 import UtterancesComment from "./UtteranceComment";
@@ -148,9 +148,8 @@ const StyledTag = styled.span`
 const CommentsSection = styled.div`
   margin-top: 2rem;
   // padding-top: 2rem;
-  border-top: 1px solid ${({ theme }) => 
-    theme.mode === "dark" ? "#2D2D2D" : "#f0f0f0"
-  };
+  border-top: 1px solid
+    ${({ theme }) => (theme.mode === "dark" ? "#2D2D2D" : "#f0f0f0")};
 `;
 
 const CommentsTitle = styled.h3`
@@ -183,7 +182,11 @@ export default function BlogDetails() {
           <AuthorSectionWithShare post={post} />
         </ArticleHeader>
 
-        <Content dangerouslySetInnerHTML={{ __html: post.content }} />
+        <Content>
+          {post.content.map((contentItem, index) => (
+            <ContentBlock key={index} item={contentItem} />
+          ))}
+        </Content>
         <TopicList>
           {post.topics.map((tag) => (
             <StyledTag key={tag}>{tag}</StyledTag>
@@ -192,12 +195,47 @@ export default function BlogDetails() {
         <CommentsSection>
           <CommentsTitle>Comments</CommentsTitle>
           <UtterancesComment
-            repo="Sardor-M/p_website"
+            repo="Sardor-M/p_website_frontend"
             issueTerm="title"
-            theme={theme.mode === "dark" ? "github-dark" : "github-light"}          
-            />
+            theme={theme.mode === "dark" ? "github-dark" : "github-light"}
+          />
         </CommentsSection>
       </StyledCard>
     </BlogContainer>
   );
 }
+
+const ContentBlock = ({ item }: { item: any }) => {
+  switch (item.type) {
+    case "heading":
+      return React.createElement(`h${item.level || 2}`, null, item.text);
+    case "paragraph":
+      return <p>{item.text}</p>;
+    case "code":
+      return (
+        <pre>
+          <code>{item.text}</code>
+        </pre>
+      );
+    case "blackquote":
+      return <blockquote>{item.text}</blockquote>;
+    case "list":
+      return (
+        <ul>
+          {item.items.map((listItem: any, index: number) => (
+            <li key={index}>{listItem}</li>
+          ))}
+        </ul>
+      );
+    case "image":
+      return (
+        <img
+          src={item.url}
+          alt={item.alt}
+          style={{ maxWidth: "100%", height: "auto" }}
+        />
+      );
+    default:
+      return <p>{item.text}</p>;
+  }
+};

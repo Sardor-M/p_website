@@ -1,4 +1,5 @@
 import { getThemeStyles } from "@/themes";
+import { formatDate } from "@/utils/fomatDate";
 import {
   CheckCircleFilled,
   LinkedinFilled,
@@ -198,7 +199,7 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
         <AuthorInfo>
           <AuthorName>{post.author.name}</AuthorName>
           <PostMeta>
-            <span>{post.date}</span>
+            <span>{formatDate(post.date, {includeTime: true} )}</span>
             <span>{post.readTime}</span>
           </PostMeta>
         </AuthorInfo>

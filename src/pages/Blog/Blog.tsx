@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import StyledCard from "@/components/Card/StyledCard";
 import { Link } from "react-router-dom";
-import { sample_fake_blogs } from "./fakeData";
 import { BlogResponse, Group } from "@/types/blog";
 import { themeColor } from "@/themes/color";
 import { useFilter } from "@/context/FilterContext";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { useEffect, useState } from "react";
 import { API_ENDPOINTS } from "@/api/config";
+import { formatDate } from "@/utils/fomatDate";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -295,8 +295,8 @@ export default function Blog() {
               >
                 <BlogPostCard variant="light" padding="sm" hoverable={true}>
                   <BlogTitle>{post.title}</BlogTitle>
-                  <BlogDate>{post.date}</BlogDate>
-                  <BlogDescription>{post.description}</BlogDescription>
+                  <BlogDate>{formatDate(post.date)}</BlogDate>
+                  <BlogDescription>{post.content[0].text}</BlogDescription>
                   <TagList>
                     {post.topics.map((tag, index) => (
                       <Tag
