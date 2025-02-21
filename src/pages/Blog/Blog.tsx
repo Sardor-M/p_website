@@ -2,9 +2,12 @@ import styled from "styled-components";
 import StyledCard from "@/components/Card/StyledCard";
 import { Link } from "react-router-dom";
 import { sample_fake_blogs } from "./fakeData";
-import { Group } from "@/types/blog";
+import { BlogResponse, Group } from "@/types/blog";
 import { themeColor } from "@/themes/color";
 import { useFilter } from "@/context/FilterContext";
+import { useFetch } from "@/hooks/useFetch/useFetch";
+import { useEffect, useState } from "react";
+import { API_ENDPOINTS } from "@/api/config";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -147,43 +150,89 @@ const GroupCount = styled.span`s
   border-radius: 8px;
 `;
 
-const GROUPS: Group[] = [
-  {
-    name: "All",
-    count: sample_fake_blogs.length,
-    icon: "📑",
-  },
-  {
-    name: "Frontend",
-    count: sample_fake_blogs.filter((post) => post.tags.includes("Frontend"))
-      .length,
-    icon: "🎨",
-  },
-  {
-    name: "Backend",
-    count: sample_fake_blogs.filter((post) => post.tags.includes("Backend"))
-      .length,
-    icon: "⚙️",
-  },
-  {
-    name: "Web Development",
-    count: sample_fake_blogs.filter((post) =>
-      post.tags.includes("Web Development")
-    ).length,
-    icon: "🌐",
-  },
-];
+// const GROUPS: Group[] = [
+//   {
+//     name: "All",
+//     count: sample_fake_blogs.length,
+//     icon: "📑",
+//   },
+//   {
+//     name: "Frontend",
+//     count: sample_fake_blogs.filter((post) => post.topics.includes("Frontend"))
+//       .length,
+//     icon: "🎨",
+//   },
+//   {
+//     name: "Backend",
+//     count: sample_fake_blogs.filter((post) => post.topics.includes("Backend"))
+//       .length,
+//     icon: "⚙️",
+//   },
+//   {
+//     name: "Web Development",
+//     count: sample_fake_blogs.filter((post) =>
+//       post.topics.includes("Web Development")
+//     ).length,
+//     icon: "🌐",
+//   },
+// ];
+const getIconForTag = (tag: string): string => {
+  const iconMap: Record<string, string> = {
+    Frontend: "🎨",
+    Backend: "⚙️",
+    Web_Dev: "🌐",
+    React: "⚛️",
+    JavaScript: "📜",
+    TypeScript: "💪",
+    Node: "🟢",
+  };
 
-export default function Blog({}) {
-  // const { t, i18n } = useTranslation();
+  return iconMap[tag] || "📄";
+};
 
+export default function Blog() {
+  const { data, loading, error } = useFetch<BlogResponse>(
+    `${API_ENDPOINTS.BASE_URL}${API_ENDPOINTS.BLOG.GET_ALL}`
+  );
   const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } =
     useFilter();
+  const [groups, setGroups] = useState<Group[]>([]);
 
-  const filteredPosts = sample_fake_blogs.filter((post) => {
-    const matchedTag = selectedTag ? post.tags.includes(selectedTag) : true;
+  // we get the items from the response
+  const blogs = data?.items || [];
+
+  useEffect(() => {
+    if (blogs.length > 0) {
+      // flatmap orqali hamma topiclarni bitta arrayga qo'shib olamiz
+      const allTags = blogs.flatMap((post) => post.topics);
+      // objectga o'tkazib olib har bir tag uchun count jhisoblaydi
+      // shu acc orqali tagni countni hisoblaymiz
+      const tagCounts = allTags.reduce((acc, tag) => {
+        acc[tag] = (acc[tag] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      const newGroups: Group[] = [
+        {
+          name: "All",
+          count: blogs.length,
+          icon: "📑",
+        },
+        ...Object.entries(tagCounts).map(([tag, count]) => ({
+          name: tag,
+          count,
+          icon: getIconForTag(tag), // helper method bu
+        })),
+      ];
+
+      setGroups(newGroups);
+    }
+  }, [blogs]);
+
+  const filteredPosts = blogs.filter((post) => {
+    const matchedTag = selectedTag ? post.topics.includes(selectedTag) : true;
     const matchedGroup =
-      selectedGroup === "All" ? true : post.tags.includes(selectedGroup);
+      selectedGroup === "All" ? true : post.topics.includes(selectedGroup);
     return matchedTag && matchedGroup;
   });
 
@@ -203,12 +252,20 @@ export default function Blog({}) {
   //   new Set(sample_fake_blogs.flatMap((post) => post.tags))
   // );
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <Container>
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
         <GroupsContainer>
-          {GROUPS.map((group) => (
+          {groups.map((group) => (
             <GroupItem
               key={group.name}
               active={selectedGroup === group.name}
@@ -239,7 +296,7 @@ export default function Blog({}) {
                   <BlogDate>{post.date}</BlogDate>
                   <BlogDescription>{post.description}</BlogDescription>
                   <TagList>
-                    {post.tags.map((tag, index) => (
+                    {post.topics.map((tag, index) => (
                       <Tag
                         key={`${post.id}-${tag}-${index}`}
                         onClick={(e) => {
