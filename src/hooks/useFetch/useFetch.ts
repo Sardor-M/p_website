@@ -73,7 +73,16 @@ export function useFetch<T>(url: string, options: FetchOptions = {}) {
   const refresh = async () => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
-      const response = await fetch(url, options);
+      const headers = {
+        "Content-Type": "application/json",
+        ...options.headers,
+      };
+      const fetchOptions: RequestInit = {
+        method: options.method || "GET",
+        headers,
+        ...(options.body ? { body: JSON.stringify(options.body) } : {}),
+      };
+      const response = await fetch(url, fetchOptions);
       const data = await response.json();
       setState({
         data: data.data,

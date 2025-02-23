@@ -1,7 +1,10 @@
 import { themeColor } from "./color";
 
 type Theme  = {
-  mode: 'light' | 'dark';
+  mode: 'light' | 'dark' | string;
+  // bodyBg?: string;
+  // textColor?: string;
+  // cardBg?: string;
 }
 
 type ThemeProperty =

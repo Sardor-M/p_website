@@ -1,9 +1,10 @@
 export interface BlogContent {
-  type: string;
-  text?: string;
+ type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
+  text: string;
   level?: number;
-  language?: string;
-  content?: string;
+  items?: string[];
+  url?: string;
+  alt?: string;
 }
 
 export interface BlogAuthor {
@@ -48,14 +49,15 @@ export type BlogResponse = {
 };
 
 
-export type ContentBlockItem = {
-  type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
-  text?: string;
-  level?: number;
-  items?: string[];
-  url?: string;
-  alt?: string;
-}
+// export type ContentBlockItem = {
+//   type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
+//   text: string;
+//   level?: number;
+//   items?: string[];
+//   url?: string;
+//   alt?: string;
+// }
+
 
 // export type BlogProps = {
 //   selectedTag: string | null;
