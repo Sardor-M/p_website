@@ -10,18 +10,25 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
-    steps:
+   steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Setup Node
         uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: pnpm install
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
