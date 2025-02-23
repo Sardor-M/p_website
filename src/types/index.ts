@@ -9,8 +9,8 @@ export type FetchState<T> = {
   error: Error | null;
 }
 
-export type FetchOptions = {
+export type FetchOptions<TBody = unknown> = {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   headers?: HeadersInit;
-  body?: any;
+  body?: TBody;
 }

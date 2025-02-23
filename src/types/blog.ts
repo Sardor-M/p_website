@@ -47,6 +47,16 @@ export type BlogResponse = {
   };
 };
 
+
+export type ContentBlockItem = {
+  type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
+  text?: string;
+  level?: number;
+  items?: string[];
+  url?: string;
+  alt?: string;
+}
+
 // export type BlogProps = {
 //   selectedTag: string | null;
 //   setSelectedTag: (tag: string | null) => void;

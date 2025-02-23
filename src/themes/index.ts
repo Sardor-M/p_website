@@ -1,5 +1,9 @@
 import { themeColor } from "./color";
 
+type Theme  = {
+  mode: 'light' | 'dark';
+}
+
 type ThemeProperty =
   | "background"
   | "text"
@@ -29,7 +33,7 @@ const getCSSProperty = (property: ThemeProperty) => {
 };
 
 // mixin yaratamiz ( ikki xil turdagi)
-const getThemeValue = (theme: any, property: ThemeProperty) => {
+const getThemeValue = (theme: Theme, property: ThemeProperty) => {
   switch (property) {
     case "background":
       return theme.mode === "dark"
@@ -61,7 +65,7 @@ const getThemeValue = (theme: any, property: ThemeProperty) => {
 };
 
 export const getThemeStyles = (
-  theme: any,
+  theme: Theme,
   properties: ThemeProperty | ThemeProperty[]
 ) => {
   // bu esa single property uchun
@@ -82,11 +86,11 @@ export const getThemeStyles = (
 };
 
 // adashib ketmaslik uchun alohida wrapper getHoverStyle yaratildi
-export const getHoverStyles = (theme: any) => `
+export const getHoverStyles = (theme: Theme) => `
     background-color: ${getThemeValue(theme, "hover")};
   `;
 
 // tepadagidek bunga ham wrapper qo'yildi
-export const getActiveHoverStyles = (theme: any) => `
+export const getActiveHoverStyles = (theme: Theme) => `
     background-color: ${getThemeValue(theme, "activeHover")};
 `;

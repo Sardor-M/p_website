@@ -41,11 +41,11 @@ const SectionTitle = styled.h2`
   margin-bottom: 8px;
 `;
 
-const TagContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-`;
+// const TagContainer = styled.div`
+//   display: flex;
+//   gap: 0.5rem;
+//   flex-wrap: wrap;
+// `;
 
 const BlogContainer = styled.div`
   width: 100%;

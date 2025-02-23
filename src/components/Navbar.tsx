@@ -169,6 +169,7 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
   const switchLanguage = (lang: string) => {
     void i18n.changeLanguage(lang);
     setShowLanguages(false);
+    console.log(t);
   };
 
   return (

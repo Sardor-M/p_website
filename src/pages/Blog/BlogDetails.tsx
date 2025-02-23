@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import StyledCard from "@/components/Card/StyledCard";
 import AuthorSectionWithShare from "./BlogShareLink";
-import { BlogPost } from "@/types/blog";
+import { BlogPost, ContentBlockItem } from "@/types/blog";
 import { useLocation, useParams } from "react-router-dom";
 import { getThemeStyles } from "@/themes";
 import UtterancesComment from "./UtteranceComment";
@@ -205,7 +205,7 @@ export default function BlogDetails() {
   );
 }
 
-const ContentBlock = ({ item }: { item: any }) => {
+const ContentBlock = ({ item }: { item: ContentBlockItem }) => {
   switch (item.type) {
     case "heading":
       return React.createElement(`h${item.level || 2}`, null, item.text);
@@ -222,7 +222,7 @@ const ContentBlock = ({ item }: { item: any }) => {
     case "list":
       return (
         <ul>
-          {item.items.map((listItem: any, index: number) => (
+          {item.items?.map((listItem: string, index: number) => (
             <li key={index}>{listItem}</li>
           ))}
         </ul>
