@@ -8,6 +8,9 @@ import { useFetch } from "@/hooks/useFetch/useFetch";
 import { useEffect, useState } from "react";
 import { API_ENDPOINTS } from "@/api/config";
 import { formatDate } from "@/utils/fomatDate";
+import { Loading } from "@/components/Loading";
+import { Error } from "@/components/Error";
+
 
 const Container = styled.div`
   min-height: 100vh;
@@ -255,11 +258,11 @@ export default function Blog() {
   // );
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <Error message={error.message}/>
   }
 
   return (

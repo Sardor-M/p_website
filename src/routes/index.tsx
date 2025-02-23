@@ -9,7 +9,7 @@ import { FilterProvider } from "@/context/FilterContext";
 export default function AppRoutes({ onToggleTheme, theme }: AppProps) {
 
   return (
-    <BrowserRouter basename="/p_website_frontend">
+    <BrowserRouter>
       <FilterProvider>
         <Layout onToggleTheme={onToggleTheme} theme={theme}>
           <Routes>
