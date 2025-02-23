@@ -266,56 +266,56 @@ export default function Blog() {
     <Container>
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
-        <GroupsContainer>
-          {groups.map((group) => (
-            <GroupItem
-              key={group.name}
-              active={selectedGroup === group.name}
-              onClick={() => handleGroupClick(group.name)}
-            >
-              <GroupIcon>{group.icon}</GroupIcon> {group.name}
-              <GroupCount>{group.count}</GroupCount>
-            </GroupItem>
-          ))}
-        </GroupsContainer>
-        {/* <TagContainer>
+          <GroupsContainer>
+            {groups.map((group) => (
+              <GroupItem
+                key={group.name}
+                active={selectedGroup === group.name}
+                onClick={() => handleGroupClick(group.name)}
+              >
+                <GroupIcon>{group.icon}</GroupIcon> {group.name}
+                <GroupCount>{group.count}</GroupCount>
+              </GroupItem>
+            ))}
+          </GroupsContainer>
+          {/* <TagContainer>
           <TagFilterSystem
             tags={tagsData}
             selectedTag={selectedTag}
             onTagSelect={setSelectedTag}
           />
         </TagContainer> */}
-        <BlogContainer>
-          <BlogGrid>
-            {filteredPosts.map((post) => (
-              <StyledLink
-                key={`blog-${post.id}`}
-                to={`/${post.id}`}
-                state={{ blogData: post }}
-              >
-                <BlogPostCard variant="light" padding="sm" hoverable={true}>
-                  <BlogTitle>{post.title}</BlogTitle>
-                  <BlogDate>{formatDate(post.date)}</BlogDate>
-                  <BlogDescription>{post.content[0].text}</BlogDescription>
-                  <TagList>
-                    {post.topics.map((tag, index) => (
-                      <Tag
-                        key={`${post.id}-${tag}-${index}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedTag(tag);
-                          setSelectedGroup("All");
-                        }}
-                      >
-                        {tag}
-                      </Tag>
-                    ))}
-                  </TagList>
-                </BlogPostCard>
-              </StyledLink>
-            ))}
-          </BlogGrid>
-        </BlogContainer>
+          <BlogContainer>
+            <BlogGrid>
+              {filteredPosts.map((post) => (
+                <StyledLink
+                  key={`blog-${post.id}`}
+                  to={`/${post.id}`}
+                  state={{ blogData: post }}
+                >
+                  <BlogPostCard variant="light" padding="sm" hoverable={true}>
+                    <BlogTitle>{post.title}</BlogTitle>
+                    <BlogDate>{formatDate(post.date)}</BlogDate>
+                    <BlogDescription>{post.content[0].text}</BlogDescription>
+                    <TagList>
+                      {post.topics.map((tag, index) => (
+                        <Tag
+                          key={`${post.id}-${tag}-${index}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedTag(tag);
+                            setSelectedGroup("All");
+                          }}
+                        >
+                          {tag}
+                        </Tag>
+                      ))}
+                    </TagList>
+                  </BlogPostCard>
+                </StyledLink>
+              ))}
+            </BlogGrid>
+          </BlogContainer>
       </Section>
     </Container>
   );

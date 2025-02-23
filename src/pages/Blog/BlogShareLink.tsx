@@ -140,7 +140,7 @@ const DropdownItem = styled.button`
 
 const CopyNotification = styled.div`
   position: fixed;
-  top: 6rem;
+  top: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
   ${({ theme }) => getThemeStyles(theme, "background")};

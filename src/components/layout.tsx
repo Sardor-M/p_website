@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Navbar from "./Navbar";
 import StyledCard from "./Card/StyledCard";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
@@ -205,6 +205,23 @@ const ContactItem = styled.li`
   }
 `;
 
+const dropDown = keyframes`
+    0% {
+        opacaity: 0;
+        transform: translateY(-20px);
+    }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+`;
+
+const AnimatedSection = styled.div<{ delay?: number }>`
+  animation: ${dropDown} 0.6s ease-out forwards;
+  animation-delay: ${(props) => props.delay || 0}s;
+  opacity: 0;
+`;
+
 export default function Layout({
   children,
   onToggleTheme,
@@ -224,58 +241,66 @@ export default function Layout({
         <ContentWrapper>
           {/* chap tomon sibebar (tags filter uchun) */}
           <LeftSidebar>
-            <TagSection>
-              <TagTitle>📌 Tags</TagTitle>
-              <TagList>
-                {TAG_LIST.map((tag) => (
-                  <TagItem
-                    key={tag}
-                    onClick={() => handleTagsClick(tag)}
-                    className={tag === selectedTag ? "active" : ""}
-                  >
-                    {" "}
-                    {tag}
-                  </TagItem>
-                ))}
-              </TagList>
-            </TagSection>
+            <AnimatedSection delay={0.4}>
+              <TagSection>
+                <TagTitle>📌 Tags</TagTitle>
+                <TagList>
+                  {TAG_LIST.map((tag) => (
+                    <TagItem
+                      key={tag}
+                      onClick={() => handleTagsClick(tag)}
+                      className={tag === selectedTag ? "active" : ""}
+                    >
+                      {" "}
+                      {tag}
+                    </TagItem>
+                  ))}
+                </TagList>
+              </TagSection>
+            </AnimatedSection>
           </LeftSidebar>
+
           {/* body content shu yerda  */}
-          <MainContent>{children}</MainContent>
+          <MainContent>
+            <AnimatedSection delay={0.4}>{children}</AnimatedSection>
+          </MainContent>
+
           {/* o'ng tomon contenti shu yerda */}
           <RightSidebar>
-            <ProfileSection>
-              <StyledCard key={"id"} variant="light" padding="sm" size="sm">
-                <ProfileImage
-                  src="https://avatars.githubusercontent.com/u/65296404?v=4"
-                  alt="Profile"
-                />
-                <ProfileName>sardor-m</ProfileName>
-                <ProfileBio>Sardor Madaminov</ProfileBio>
-                {/* {// tags  */}
-                <TagContainer>
-                  <Tag>frontend</Tag>
-                  <Tag>react-js</Tag>
-                </TagContainer>
-              </StyledCard>
-              <ContactTitle>🔗 Contact</ContactTitle>
-              <StyledCard key={"id"} variant="light" padding="sm" size="sm">
-                <ContactList>
-                  <ContactItem>
-                    <GithubFilled />
-                    github
-                  </ContactItem>
-                  <ContactItem>
-                    <LinkedinFilled />
-                    instagram
-                  </ContactItem>
-                  <ContactItem>
-                    <MailFilled />
-                    email
-                  </ContactItem>
-                </ContactList>
-              </StyledCard>
-            </ProfileSection>
+            <AnimatedSection delay={0.4}>
+              <ProfileSection>
+                <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                  <ProfileImage
+                    src="https://avatars.githubusercontent.com/u/65296404?v=4"
+                    alt="Profile"
+                  />
+                  <ProfileName>sardor-m</ProfileName>
+                  <ProfileBio>Sardor Madaminov</ProfileBio>
+                  {/* {// tags  */}
+                  <TagContainer>
+                    <Tag>frontend</Tag>
+                    <Tag>react-js</Tag>
+                  </TagContainer>
+                </StyledCard>
+                <ContactTitle>🔗 Contact</ContactTitle>
+                <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                  <ContactList>
+                    <ContactItem>
+                      <GithubFilled />
+                      github
+                    </ContactItem>
+                    <ContactItem>
+                      <LinkedinFilled />
+                      instagram
+                    </ContactItem>
+                    <ContactItem>
+                      <MailFilled />
+                      email
+                    </ContactItem>
+                  </ContactList>
+                </StyledCard>
+              </ProfileSection>
+            </AnimatedSection>
           </RightSidebar>
         </ContentWrapper>
       </MaxWidthContainer>
