@@ -5,6 +5,7 @@ import StyledCard from "./Card/StyledCard";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
 import { getHoverStyles, getThemeStyles } from "@/themes";
 import { useFilter } from "@/context/FilterContext";
+import { useLocation } from "react-router-dom";
 
 type LayoutProps = {
   children: ReactNode;
@@ -229,6 +230,9 @@ export default function Layout({
 }: LayoutProps) {
   const { selectedTag, setSelectedTag, setSelectedGroup } = useFilter();
 
+  const location = useLocation();
+  const isBlogDetailsPage = location.pathname.match(/^\/\d+$/);
+
   const handleTagsClick = (tag: string) => {
     setSelectedTag(tag === selectedTag ? "" : tag);
     setSelectedGroup("All");
@@ -240,68 +244,72 @@ export default function Layout({
       <MaxWidthContainer>
         <ContentWrapper>
           {/* chap tomon sibebar (tags filter uchun) */}
-          <LeftSidebar>
-            <AnimatedSection delay={0.4}>
-              <TagSection>
-                <TagTitle>📌 Tags</TagTitle>
-                <TagList>
-                  {TAG_LIST.map((tag) => (
-                    <TagItem
-                      key={tag}
-                      onClick={() => handleTagsClick(tag)}
-                      className={tag === selectedTag ? "active" : ""}
-                    >
-                      {" "}
-                      {tag}
-                    </TagItem>
-                  ))}
-                </TagList>
-              </TagSection>
-            </AnimatedSection>
-          </LeftSidebar>
+          {!isBlogDetailsPage && (
+            <LeftSidebar>
+              <AnimatedSection delay={0.3}>
+                <TagSection>
+                  <TagTitle>📌 Tags</TagTitle>
+                  <TagList>
+                    {TAG_LIST.map((tag) => (
+                      <TagItem
+                        key={tag}
+                        onClick={() => handleTagsClick(tag)}
+                        className={tag === selectedTag ? "active" : ""}
+                      >
+                        {" "}
+                        {tag}
+                      </TagItem>
+                    ))}
+                  </TagList>
+                </TagSection>
+              </AnimatedSection>
+            </LeftSidebar>
+          )}
 
           {/* body content shu yerda  */}
           <MainContent>
-            <AnimatedSection delay={0.4}>{children}</AnimatedSection>
+            <AnimatedSection delay={0.3}>{children}</AnimatedSection>
           </MainContent>
 
           {/* o'ng tomon contenti shu yerda */}
-          <RightSidebar>
-            <AnimatedSection delay={0.4}>
-              <ProfileSection>
-                <StyledCard key={"id"} variant="light" padding="sm" size="sm">
-                  <ProfileImage
-                    src="https://avatars.githubusercontent.com/u/65296404?v=4"
-                    alt="Profile"
-                  />
-                  <ProfileName>sardor-m</ProfileName>
-                  <ProfileBio>Sardor Madaminov</ProfileBio>
-                  {/* {// tags  */}
-                  <TagContainer>
-                    <Tag>frontend</Tag>
-                    <Tag>react-js</Tag>
-                  </TagContainer>
-                </StyledCard>
-                <ContactTitle>🔗 Contact</ContactTitle>
-                <StyledCard key={"id"} variant="light" padding="sm" size="sm">
-                  <ContactList>
-                    <ContactItem>
-                      <GithubFilled />
-                      github
-                    </ContactItem>
-                    <ContactItem>
-                      <LinkedinFilled />
-                      instagram
-                    </ContactItem>
-                    <ContactItem>
-                      <MailFilled />
-                      email
-                    </ContactItem>
-                  </ContactList>
-                </StyledCard>
-              </ProfileSection>
-            </AnimatedSection>
-          </RightSidebar>
+          {!isBlogDetailsPage && (
+            <RightSidebar>
+              <AnimatedSection delay={0.3}>
+                <ProfileSection>
+                  <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                    <ProfileImage
+                      src="https://avatars.githubusercontent.com/u/65296404?v=4"
+                      alt="Profile"
+                    />
+                    <ProfileName>sardor-m</ProfileName>
+                    <ProfileBio>Sardor Madaminov</ProfileBio>
+                    {/* {// tags  */}
+                    <TagContainer>
+                      <Tag>frontend</Tag>
+                      <Tag>react-js</Tag>
+                    </TagContainer>
+                  </StyledCard>
+                  <ContactTitle>🔗 Contact</ContactTitle>
+                  <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                    <ContactList>
+                      <ContactItem>
+                        <GithubFilled />
+                        github
+                      </ContactItem>
+                      <ContactItem>
+                        <LinkedinFilled />
+                        instagram
+                      </ContactItem>
+                      <ContactItem>
+                        <MailFilled />
+                        email
+                      </ContactItem>
+                    </ContactList>
+                  </StyledCard>
+                </ProfileSection>
+              </AnimatedSection>
+            </RightSidebar>
+          )}
         </ContentWrapper>
       </MaxWidthContainer>
     </LayoutContainer>

@@ -7,6 +7,7 @@ import BlogDetails from "@/pages/Blog/BlogDetails";
 import { FilterProvider } from "@/context/FilterContext";
 
 export default function AppRoutes({ onToggleTheme, theme }: AppProps) {
+
   return (
     <BrowserRouter>
       <FilterProvider>
