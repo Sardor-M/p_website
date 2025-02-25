@@ -159,14 +159,13 @@ const NavigationContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
-  padding-bottom: 2rem;
 `;
 
 const NavButton = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.7rem;
   ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])}
   border-radius: 8px;
   text-decoration: none;
@@ -187,7 +186,7 @@ const BackToTopButton = styled.button`
   justify-content: center;
   gap: 0.5rem;
   inline-padding: -10px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
   font-size: 0.9rem;
   font-weight: 400;
   ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])}

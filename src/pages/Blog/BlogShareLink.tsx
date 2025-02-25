@@ -192,10 +192,12 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
     }
   }, []);
 
+  const authorImg = post.author.image ? post.author.image : '/sm.png';
+
   return (
     <AuthorSection>
       <AuthorBlock>
-        <AuthorImage src={post.author.image} alt={post.author.name} />
+        <AuthorImage src={authorImg } alt={post.author.name} />
         <AuthorInfo>
           <AuthorName>{post.author.name}</AuthorName>
           <PostMeta>

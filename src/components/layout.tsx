@@ -1,28 +1,28 @@
-import { ReactNode } from "react";
-import styled, { keyframes } from "styled-components";
-import Navbar from "./Navbar";
-import StyledCard from "./Card/StyledCard";
-import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
-import { getHoverStyles, getThemeStyles } from "@/themes";
-import { useFilter } from "@/context/FilterContext";
-import { useLocation } from "react-router-dom";
+import { ReactNode } from 'react';
+import styled, { keyframes } from 'styled-components';
+import Navbar from './Navbar';
+import StyledCard from './Card/StyledCard';
+import { GithubFilled, LinkedinFilled, MailFilled } from '@ant-design/icons';
+import { getHoverStyles, getThemeStyles } from '@/themes';
+import { useFilter } from '@/context/FilterContext';
+import { useLocation } from 'react-router-dom';
 
 type LayoutProps = {
   children: ReactNode;
   onToggleTheme: () => void;
-  theme: "light" | "dark";
+  theme: 'light' | 'dark';
 };
 
 const TAG_LIST = [
-  "JavaScript",
-  "Frontend",
-  "PostgreSQL",
-  "Daily",
-  "TypeScript",
-  "Blog",
-  "Database",
-  "React",
-  "Next.js",
+  'JavaScript',
+  'Frontend',
+  'PostgreSQL',
+  'Daily',
+  'TypeScript',
+  'Blog',
+  'Database',
+  'React',
+  'Next.js',
 ];
 
 const MaxWidthContainer = styled.div`
@@ -34,7 +34,7 @@ const MaxWidthContainer = styled.div`
 `;
 
 const LayoutContainer = styled.div`
-  ${({ theme }) => getThemeStyles(theme, ["background", "text"])};
+  ${({ theme }) => getThemeStyles(theme, ['background', 'text'])};
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -158,9 +158,8 @@ const Tag = styled.span`
   font-size: 0.6rem;
   border-radius: 6px;
   margin: 0;
-  background-color: ${({ theme }) =>
-    theme.mode === "dark" ? "#2D2D2D" : "rgb(235, 235, 235)"};
-  color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};
+  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
   text-align: center;
   font-size: 12px;
 `;
@@ -169,7 +168,7 @@ const ContactTitle = styled.h2`
   font-size: 1.1rem;
   margin-top: 40px;
   margin-bottom: 20px;
-  ${({ theme }) => getThemeStyles(theme, "text")};
+  ${({ theme }) => getThemeStyles(theme, 'text')};
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -194,16 +193,21 @@ const ContactItem = styled.li`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  ${({ theme }) => getThemeStyles(theme, "text")};
+  ${({ theme }) => getThemeStyles(theme, 'text')};
 
   &:hover {
-    ${({ theme }) => getThemeStyles(theme, "hover")};
+    ${({ theme }) => getThemeStyles(theme, 'hover')};
   }
 
   svg {
     width: 14px;
     height: 14px;
   }
+`;
+
+const ContactItemLink = styled.a`
+  text-decoration: none;
+  color: inherit;
 `;
 
 const dropDown = keyframes`
@@ -223,19 +227,15 @@ const AnimatedSection = styled.div<{ delay?: number }>`
   opacity: 0;
 `;
 
-export default function Layout({
-  children,
-  onToggleTheme,
-  theme,
-}: LayoutProps) {
+export default function Layout({ children, onToggleTheme, theme }: LayoutProps) {
   const { selectedTag, setSelectedTag, setSelectedGroup } = useFilter();
 
   const location = useLocation();
-  const isBlogDetailsPage = location.pathname.match(/^\/\d+$/);
+  const isBlogDetailsPage = location.pathname.match(/^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
 
   const handleTagsClick = (tag: string) => {
-    setSelectedTag(tag === selectedTag ? "" : tag);
-    setSelectedGroup("All");
+    setSelectedTag(tag === selectedTag ? '' : tag);
+    setSelectedGroup('All');
   };
 
   return (
@@ -254,9 +254,9 @@ export default function Layout({
                       <TagItem
                         key={tag}
                         onClick={() => handleTagsClick(tag)}
-                        className={tag === selectedTag ? "active" : ""}
+                        className={tag === selectedTag ? 'active' : ''}
                       >
-                        {" "}
+                        {' '}
                         {tag}
                       </TagItem>
                     ))}
@@ -276,7 +276,7 @@ export default function Layout({
             <RightSidebar>
               <AnimatedSection delay={0.3}>
                 <ProfileSection>
-                  <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                  <StyledCard key={'id'} variant="light" padding="sm" size="sm">
                     <ProfileImage
                       src="https://avatars.githubusercontent.com/u/65296404?v=4"
                       alt="Profile"
@@ -290,19 +290,37 @@ export default function Layout({
                     </TagContainer>
                   </StyledCard>
                   <ContactTitle>🔗 Contact</ContactTitle>
-                  <StyledCard key={"id"} variant="light" padding="sm" size="sm">
+                  <StyledCard key={'id'} variant="light" padding="sm" size="sm">
                     <ContactList>
                       <ContactItem>
                         <GithubFilled />
-                        github
+                        <ContactItemLink
+                          href="https://github.com/Sardor-M"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          github
+                        </ContactItemLink>
                       </ContactItem>
                       <ContactItem>
                         <LinkedinFilled />
-                        instagram
+                        <ContactItemLink
+                          href="https://www.linkedin.com/in/sardor-m/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          linkedin
+                        </ContactItemLink>
                       </ContactItem>
                       <ContactItem>
                         <MailFilled />
-                        email
+                        <ContactItemLink
+                          href="mailto:sardor0968@gmail.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          gmail
+                        </ContactItemLink>
                       </ContactItem>
                     </ContactList>
                   </StyledCard>
