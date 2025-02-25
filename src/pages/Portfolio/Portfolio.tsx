@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { ExternalLink, Code, Server } from "lucide-react";
-import StyledCard from "@/components/Card/StyledCard";
-import { GithubFilled } from "@ant-design/icons";
-import { getThemeStyles } from "@/themes";
+import React from 'react';
+import styled from 'styled-components';
+import { ExternalLink, Code, Server } from 'lucide-react';
+import StyledCard from '@/components/Card/StyledCard';
+import { GithubFilled } from '@ant-design/icons';
+import { getThemeStyles } from '@/themes';
 
 type SkillSection = {
   id: string;
@@ -26,7 +26,7 @@ const SectionTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  ${({ theme }) => getThemeStyles(theme, "text")};
+  ${({ theme }) => getThemeStyles(theme, 'text')};
 `;
 
 const SkillsGrid = styled.div`
@@ -103,21 +103,15 @@ const Portfolio: React.FC = () => {
   const skillSections: SkillSection[] = [
     {
       id: generateId(),
-      title: "Frontend ",
+      title: 'Frontend ',
       icon: <Code size={20} />,
-      skills: [
-        "React.js",
-        "Next.js",
-        "TypeScript",
-        "Styled Components",
-        "Tailwind CSS",
-      ],
+      skills: ['React.js', 'Next.js', 'TypeScript', 'Styled Components', 'Tailwind CSS'],
     },
     {
       id: generateId(),
-      title: "Backend",
+      title: 'Backend',
       icon: <Server size={20} />,
-      skills: ["Node.js", "Express.js", "REST APIs", "MySql"],
+      skills: ['Node.js', 'Express.js', 'REST APIs', 'MySql'],
     },
     // {
     //   id: generateId(),
@@ -129,20 +123,20 @@ const Portfolio: React.FC = () => {
 
   const projects = [
     {
-      title: "Personal Blog",
+      title: 'Personal Blog',
       description:
-        "A static blog platform built with React and Typescript. Features include, markdown support, and comment system.",
-      tags: ["React", "Node.js", "PostgreSQL", "TypeScript"],
-      github: "https://github.com/",
-      demo: "https://demo.com",
+        'A static blog platform built with React and Typescript. Features include, markdown support, and comment system.',
+      tags: ['React', 'Node.js', 'PostgreSQL', 'TypeScript'],
+      github: 'https://github.com/',
+      demo: 'https://demo.com',
     },
     {
-      title: "Sample Project",
+      title: 'Sample Project',
       description:
-        "A static blog platform built with React and Typescript. Features include, markdown support, and comment system.",
-      tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
-      github: "https://github.com/",
-      demo: "https://demo.com",
+        'A static blog platform built with React and Typescript. Features include, markdown support, and comment system.',
+      tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS'],
+      github: 'https://github.com/',
+      demo: 'https://demo.com',
     },
   ];
 
@@ -160,9 +154,7 @@ const Portfolio: React.FC = () => {
                 </SkillTitle>
                 <SkillList>
                   {section.skills.map((skill) => (
-                    <SkillItem key={`${section.id}_${skill}`}>
-                      {skill}
-                    </SkillItem>
+                    <SkillItem key={`${section.id}_${skill}`}>{skill}</SkillItem>
                   ))}
                 </SkillList>
               </SkillCategory>
@@ -175,42 +167,27 @@ const Portfolio: React.FC = () => {
         <SectionTitle>Featured Projects</SectionTitle>
         <ProjectsGrid>
           {projects.map((project) => (
-            <StyledCard
-              key={project.title}
-              variant="light"
-              padding="md"
-              hoverable
-            >
+            <StyledCard key={project.title} variant="light" padding="md" hoverable>
               <h3
                 style={{
-                  fontSize: "1.3rem",
+                  fontSize: '1.3rem',
                   fontWeight: 600,
-                  marginBottom: "0.5rem",
+                  marginBottom: '0.5rem',
                 }}
               >
                 {project.title}
               </h3>
-              <p style={{ color: "inherit", marginBottom: "1rem" }}>
-                {project.description}
-              </p>
+              <p style={{ color: 'inherit', marginBottom: '1rem' }}>{project.description}</p>
               <TagList>
                 {project.tags.map((tag) => (
                   <Tag key={tag}>{tag}</Tag>
                 ))}
               </TagList>
               <IconContainer>
-                <LinkIcon
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <LinkIcon href={project.github} target="_blank" rel="noopener noreferrer">
                   <GithubFilled size={20} />
                 </LinkIcon>
-                <LinkIcon
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <LinkIcon href={project.demo} target="_blank" rel="noopener noreferrer">
                   <ExternalLink size={20} />
                 </LinkIcon>
               </IconContainer>
@@ -218,6 +195,7 @@ const Portfolio: React.FC = () => {
           ))}
         </ProjectsGrid>
       </Section>
+     
     </PortfolioContainer>
   );
 };
