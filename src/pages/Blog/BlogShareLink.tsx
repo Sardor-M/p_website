@@ -1,13 +1,9 @@
-import { getThemeStyles } from "@/themes";
-import { formatDate } from "@/utils/fomatDate";
-import {
-  CheckCircleFilled,
-  LinkedinFilled,
-  TwitterCircleFilled,
-} from "@ant-design/icons";
-import { Link,  Share } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import { getThemeStyles } from '@/themes';
+import { formatDate } from '@/utils/fomatDate';
+import { CheckCircleFilled, LinkedinFilled, TwitterCircleFilled } from '@ant-design/icons';
+import { Link, Share } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 
 type Post = {
   title: string;
@@ -58,7 +54,7 @@ const PostMeta = styled.div`
   font-size: 0.875rem;
 
   span:not(:last-child)::after {
-    content: "·";
+    content: '·';
     margin-left: 0.5rem;
   }
 `;
@@ -77,15 +73,14 @@ const ShareButton = styled.button`
   height: 36px;
   border-radius: 50%;
   border: 1px transparent;
-    ${({ theme }) => (theme.mode === "dark" ? "#404040" : "#e5e5e5")};
+  ${({ theme }) => (theme.mode === 'dark' ? '#404040' : '#e5e5e5')};
   background: transparent;
- ${({ theme }) => getThemeStyles(theme, "text")};
+  ${({ theme }) => getThemeStyles(theme, 'text')};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${({ theme }) =>
-      theme.mode === "dark" ? "#2D2D2D" : "#f5f5f5"};
+    background: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#f5f5f5')};
   }
 
   svg {
@@ -103,9 +98,8 @@ const DropdownMenu = styled.div`
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  ${({ theme }) => getThemeStyles(theme, "background")};
-  border: 1px solid
-    ${({ theme }) => (theme.mode === "dark" ? "#404040" : "#e5e5e5")};
+  ${({ theme }) => getThemeStyles(theme, 'background')};
+  border: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#404040' : '#e5e5e5')};
   border-radius: 8px;
   padding: 0.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -121,15 +115,14 @@ const DropdownItem = styled.button`
   padding: 0.5rem 0.75rem;
   border: none;
   background: transparent;
-  ${({ theme }) => getThemeStyles(theme, "text")};
+  ${({ theme }) => getThemeStyles(theme, 'text')};
   font-size: 0.875rem;
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${({ theme }) =>
-      theme.mode === "dark" ? "#2D2D2D" : "#f5f5f5"};
+    background: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#f5f5f5')};
   }
 
   svg {
@@ -143,9 +136,8 @@ const CopyNotification = styled.div`
   top: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
-  ${({ theme }) => getThemeStyles(theme, "background")};
-  border: 1px solid
-    ${({ theme }) => (theme.mode === "dark" ? "#404040" : "#e5e5e5")};
+  ${({ theme }) => getThemeStyles(theme, 'background')};
+  border: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#404040' : '#e5e5e5')};
   padding: 0.75rem 1rem;
   border-radius: 8px;
   display: flex;
@@ -158,6 +150,9 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCopyNotification, setShowCopyNotification] = useState(false);
+  const [authorImg, setAuthorImg] = useState(
+    post.author.image || 'https://avatars.githubusercontent.com/u/65296404?v=4'
+  );
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -166,7 +161,7 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
     setShowDropdown(false);
   };
 
-  const handleShare = (platform: "twitter" | "linkedin") => {
+  const handleShare = (platform: 'twitter' | 'linkedin') => {
     const url = encodeURIComponent(window.location.href);
     const title = encodeURIComponent(post.title);
 
@@ -175,13 +170,13 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
     };
 
-    window.open(shareUrls[platform], "_blank");
+    window.open(shareUrls[platform], '_blank');
     setShowDropdown(false);
   };
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent){
-      if(dropdownRef.current && !dropdownRef.current.contains(event.target as Node)){
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
       }
     }
@@ -189,19 +184,21 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
     // clean up function to clear
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-    }
+    };
   }, []);
-
-  const authorImg = post.author.image ? post.author.image : '/sm.png';
 
   return (
     <AuthorSection>
       <AuthorBlock>
-        <AuthorImage src={authorImg } alt={post.author.name} />
+        <AuthorImage
+          src={authorImg}
+          alt={post.author.name || 'Author'}
+          onError={() => setAuthorImg('https://avatars.githubusercontent.com/u/65296404?v=4')}
+        />
         <AuthorInfo>
           <AuthorName>{post.author.name}</AuthorName>
           <PostMeta>
-            <span>{formatDate(post.date, {includeTime: true} )}</span>
+            <span>{formatDate(post.date, { includeTime: true })}</span>
             <span>{post.readTime}</span>
           </PostMeta>
         </AuthorInfo>
@@ -218,11 +215,11 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
                 <Link />
                 Copy link
               </DropdownItem>
-              <DropdownItem onClick={() => handleShare("twitter")}>
+              <DropdownItem onClick={() => handleShare('twitter')}>
                 <TwitterCircleFilled />
                 Share on Twitter
               </DropdownItem>
-              <DropdownItem onClick={() => handleShare("linkedin")}>
+              <DropdownItem onClick={() => handleShare('linkedin')}>
                 <LinkedinFilled />
                 Share on LinkedIn
               </DropdownItem>

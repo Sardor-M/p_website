@@ -195,7 +195,6 @@ const Portfolio: React.FC = () => {
           ))}
         </ProjectsGrid>
       </Section>
-     
     </PortfolioContainer>
   );
 };
