@@ -31,4 +31,4 @@ export const themeColor = {
     dark: "#2D2D2D",
     light:" #E5E7EB",
   }
-};
+}

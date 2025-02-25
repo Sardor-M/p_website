@@ -11,7 +11,6 @@ const TagButton = styled.button<{ selected: boolean }>`
   background: ${({ selected }) => (selected ? '#ffcc00' : '#ddd')};
   border: none;
   padding: 5px 10px;
-  cursor: pointer;
   border-radius: 5px;
 `;
 

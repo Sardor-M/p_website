@@ -111,7 +111,6 @@ const TagItem = styled.li`
   padding: 0.7rem 0.6rem;
   border-radius: 14px;
   font-size: 0.8rem;
-  cursor: pointer;
   gap: 0.2rem;
   margin: 0;
   transition: all 0.2s ease;

@@ -192,7 +192,6 @@ const BackToTopButton = styled.button`
   ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])}
   border-radius: 8px;
   border: none;
-  cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {

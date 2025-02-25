@@ -19,7 +19,6 @@ const baseButtonStyles = css`
   justify-content: center;
   border-radius: 6px;
   font-weight: 500;
-  cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
   

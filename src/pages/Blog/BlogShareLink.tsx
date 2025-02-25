@@ -76,7 +76,6 @@ const ShareButton = styled.button`
   ${({ theme }) => (theme.mode === 'dark' ? '#404040' : '#e5e5e5')};
   background: transparent;
   ${({ theme }) => getThemeStyles(theme, 'text')};
-  cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
@@ -117,7 +116,6 @@ const DropdownItem = styled.button`
   background: transparent;
   ${({ theme }) => getThemeStyles(theme, 'text')};
   font-size: 0.875rem;
-  cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s ease;
 

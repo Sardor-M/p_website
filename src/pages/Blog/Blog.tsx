@@ -126,7 +126,6 @@ const GroupItem = styled.button<{ active: boolean }>`
     active ? (theme.mode === "dark" ? "#3a3a3a" : "#e5e5e5") : "transparent"};
   color: ${({ theme }) =>
     theme.mode === "dark" ? themeColor.text.dark : themeColor.text.light};
-  cursor: pointer;
   transition: all 0.2s;
   font-size: 0.8rem;
 

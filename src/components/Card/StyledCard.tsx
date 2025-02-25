@@ -40,7 +40,6 @@ const CardContainer = styled.div<{
   ${({ $hoverable }) =>
     $hoverable &&
     css`
-      cursor: pointer;
       &:hover {
         transform: translateY(-4px);
         box-shadow: ${({ theme }) =>

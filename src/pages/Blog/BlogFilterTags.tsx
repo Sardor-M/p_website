@@ -28,7 +28,6 @@ const TagItem = styled.span<{ $isSelected: boolean }>`
   padding: 0.4rem 0.8rem;
   border-radius: 10px;
   font-size: 0.875rem;
-  cursor: pointer;
   transition: all 0.2s ease;
   background-color: ${(props) =>
     props.$isSelected
@@ -58,7 +57,6 @@ const ResetButton = styled.button`
   padding: 0.4rem 0.8rem;
   border-radius: 10px;
   font-size: 0.875rem;
-  cursor: pointer;
   background-color: transparent;
   ${({ theme }) => getThemeStyles(theme, "text")};
   border: 1px

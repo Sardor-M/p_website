@@ -1,3 +1,4 @@
+import CustomCursor from "./components/common/CustomCursor";
 import { ThemeProvider } from "styled-components";
 import AppRoutes from "./routes";
 import { darkTheme, lightTheme } from "@/themes/themes/themes";
@@ -19,6 +20,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <CustomCursor />
       <AppRoutes onToggleTheme={handleToggleTheme} theme={theme} />;
     </ThemeProvider>
     
