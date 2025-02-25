@@ -6,6 +6,7 @@ import { BlogContent, BlogPost } from "@/types/blog";
 import { useLocation, useParams } from "react-router-dom";
 import { getThemeStyles } from "@/themes";
 import UtterancesComment from "./UtteranceComment";
+import { sanitizeObject, sanitizeString } from "@/utils/security";
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -164,6 +165,9 @@ export default function BlogDetails() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 
+  const sanitizedPost = post ? sanitizeObject(post) : null;
+
+
   const theme = useTheme();
 
   useEffect(() => {
@@ -177,19 +181,19 @@ export default function BlogDetails() {
     <BlogContainer>
       <StyledCard variant="light" padding="lg">
         <ArticleHeader>
-          <Title>{post.title}</Title>
-          <Subtitle>{post.subtitle}</Subtitle>
-          <AuthorSectionWithShare post={post} />
+          <Title>{sanitizeString(post.title)}</Title>
+          <Subtitle>{sanitizeString(post.subtitle)}</Subtitle>
+          {sanitizedPost && <AuthorSectionWithShare post={sanitizedPost} />}
         </ArticleHeader>
 
         <Content>
-          {post.content.map((contentItem, index) => (
+          {sanitizedPost?.content.map((contentItem, index) => (
             <ContentBlock key={index} item={contentItem} />
           ))}
         </Content>
         <TopicList>
-          {post.topics.map((tag) => (
-            <StyledTag key={tag}>{tag}</StyledTag>
+          {sanitizedPost?.topics.map((tag) => (
+            <StyledTag key={tag}>{sanitizeString(tag)}</StyledTag>
           ))}
         </TopicList>
         <CommentsSection>
@@ -208,34 +212,34 @@ export default function BlogDetails() {
 const ContentBlock = ({ item }: { item: BlogContent }) => {
   switch (item.type) {
     case "heading":
-      return React.createElement(`h${item.level || 2}`, null, item.text);
+      return React.createElement(`h${item.level || 2}`, null, sanitizeString(item.text));
     case "paragraph":
-      return <p>{item.text}</p>;
+      return <p>{sanitizeString(item.text)}</p>;
     case "code":
       return (
         <pre>
-          <code>{item.text}</code>
+          <code>{sanitizeString(item.text)}</code>
         </pre>
       );
     case "blackquote":
-      return <blockquote>{item.text}</blockquote>;
+      return <blockquote>{sanitizeString(item.text)}</blockquote>;
     case "list":
       return (
         <ul>
           {item.items?.map((listItem: string, index: number) => (
-            <li key={index}>{listItem}</li>
+            <li key={index}>{sanitizeString(listItem)}</li>
           ))}
         </ul>
       );
     case "image":
       return (
         <img
-          src={item.url}
-          alt={item.alt}
+          src={sanitizeString(item.url ?? '')}
+          alt={sanitizeString(item.alt ?? '')}
           style={{ maxWidth: "100%", height: "auto" }}
         />
       );
     default:
-      return <p>{item.text}</p>;
+      return <p>{sanitizeString(item.text)}</p>;
   }
 };

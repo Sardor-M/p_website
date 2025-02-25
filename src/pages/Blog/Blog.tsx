@@ -10,6 +10,7 @@ import { API_ENDPOINTS } from "@/api/config";
 import { formatDate } from "@/utils/fomatDate";
 import { Loading } from "@/components/Loading";
 import { Error } from "@/components/Error";
+import { sanitizeObject } from "@/utils/security";
 
 
 const Container = styled.div`
@@ -204,7 +205,9 @@ export default function Blog() {
 
   // we get the items from the response
   const blogs = data?.items || [];
-  console.log("Blog data is here", blogs);
+  // and we sanitize the object for security reasons
+  const sanitizedBlogs = blogs.length > 0 ? sanitizeObject(blogs) : [];
+  const blogsArray = Object.values(sanitizedBlogs || {});
 
   useEffect(() => {
     if (blogs.length > 0) {
@@ -234,7 +237,7 @@ export default function Blog() {
     }
   }, [blogs]);
 
-  const filteredPosts = blogs.filter((post) => {
+  const filteredPosts = blogsArray.filter((post) => {
     const matchedTag = selectedTag ? post.topics.includes(selectedTag) : true;
     const matchedGroup =
       selectedGroup === "All" ? true : post.topics.includes(selectedGroup);

@@ -1,6 +1,30 @@
 import { FetchOptions, FetchState } from "@/types";
 import { useEffect, useState } from "react";
 
+
+const getCsrfToken = (): string | null => {
+  const cookies = document.cookie.split(";");
+    for(const cookie of cookies) {
+      const [name, value ] = cookie.trim().split('=');
+      if(name === "XSRF-TOKEN") {
+        return decodeURIComponent(value);
+      }
+    }
+    return null;
+}
+
+
+const fetchCsrfToken = async (baseUrl: string): Promise<void> => {
+  try {
+    await fetch(`${baseUrl}/csrf-token`, {
+      method: "GET",
+      credentials: "include"
+    });
+  } catch(error) {
+    console.error('Failed to fetch CSRF token:', error);
+  }
+}
+
 {
   /* T expected data typeni bildiradi */
 }
@@ -11,10 +35,24 @@ export function useFetch<T>(url: string, options: FetchOptions = {}) {
     error: null,
   });
 
+  const baseUrl = url.split('/').slice(0, 3).join('/');
+
+ // CSRF tokenni fetch qilish uchun effect
+ useEffect(() => {
+  const nonGetRequest = options.method && options.method !== 'GET';
+  
+  // faqat fetch CSRF token qilamiz qachoni state-changing request bo'lsa
+  if (nonGetRequest && !getCsrfToken()) {
+    fetchCsrfToken(baseUrl);
+  }
+}, [baseUrl, options.method]);
+
+
   useEffect(() => {
     {
       /* komponentimiz unmount bo'lganda fetch callni cancel qilish uchun abortcontrolelr */
     }
+
     const abortController = new AbortController();
     const signal = abortController.signal;
 
@@ -25,15 +63,32 @@ export function useFetch<T>(url: string, options: FetchOptions = {}) {
           loading: true,
         }));
 
-        const headers = {
+        const headers: HeadersInit = {
           "Content-Type": "application/json",
           ...options.headers,
         };
+
+        if (options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method.toUpperCase())) {
+          const token = getCsrfToken();
+          if (token) {
+            (headers as Record<string, string>)['X-CSRF-TOKEN'] = token;
+            (headers as Record<string, string>)['CSRF-Token'] = token;
+          } else {
+            // Iif we dont have token yet for a state-changing request, we get one first
+            await fetchCsrfToken(baseUrl);
+            const newToken = getCsrfToken();
+            if (newToken) {
+              (headers as Record<string, string>)['X-CSRF-TOKEN'] = newToken;
+              (headers as Record<string, string>)['CSRF-Token'] = newToken;
+            }
+          }
+        }
 
         // fetchoption larni set qilamiz
         const fetchOptions: RequestInit = {
           method: options.method || "GET",
           headers,
+          credentials: "include",
           signal,
           ...(options.body ? { body: JSON.stringify(options.body) } : {}),
         };
@@ -73,15 +128,35 @@ export function useFetch<T>(url: string, options: FetchOptions = {}) {
   const refresh = async () => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
-      const headers = {
+      // prepare headers with CSRF token
+      const headers: HeadersInit = {
         "Content-Type": "application/json",
         ...options.headers,
       };
+
+      // we add a CSRF token for non-GET requests
+      if (options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method.toUpperCase())) {
+        const token = getCsrfToken();
+        if (token) {
+          (headers as Record<string, string>)['X-CSRF-TOKEN'] = token;
+          (headers as Record<string, string>)['CSRF-Token'] = token;
+        } else {
+          await fetchCsrfToken(baseUrl);
+          const newToken = getCsrfToken();
+          if (newToken) {
+            (headers as Record<string, string>)['X-CSRF-TOKEN'] = newToken;
+            (headers as Record<string, string>)['CSRF-Token'] = newToken;
+          }
+        }
+      }
+
       const fetchOptions: RequestInit = {
         method: options.method || "GET",
         headers,
+        credentials: 'include', // cookie uchun muhim
         ...(options.body ? { body: JSON.stringify(options.body) } : {}),
       };
+      
       const response = await fetch(url, fetchOptions);
       const data = await response.json();
       setState({
