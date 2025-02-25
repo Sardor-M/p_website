@@ -162,6 +162,7 @@ const NavigationContainer = styled.div`
 `;
 
 const NavButton = styled(Link)`
+cursor: inherit;
   display: flex;
   align-items: center;
   gap: 0.5rem;

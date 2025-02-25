@@ -186,7 +186,6 @@ const ContactList = styled.ul`
 const ContactItem = styled.li`
   font-weight: 14px;
   padding: 0.75rem;
-  cursor: pointer;
   transition: all 0.2s;
   border-radius: 10px;
   display: flex;
@@ -205,6 +204,7 @@ const ContactItem = styled.li`
 `;
 
 const ContactItemLink = styled.a`
+  cursor: inherit;
   text-decoration: none;
   color: inherit;
 `;
@@ -230,7 +230,9 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
   const { selectedTag, setSelectedTag, setSelectedGroup } = useFilter();
 
   const location = useLocation();
-  const isBlogDetailsPage = location.pathname.match(/^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+  const isBlogDetailsPage = location.pathname.match(
+    /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+  );
 
   const handleTagsClick = (tag: string) => {
     setSelectedTag(tag === selectedTag ? '' : tag);

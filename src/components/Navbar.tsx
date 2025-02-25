@@ -37,6 +37,7 @@ const NavContainer = styled.div`
 `;
 
 const Logo = styled(Link)`
+cursor: inherit;
   font-size: 1.25rem;
   font-weight: 600;
   ${({ theme }) => getThemeStyles(theme, "text")};
@@ -53,6 +54,7 @@ const NavList = styled.ul`
 `;
 
 const NavItem = styled(Link)`
+cursor: inherit;
   ${({ theme }) => getThemeStyles(theme, "text")};
   text-decoration: none;
   font-weight: 500;

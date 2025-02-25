@@ -1,17 +1,16 @@
-import styled from "styled-components";
-import StyledCard from "@/components/Card/StyledCard";
-import { Link } from "react-router-dom";
-import { BlogResponse, Group } from "@/types/blog";
-import { themeColor } from "@/themes/color";
-import { useFilter } from "@/context/FilterContext";
-import { useFetch } from "@/hooks/useFetch/useFetch";
-import { useEffect, useState } from "react";
-import { API_ENDPOINTS } from "@/api/config";
-import { formatDate } from "@/utils/fomatDate";
-import { Loading } from "@/components/Loading";
-import { Error } from "@/components/Error";
-import { sanitizeObject } from "@/utils/security";
-
+import styled from 'styled-components';
+import StyledCard from '@/components/Card/StyledCard';
+import { Link } from 'react-router-dom';
+import { BlogResponse, Group } from '@/types/blog';
+import { themeColor } from '@/themes/color';
+import { useFilter } from '@/context/FilterContext';
+import { useFetch } from '@/hooks/useFetch/useFetch';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '@/api/config';
+import { formatDate } from '@/utils/fomatDate';
+import { Loading } from '@/components/Loading';
+import { Error } from '@/components/Error';
+import { sanitizeObject } from '@/utils/security';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -69,8 +68,7 @@ const BlogTitle = styled.h3`
 
 const BlogDate = styled.p`
   font-size: 0.875rem;
-  color: ${({ theme }) =>
-    theme.mode === "dark" ? "rgb(138, 138, 138)" : "rgb(154, 154, 154) "};
+  color: ${({ theme }) => (theme.mode === 'dark' ? 'rgb(138, 138, 138)' : 'rgb(154, 154, 154) ')};
   margin-bottom: 0.8rem;
   font-weight: 500;
 `;
@@ -90,12 +88,12 @@ const Tag = styled.span`
   padding: 0.25rem 0.8rem;
   font-size: 0.6rem;
   border-radius: 6px;
-  background-color: ${({ theme }) =>
-    theme.mode === "dark" ? "#2D2D2D" : "rgb(235, 235, 235)"};
-  color: ${({ theme }) => (theme.mode === "dark" ? "#FFFFFF" : "#000000")};
+  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
 `;
 
 const StyledLink = styled(Link)`
+  cursor: inherit;
   text-decoration: none;
   color: inherit;
 
@@ -123,15 +121,13 @@ const GroupItem = styled.button<{ active: boolean }>`
   border-radius: 12px;
   border: none;
   background-color: ${({ active, theme }) =>
-    active ? (theme.mode === "dark" ? "#3a3a3a" : "#e5e5e5") : "transparent"};
-  color: ${({ theme }) =>
-    theme.mode === "dark" ? themeColor.text.dark : themeColor.text.light};
+    active ? (theme.mode === 'dark' ? '#3a3a3a' : '#e5e5e5') : 'transparent'};
+  color: ${({ theme }) => (theme.mode === 'dark' ? themeColor.text.dark : themeColor.text.light)};
   transition: all 0.2s;
   font-size: 0.8rem;
 
   &:hover {
-    background-color: ${({ theme }) =>
-      theme.mode === "dark" ? "#3a3a3a" : "#e5e5e5"};
+    background-color: ${({ theme }) => (theme.mode === 'dark' ? '#3a3a3a' : '#e5e5e5')};
   }
 `;
 
@@ -145,10 +141,8 @@ const GroupIcon = styled.span`
 
 const GroupCount = styled.span`s
   font-size: 0.8rem;
-  color: ${({ theme }) =>
-    theme.mode === "dark" ? themeColor.text.dark : themeColor.text.light};
-  background-color: ${({ theme }) =>
-    theme.mode === "dark" ? "#2d2d2d" : "#f0f0f0"};
+  color: ${({ theme }) => (theme.mode === 'dark' ? themeColor.text.dark : themeColor.text.light)};
+  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2d2d2d' : '#f0f0f0')};
   padding: 0.2rem 0.5rem;
   border-radius: 8px;
 `;
@@ -182,24 +176,23 @@ const GroupCount = styled.span`s
 
 const getIconForTag = (tag: string): string => {
   const iconMap: Record<string, string> = {
-    Frontend: "🎨",
-    Backend: "⚙️",
-    Web_Dev: "🌐",
-    React: "⚛️",
-    JavaScript: "📜",
-    TypeScript: "💪",
-    Node: "🟢",
+    Frontend: '🎨',
+    Backend: '⚙️',
+    Web_Dev: '🌐',
+    React: '⚛️',
+    JavaScript: '📜',
+    TypeScript: '💪',
+    Node: '🟢',
   };
 
-  return iconMap[tag] || "📄";
+  return iconMap[tag] || '📄';
 };
 
 export default function Blog() {
   const { data, loading, error } = useFetch<BlogResponse>(
     `${API_ENDPOINTS.BASE_URL}${API_ENDPOINTS.BLOG.GET_ALL}`
   );
-  const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } =
-    useFilter();
+  const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } = useFilter();
   const [groups, setGroups] = useState<Group[]>([]);
 
   // we get the items from the response
@@ -214,16 +207,19 @@ export default function Blog() {
       const allTags = blogs.flatMap((post) => post.topics);
       // objectga o'tkazib olib har bir tag uchun count jhisoblaydi
       // shu acc orqali tagni countni hisoblaymiz
-      const tagCounts = allTags.reduce((acc, tag) => {
-        acc[tag] = (acc[tag] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const tagCounts = allTags.reduce(
+        (acc, tag) => {
+          acc[tag] = (acc[tag] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
       const newGroups: Group[] = [
         {
-          name: "All",
+          name: 'All',
           count: blogs.length,
-          icon: "📑",
+          icon: '📑',
         },
         ...Object.entries(tagCounts).map(([tag, count]) => ({
           name: tag,
@@ -238,15 +234,14 @@ export default function Blog() {
 
   const filteredPosts = blogsArray.filter((post) => {
     const matchedTag = selectedTag ? post.topics.includes(selectedTag) : true;
-    const matchedGroup =
-      selectedGroup === "All" ? true : post.topics.includes(selectedGroup);
+    const matchedGroup = selectedGroup === 'All' ? true : post.topics.includes(selectedGroup);
     return matchedTag && matchedGroup;
   });
 
   // we handle the group selection
   const handleGroupClick = (group: string) => {
     if (group === selectedGroup) {
-      setSelectedGroup("All");
+      setSelectedGroup('All');
     } else {
       setSelectedGroup(group);
     }
@@ -260,67 +255,63 @@ export default function Blog() {
   // );
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   if (error) {
-    return <Error message={error.message}/>
+    return <Error message={error.message} />;
   }
 
   return (
     <Container>
       <Section>
         <SectionTitle>Blog Posts</SectionTitle>
-          <GroupsContainer>
-            {groups.map((group) => (
-              <GroupItem
-                key={group.name}
-                active={selectedGroup === group.name}
-                onClick={() => handleGroupClick(group.name)}
-              >
-                <GroupIcon>{group.icon}</GroupIcon> {group.name}
-                <GroupCount>{group.count}</GroupCount>
-              </GroupItem>
-            ))}
-          </GroupsContainer>
-          {/* <TagContainer>
+        <GroupsContainer>
+          {groups.map((group) => (
+            <GroupItem
+              key={group.name}
+              active={selectedGroup === group.name}
+              onClick={() => handleGroupClick(group.name)}
+            >
+              <GroupIcon>{group.icon}</GroupIcon> {group.name}
+              <GroupCount>{group.count}</GroupCount>
+            </GroupItem>
+          ))}
+        </GroupsContainer>
+        {/* <TagContainer>
           <TagFilterSystem
             tags={tagsData}
             selectedTag={selectedTag}
             onTagSelect={setSelectedTag}
           />
         </TagContainer> */}
-          <BlogContainer>
-            <BlogGrid>
-              {filteredPosts.map((post) => (
-                <StyledLink
-                  key={`blog-${post.id}`}
-                  to={`/${post.id}`}
-                  state={{ blogData: post }}
-                >
-                  <BlogPostCard variant="light" padding="sm" hoverable={true}>
-                    <BlogTitle>{post.title}</BlogTitle>
-                    <BlogDate>{formatDate(post.date)}</BlogDate>
-                    <BlogDescription>{post.content[0].text}</BlogDescription>
-                    <TagList>
-                      {post.topics.map((tag, index) => (
-                        <Tag
-                          key={`${post.id}-${tag}-${index}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setSelectedTag(tag);
-                            setSelectedGroup("All");
-                          }}
-                        >
-                          {tag}
-                        </Tag>
-                      ))}
-                    </TagList>
-                  </BlogPostCard>
-                </StyledLink>
-              ))}
-            </BlogGrid>
-          </BlogContainer>
+        <BlogContainer>
+          <BlogGrid>
+            {filteredPosts.map((post) => (
+              <StyledLink key={`blog-${post.id}`} to={`/${post.id}`} state={{ blogData: post }}>
+                <BlogPostCard variant="light" padding="sm" hoverable={true}>
+                  <BlogTitle>{post.title}</BlogTitle>
+                  <BlogDate>{formatDate(post.date)}</BlogDate>
+                  <BlogDescription>{post.content[0].text}</BlogDescription>
+                  <TagList>
+                    {post.topics.map((tag, index) => (
+                      <Tag
+                        key={`${post.id}-${tag}-${index}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedTag(tag);
+                          setSelectedGroup('All');
+                        }}
+                      >
+                        {tag}
+                      </Tag>
+                    ))}
+                  </TagList>
+                </BlogPostCard>
+              </StyledLink>
+            ))}
+          </BlogGrid>
+        </BlogContainer>
       </Section>
     </Container>
   );
