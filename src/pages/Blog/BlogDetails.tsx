@@ -162,7 +162,7 @@ const NavigationContainer = styled.div`
 `;
 
 const NavButton = styled(Link)`
-cursor: inherit;
+  cursor: inherit;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -281,7 +281,7 @@ export default function BlogDetails() {
           <CommentsTitle>Comments</CommentsTitle>
           <UtterancesComment
             repo="Sardor-M/p_website_frontend"
-            issueTerm="title"
+            issueTerm="url"
             theme={theme.mode === 'dark' ? 'github-dark' : 'github-light'}
           />
         </CommentsSection>

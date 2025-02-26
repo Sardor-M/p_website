@@ -12,13 +12,13 @@ const Container = styled.div`
 `;
 
 const LoadingMessage = styled.div`
-  color: ${({ theme }) => theme.mode === 'dark' ? '#9CA3AF' : '#4B5563'};
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#9CA3AF' : '#4B5563')};
   font-size: 0.875rem;
   padding: 1rem 0;
 `;
 
 const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.mode === 'dark' ? '#EF4444' : '#DC2626'};
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#EF4444' : '#DC2626')};
   font-size: 0.875rem;
   padding: 1rem 0;
 `;
@@ -33,47 +33,46 @@ export default function UtterancesComment({ repo, issueTerm, theme }: Utterances
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-      const createUtteranceScript = () => {
-        setIsLoading(true);
-        setError(null);
+    const timer = setTimeout(() => {
+      setIsLoading(true);
+      setError(null);
 
-        // Exisitng contentni o'chiramiz
-        if (containerRef.current) {
-          containerRef.current.innerHTML = '';
-        }
+      // Exisitng contentni o'chiramiz
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
 
-        const script = document.createElement('script');
-        const config = {
-          src: 'https://utteranc.es/client.js',
-          repo,
-          'issue-term': issueTerm,
-          theme,
-          crossorigin: 'anonymous',
-          async: 'true'
-        };
-
-        Object.entries(config).forEach(([key, value]) => {
-          script.setAttribute(key, value);
-        });
-
-        script.onerror = () => {
-          setError('Failed to load comments. Please check your GitHub authentication.');
-          setIsLoading(false);
-        };
-
-        script.onload = () => {
-          setIsLoading(false);
-        };
-
-        // Agar container bo'lsagina append qilamiz
-        if (containerRef.current) {
-          containerRef.current.appendChild(script);
-        }
+      const script = document.createElement('script');
+      const config = {
+        src: 'https://utteranc.es/client.js',
+        repo,
+        'issue-term': issueTerm,
+        theme,
+        crossorigin: 'anonymous',
+        async: 'true',
       };
 
-    createUtteranceScript();
+      Object.entries(config).forEach(([key, value]) => {
+        script.setAttribute(key, value);
+      });
+
+      script.onerror = () => {
+        setError('Failed to load comments. Please check your GitHub authentication.');
+        setIsLoading(false);
+      };
+
+      script.onload = () => {
+        setIsLoading(false);
+      };
+
+      // Agar container bo'lsagina append qilamiz
+      if (containerRef.current) {
+        containerRef.current.appendChild(script);
+      }
+    }, 500);
 
     return () => {
+      clearTimeout(timer);
       if (containerRef.current) {
         containerRef.current.innerHTML = '';
       }
@@ -82,16 +81,8 @@ export default function UtterancesComment({ repo, issueTerm, theme }: Utterances
 
   return (
     <Container>
-      {isLoading && (
-        <LoadingMessage>
-          Loading comments...
-        </LoadingMessage>
-      )}
-      {error && (
-        <ErrorMessage>
-          {error}
-        </ErrorMessage>
-      )}
+      {isLoading && <LoadingMessage>Loading comments...</LoadingMessage>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       <CommentsContainer ref={containerRef} />
     </Container>
   );
