@@ -30,5 +30,5 @@ dist-ssr
 
 tsconfig.node.tsbuildinfo
 
-// firebase files
-.firebase/
+# Build file cache
+.firebase
