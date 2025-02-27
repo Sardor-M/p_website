@@ -6,6 +6,7 @@ import { GithubFilled, LinkedinFilled, MailFilled } from '@ant-design/icons';
 import { getHoverStyles, getThemeStyles } from '@/themes';
 import { useFilter } from '@/context/FilterContext';
 import { useLocation } from 'react-router-dom';
+import { CONFIG } from '@/config/site.config';
 
 type LayoutProps = {
   children: ReactNode;
@@ -279,11 +280,11 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
                 <ProfileSection>
                   <StyledCard key={'id'} variant="light" padding="sm" size="sm">
                     <ProfileImage
-                      src="https://avatars.githubusercontent.com/u/65296404?v=4"
+                      src={CONFIG.profile.imageUrl}
                       alt="Profile"
                     />
-                    <ProfileName>sardor-m</ProfileName>
-                    <ProfileBio>Sardor Madaminov</ProfileBio>
+                    <ProfileName>{CONFIG.profile.username}</ProfileName>
+                    <ProfileBio>{CONFIG.profile.fullName}</ProfileBio>
                     {/* {// tags  */}
                     <TagContainer>
                       <Tag>frontend</Tag>
@@ -296,7 +297,7 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
                       <ContactItem>
                         <GithubFilled />
                         <ContactItemLink
-                          href="https://github.com/Sardor-M"
+                          href={CONFIG.profile.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -306,7 +307,7 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
                       <ContactItem>
                         <LinkedinFilled />
                         <ContactItemLink
-                          href="https://www.linkedin.com/in/sardor-m/"
+                          href={CONFIG.profile.linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -316,7 +317,7 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
                       <ContactItem>
                         <MailFilled />
                         <ContactItemLink
-                          href="mailto:sardor0968@gmail.com"
+                          href={`mailto:${CONFIG.profile.email}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

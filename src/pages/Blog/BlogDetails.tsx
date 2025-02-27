@@ -5,8 +5,9 @@ import AuthorSectionWithShare from './BlogShareLink';
 import { BlogContent, BlogPost } from '@/types/blog';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getThemeStyles } from '@/themes';
-import UtterancesComment from './UtteranceComment';
+import UtterancesComment from '../../components/Comment/UtteranceComment';
 import { sanitizeObject, sanitizeString } from '@/utils/security';
+import { CONFIG } from '@/config/site.config';
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -280,8 +281,8 @@ export default function BlogDetails() {
         <CommentsSection>
           <CommentsTitle>Comments</CommentsTitle>
           <UtterancesComment
-            repo="Sardor-M/p_website_frontend"
-            issueTerm="url"
+            repo={CONFIG.utterances.config.repo}
+            issueTerm={CONFIG.utterances.config['issue-term']}
             theme={theme.mode === 'dark' ? 'github-dark' : 'github-light'}
           />
         </CommentsSection>
