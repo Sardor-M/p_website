@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@/api/config";
+import { API_ENDPOINTS } from "@/api/api.config";
 import { useEffect, useState } from "react";
 
 export function useCsrfInit() {

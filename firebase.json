@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "sardor-m",
     "public": "dist",
     "headers": [
       {

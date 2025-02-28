@@ -10,11 +10,10 @@ export const CONFIG = {
     linkedinUrl: 'https://www.linkedin.com/in/sardor-m/',
   },
   utterances: {
-    enable: true,
     config: {
       repo: 'Sardor-M/p_website_frontend',
       'issue-term': 'pathname',
-      label: '💬 Comments',
+      label: '💬',
     },
   },
   // environment

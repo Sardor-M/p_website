@@ -211,17 +211,43 @@ export default function BlogDetails() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
-
-  const sanitizedPost = post ? sanitizeObject(post) : null;
-
   const theme = useTheme();
 
   useEffect(() => {
     const stateData = location.state?.blogData;
-    setPost(stateData || null);
-  }, [id]);
+    if(stateData){
+      setPost(stateData || null);
+      
+      try {
+        sessionStorage.setItem(`blog-post-${id}`, JSON.stringify(stateData));
+      } catch(error) {
+        console.error("Failed to store the blog data: ", error);
+      }
+    } else {
+      // agar stateni set qilamasakan, sessiondan data olishga harakat qilamiz
+      const storedData = sessionStorage.getItem(`blog-post-${id}`);
+      if(storedData){
+         try {
+          const parsedData = JSON.parse(storedData);
+          setPost(parsedData);
+         } catch(error){
+          console.error("failed to parse the stored blog data: ", error);
+         }
+      } else {
+        // agar haliyam data umuman bo'lmasa, biz fetch qilishimiz keragi yo'q
+        console.log('No data available for this blog post');
+      }
+    }
+    
+  }, [id, location.state]);
 
-  if (!post) return null;
+  const sanitizedPost = post ? sanitizeObject(post) : null;
+  
+  if(!sanitizedPost){
+    console.log("Sanitized object is failed to purify the object values. ");
+  }  
+
+  if (!post) return <div>Loading blog post... </div>;
 
   const scrollToTop = () => {
     console.log('Scrolling to top...');

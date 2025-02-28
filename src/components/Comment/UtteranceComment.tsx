@@ -10,35 +10,41 @@ interface UtterancesProps {
 
 const Container = styled.div`
   width: 100%;
-  min-height: 200px; /* Give some space for comments to load */
+  min-height: 200px;
+  margin: 24px 0;
 `;
 
 export default function UtterancesComment({ repo, issueTerm, theme }: UtterancesProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const commentRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
-    if (window.location.search.includes('utterances=')) {
-      const cleanUrl = window.location.pathname;
-      window.history.replaceState({}, document.title, cleanUrl);
-    }
+    // const isUtteranceCallback = window.location.search.includes('utterances=');
 
     const loadUtterancesScript = () => {
       // Exisitng contentni o'chiramiz
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
+      if (commentRef.current) {
+        commentRef.current.innerHTML = '';
       }
 
       const script = document.createElement('script');
       script.src = 'https://utteranc.es/client.js';
       script.setAttribute('repo', repo);
       script.setAttribute('issue-term', issueTerm);
+      script.setAttribute('label', '💬');
       script.setAttribute('theme', theme);
       script.setAttribute('crossorigin', 'anonymous');
       script.async = true;
 
-      if (containerRef.current) {
-        containerRef.current.appendChild(script);
+      script.onerror = () => {
+        console.error("Error loading Utterances script");
+        if (commentRef.current) {
+          commentRef.current.innerHTML = '<div style="color: red;">Error loading comments. Please try again later.</div>';
+        }
+      }
+
+      if (commentRef.current) {
+        commentRef.current.appendChild(script);
       }
     };
 
@@ -48,11 +54,11 @@ export default function UtterancesComment({ repo, issueTerm, theme }: Utterances
 
     return () => {
       clearTimeout(timer);
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
+      if (commentRef.current) {
+        commentRef.current.innerHTML = '';
       }
     };
   }, [repo, issueTerm, theme, location.pathname]);
 
-  return <Container id="comments" ref={containerRef} />;
+  return <Container ref={commentRef} id="utterances-comments" />;
 }

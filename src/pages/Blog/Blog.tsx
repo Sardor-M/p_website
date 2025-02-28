@@ -6,7 +6,7 @@ import { themeColor } from '@/themes/color';
 import { useFilter } from '@/context/FilterContext';
 import { useFetch } from '@/hooks/useFetch/useFetch';
 import { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '@/api/config';
+import { API_ENDPOINTS } from '@/api/api.config';
 import { formatDate } from '@/utils/fomatDate';
 import { Loading } from '@/components/Loading';
 import { Error } from '@/components/Error';
