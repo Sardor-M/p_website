@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "skills": "Technical Skills",
+    "projects": "Featured Projects"
+  },
+  "skillCategories": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "database": "Database"
+  },
+  "projects": {
+    "blog": {
+      "title": "Personal Blog",
+      "description": "A static blog platform built with React and TypeScript. Features include markdown support and comment system."
+    },
+    "sample": {
+      "title": "Sample Project",
+      "description": "A static blog platform built with React and TypeScript. Features include markdown support and comment system."
+    }
+  },
+  "links": {
+    "github": "GitHub Repository",
+    "demo": "Live Demo"
+  }
+}

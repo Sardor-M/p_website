@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "skills": "Texnik Ko'nikmalar",
+    "projects": "Tanlangan Loyihalar"
+  },
+  "skillCategories": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "database": "Ma'lumotlar bazasi"
+  },
+  "projects": {
+    "blog": {
+      "title": "Shaxsiy Blog",
+      "description": "React va TypeScript yordamida yaratilgan statik blog platformasi. Xususiyatlar jumlasiga markdown qo'llab-quvvatlash va izoh tizimi kiradi."
+    },
+    "sample": {
+      "title": "Namuna Loyiha",
+      "description": "React va TypeScript yordamida yaratilgan statik blog platformasi. Xususiyatlar jumlasiga markdown qo'llab-quvvatlash va izoh tizimi kiradi."
+    }
+  },
+  "links": {
+    "github": "GitHub Repozitoriyasi",
+    "demo": "Jonli Namoyish"
+  }
+}

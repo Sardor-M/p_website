@@ -11,6 +11,7 @@ import { formatDate } from '@/utils/fomatDate';
 import { Loading } from '@/components/Loading';
 import { Error } from '@/components/Error';
 import { sanitizeObject } from '@/utils/security';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -147,33 +148,6 @@ const GroupCount = styled.span`s
   border-radius: 8px;
 `;
 
-// const GROUPS: Group[] = [
-//   {
-//     name: "All",
-//     count: sample_fake_blogs.length,
-//     icon: "📑",
-//   },
-//   {
-//     name: "Frontend",
-//     count: sample_fake_blogs.filter((post) => post.topics.includes("Frontend"))
-//       .length,
-//     icon: "🎨",
-//   },
-//   {
-//     name: "Backend",
-//     count: sample_fake_blogs.filter((post) => post.topics.includes("Backend"))
-//       .length,
-//     icon: "⚙️",
-//   },
-//   {
-//     name: "Web Development",
-//     count: sample_fake_blogs.filter((post) =>
-//       post.topics.includes("Web Development")
-//     ).length,
-//     icon: "🌐",
-//   },
-// ];
-
 const getIconForTag = (tag: string): string => {
   const iconMap: Record<string, string> = {
     Frontend: '🎨',
@@ -194,6 +168,7 @@ export default function Blog() {
   );
   const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } = useFilter();
   const [groups, setGroups] = useState<Group[]>([]);
+  const {t} = useTranslation('blog');
 
   // we get the items from the response
   const blogs = data?.items || [];
@@ -265,7 +240,7 @@ export default function Blog() {
   return (
     <Container>
       <Section>
-        <SectionTitle>Blog Posts</SectionTitle>
+        <SectionTitle>{t('blog.title')}</SectionTitle>
         <GroupsContainer>
           {groups.map((group) => (
             <GroupItem
@@ -316,3 +291,31 @@ export default function Blog() {
     </Container>
   );
 }
+
+
+// const GROUPS: Group[] = [
+//   {
+//     name: "All",
+//     count: sample_fake_blogs.length,
+//     icon: "📑",
+//   },
+//   {
+//     name: "Frontend",
+//     count: sample_fake_blogs.filter((post) => post.topics.includes("Frontend"))
+//       .length,
+//     icon: "🎨",
+//   },
+//   {
+//     name: "Backend",
+//     count: sample_fake_blogs.filter((post) => post.topics.includes("Backend"))
+//       .length,
+//     icon: "⚙️",
+//   },
+//   {
+//     name: "Web Development",
+//     count: sample_fake_blogs.filter((post) =>
+//       post.topics.includes("Web Development")
+//     ).length,
+//     icon: "🌐",
+//   },
+// ];

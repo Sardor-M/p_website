@@ -4,6 +4,7 @@ import { ExternalLink, Code, Server } from 'lucide-react';
 import StyledCard from '@/components/Card/StyledCard';
 import { GithubFilled } from '@ant-design/icons';
 import { getThemeStyles } from '@/themes';
+import { useTranslation } from 'react-i18next';
 
 type SkillSection = {
   id: string;
@@ -99,17 +100,18 @@ const Tag = styled.span`
 
 const Portfolio: React.FC = () => {
   const generateId = () => `_${Math.random().toString(36).substring(2, 11)}`;
+  const {t} = useTranslation('portfolio');
 
   const skillSections: SkillSection[] = [
     {
       id: generateId(),
-      title: 'Frontend ',
+      title: t('skillCategories.frontend'),
       icon: <Code size={20} />,
       skills: ['React.js', 'Next.js', 'TypeScript', 'Styled Components', 'Tailwind CSS'],
     },
     {
       id: generateId(),
-      title: 'Backend',
+      title: t('skillCategories.backend'),
       icon: <Server size={20} />,
       skills: ['Node.js', 'Express.js', 'REST APIs', 'MySql'],
     },
@@ -123,17 +125,15 @@ const Portfolio: React.FC = () => {
 
   const projects = [
     {
-      title: 'Personal Blog',
-      description:
-        'A static blog platform built with React and Typescript. Features include, markdown support, and comment system.',
-      tags: ['React', 'Node.js', 'PostgreSQL', 'TypeScript'],
-      github: 'https://github.com/',
-      demo: 'https://demo.com',
+      title: t('projects.blog.title'),
+      description: t('projects.blog.description'),
+      tags: ['React', 'TypeScript', 'Node js', 'Tailwind CSS'],
+      github: 'http://github.com',
+      demo: 'http://demo.com',
     },
     {
-      title: 'Sample Project',
-      description:
-        'A static blog platform built with React and Typescript. Features include, markdown support, and comment system.',
+      title: t('projects.sample.title'),
+      description: t('projects.sample.description'),
       tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS'],
       github: 'https://github.com/',
       demo: 'https://demo.com',
@@ -143,7 +143,7 @@ const Portfolio: React.FC = () => {
   return (
     <PortfolioContainer>
       <Section>
-        <SectionTitle>Technical Skills</SectionTitle>
+        <SectionTitle>{t('sections.skills')}</SectionTitle>
         <SkillsGrid>
           {skillSections.map((section) => (
             <StyledCard key={section.id} variant="light" padding="md">
@@ -164,7 +164,7 @@ const Portfolio: React.FC = () => {
       </Section>
 
       <Section>
-        <SectionTitle>Featured Projects</SectionTitle>
+        <SectionTitle>{t('sections.projects')}</SectionTitle>
         <ProjectsGrid>
           {projects.map((project) => (
             <StyledCard key={project.title} variant="light" padding="md" hoverable>

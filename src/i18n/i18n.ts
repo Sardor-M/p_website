@@ -3,8 +3,12 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { useEffect } from "react";
 import { initReactI18next, useTranslation } from "react-i18next";
 
-import enTranslations from "@/components/Common/langs/en.json";
-import uzTranslations from "@/components/Common/langs/uz.json";
+import enNavbar from "@/components/Common/langs/en.json";
+import uzNavbar from "@/components/Common/langs/uz.json";
+import enBlog from "@/pages/Blog/langs/en.json";
+import uzBlog from "@/pages/Blog/langs/uz.json";
+import enPortfolio from "@/pages/Portfolio/langs/en.json";
+import uzPortfolio from "@/pages/Portfolio/langs/uz.json";
 
 /**
  * {@link https://www.i18next.com/overview/configuration-options}
@@ -16,16 +20,22 @@ i18n
   .init({
     resources: {
       en: {
-        translation: enTranslations
+        navbar: enNavbar,
+        blog: enBlog,
+        portfolio: enPortfolio,
       },
       uz: {
-        translation: uzTranslations
+        navbar: uzNavbar,
+        blog: uzBlog,
+        portfolio: uzPortfolio,
       }
     },
     fallbackLng: "en",
     interpolation: {
       escapeValue: false 
     },
+    ns: ['navbar', 'blog', 'portfolio'],
+    defaultNS: 'navbar',
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage']
