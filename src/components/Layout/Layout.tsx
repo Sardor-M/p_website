@@ -1,12 +1,13 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Navbar from './Navbar';
-import StyledCard from './Card/StyledCard';
+import Navbar from '../Common/Navbar';
+import StyledCard from '../Card/StyledCard';
 import { GithubFilled, LinkedinFilled, MailFilled } from '@ant-design/icons';
 import { getHoverStyles, getThemeStyles } from '@/themes';
 import { useFilter } from '@/context/FilterContext';
 import { useLocation } from 'react-router-dom';
 import { CONFIG } from '@/config/site.config';
+import { media } from '@/themes/themes/media';
 
 type LayoutProps = {
   children: ReactNode;
@@ -32,21 +33,47 @@ const MaxWidthContainer = styled.div`
   margin: 0 auto;
   padding: 0 1rem;
   position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  ${media.mobile} {
+    padding: 5px;
+  }
 `;
 
 const LayoutContainer = styled.div`
   ${({ theme }) => getThemeStyles(theme, ['background', 'text'])};
   min-height: 100vh;
+  max-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
+
+  ${media.mobile} {
+    max-height: none;
+    min-height: 100vh;
+    height: auto;
+    overflow: auto;
+    padding-bottom: 0;
+  }
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   flex: 1;
   position: relative;
+  padding-top: 60px;
+  height: calc(100vh - 60px);
+
+  ${media.mobile} {
+    flex-direction: column;
+    min-height: 100vh;
+    margin-bottom: 0;
+    height: auto;
+  }
   // height: calc(100vh - 60px);
   // margin-top: 60px;
 `;
@@ -60,11 +87,22 @@ const LeftSidebar = styled.aside`
   bottom: 0;
   overflow-y: auto;
   // border-right: 0.2px solid rgb(211, 211, 211);
+
+  ${media.mobile} {
+    position: relative;
+    width: 100%;
+    top: 0;
+    padding: 2rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  ${media.tablet} {
+    width: 250px;
+  }
 `;
 
 const MainContent = styled.main`
   position: fixed;
-  top: 60px;
+  top: 80px;
   left: 310px;
   right: 360px;
   bottom: 0;
@@ -77,6 +115,25 @@ const MainContent = styled.main`
     display: none;
   }
   scrollbar-width: none;
+
+  ${media.mobile} {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 0;
+    padding-top: 30px;
+    margin-bottom: 0;
+    min-height: 50vh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  ${media.tablet} {
+    left: 260px;
+    right: 260px;
+  }
 `;
 
 const RightSidebar = styled.aside`
@@ -88,12 +145,33 @@ const RightSidebar = styled.aside`
   bottom: 0;
   overflow-y: auto;
   // border-left: 0.2px solid rgb(211, 211, 211);
+
+  ${media.mobile} {
+    position: relative;
+    width: 100%;
+    top: 0;
+    padding: 2rem 1.5rem;
+    margin-bottom: 0;
+    // overflow: visible;
+  }
+  ${media.tablet} {
+    width: 270px;
+  }
 `;
 
 // tag components (left)
 const TagSection = styled.section`
   margin: 1.5rem auto;
   padding-left: 70px;
+  height: 100%;
+  padding-right: 1rem;
+  cursor: pointer;
+
+
+  ${media.mobile} {
+    padding-left: 0;
+    margin: 0.5rem auto;
+  }
 `;
 
 const TagTitle = styled.h2`
@@ -109,15 +187,20 @@ const TagList = styled.ul`
 `;
 
 const TagItem = styled.li`
-  padding: 0.7rem 0.6rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 14px;
   font-size: 0.8rem;
-  gap: 0.2rem;
-  margin: 0;
+  gap: 0.5rem;
+  margin: 0.6rem 0;
   transition: all 0.2s ease;
 
   &:hover {
     ${({ theme }) => getHoverStyles(theme)};
+  }
+
+  &.active {
+    ${({ theme }) => getHoverStyles(theme)};
+    font-weight: bold;
   }
 `;
 
@@ -125,6 +208,11 @@ const ProfileSection = styled.section`
   text-align: center;
   margin-top: 30px;
   max-width: 280px;
+
+  ${media.mobile} {
+    max-width: 100%;
+    margin-top: 15px;
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -132,7 +220,7 @@ const ProfileImage = styled.img`
   height: 200px;
   border-radius: 5%;
   object-fit: cover;
-  padding: 4 4rem;
+  padding: 0;
 `;
 
 const ProfileName = styled.h2`
@@ -185,7 +273,7 @@ const ContactList = styled.ul`
 `;
 
 const ContactItem = styled.li`
-  font-weight: 14px;
+  font-size: 14px;
   padding: 0.75rem;
   transition: all 0.2s;
   border-radius: 10px;
@@ -205,14 +293,13 @@ const ContactItem = styled.li`
 `;
 
 const ContactItemLink = styled.a`
-  cursor: inherit;
   text-decoration: none;
   color: inherit;
 `;
 
 const dropDown = keyframes`
     0% {
-        opacaity: 0;
+        opacity: 0;
         transform: translateY(-20px);
     }
         100% {
@@ -229,11 +316,20 @@ const AnimatedSection = styled.div<{ delay?: number }>`
 
 export default function Layout({ children, onToggleTheme, theme }: LayoutProps) {
   const { selectedTag, setSelectedTag, setSelectedGroup } = useFilter();
-
   const location = useLocation();
   const isBlogDetailsPage = location.pathname.match(
     /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
   );
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleSize);
+    return () => window.removeEventListener('resize', handleSize);
+  }, []);
 
   const handleTagsClick = (tag: string) => {
     setSelectedTag(tag === selectedTag ? '' : tag);
@@ -246,7 +342,7 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
       <MaxWidthContainer>
         <ContentWrapper>
           {/* chap tomon sibebar (tags filter uchun) */}
-          {!isBlogDetailsPage && (
+          {!isBlogDetailsPage && (!isMobile || (isMobile && selectedTag === '')) && (
             <LeftSidebar>
               <AnimatedSection delay={0.3}>
                 <TagSection>
@@ -274,15 +370,12 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
           </MainContent>
 
           {/* o'ng tomon contenti shu yerda */}
-          {!isBlogDetailsPage && (
+          {!isBlogDetailsPage && (!isMobile || (isMobile && location.pathname === '/')) && (
             <RightSidebar>
               <AnimatedSection delay={0.3}>
                 <ProfileSection>
                   <StyledCard key={'id'} variant="light" padding="sm" size="sm">
-                    <ProfileImage
-                      src={CONFIG.profile.imageUrl}
-                      alt="Profile"
-                    />
+                    <ProfileImage src={CONFIG.profile.imageUrl} alt="Profile" />
                     <ProfileName>{CONFIG.profile.username}</ProfileName>
                     <ProfileBio>{CONFIG.profile.fullName}</ProfileBio>
                     {/* {// tags  */}

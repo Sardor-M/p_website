@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import GlobalStyle from "./themes/themes/GlobalStyle";
+import "./i18n/i18n";
 
 const Root = () => {
   return (
     <>
-      <GlobalStyle />
       <App />
     </>
   );

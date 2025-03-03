@@ -1,3 +1,4 @@
+import { CONFIG } from '@/config/site.config';
 import { getThemeStyles } from '@/themes';
 import { formatDate } from '@/utils/fomatDate';
 import { CheckCircleFilled, LinkedinFilled, TwitterCircleFilled } from '@ant-design/icons';
@@ -191,7 +192,7 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
         <AuthorImage
           src={authorImg}
           alt={post.author.name || 'Author'}
-          onError={() => setAuthorImg('https://avatars.githubusercontent.com/u/65296404?v=4')}
+          onError={() => setAuthorImg(CONFIG.profile.imageUrl)}
         />
         <AuthorInfo>
           <AuthorName>{post.author.name}</AuthorName>

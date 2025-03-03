@@ -1,0 +1,12 @@
+ {
+    "navbar": {
+      "logo": "sardor-m blog",
+      "blogs": "Bloglar",
+      "portfolio": "Portfolio",
+      "languages": {
+        "english": "en",
+        "uzbek": "uz"
+      }
+    }
+  }
+
