@@ -5,8 +5,10 @@ import { initReactI18next, useTranslation } from "react-i18next";
 
 import enNavbar from "@/components/Common/langs/en.json";
 import uzNavbar from "@/components/Common/langs/uz.json";
-import enBlog from "@/pages/Blog/langs/en.json";
-import uzBlog from "@/pages/Blog/langs/uz.json";
+import enBlog from "@/pages/Blog/langs/en-blog.json";
+import uzBlog from "@/pages/Blog/langs/uz-blog.json";
+import enBlogDetails from "@/pages/Blog/langs/en-details.json";
+import uzBlogDetails from "@/pages/Blog/langs/uz-details.json";
 import enPortfolio from "@/pages/Portfolio/langs/en.json";
 import uzPortfolio from "@/pages/Portfolio/langs/uz.json";
 
@@ -22,11 +24,13 @@ i18n
       en: {
         navbar: enNavbar,
         blog: enBlog,
+        blogDetails: enBlogDetails,
         portfolio: enPortfolio,
       },
       uz: {
         navbar: uzNavbar,
         blog: uzBlog,
+        blogDetails: uzBlogDetails,
         portfolio: uzPortfolio,
       }
     },

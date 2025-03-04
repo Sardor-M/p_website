@@ -8,6 +8,7 @@ import { getThemeStyles } from '@/themes';
 import UtterancesComment from '../../components/Comment/UtteranceComment';
 import { sanitizeObject, sanitizeString } from '@/utils/security';
 import { CONFIG } from '@/config/site.config';
+import { useTranslation } from 'react-i18next';
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -212,42 +213,108 @@ export default function BlogDetails() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const theme = useTheme();
+  const { t } = useTranslation('blogDetails');
+
+  const generateStorageKey = (blogData: BlogPost) => {
+    if(blogData && blogData.id){
+      return `blog-post-${blogData.id}`;
+    }
+
+    // fallback to use the url id 
+    return `blog-post-${id}`;
+  }
 
   useEffect(() => {
     const stateData = location.state?.blogData;
-    if(stateData){
+    if (stateData) {
       setPost(stateData || null);
-      
+
       try {
-        sessionStorage.setItem(`blog-post-${id}`, JSON.stringify(stateData));
-      } catch(error) {
-        console.error("Failed to store the blog data: ", error);
+        const storageKey = generateStorageKey(stateData);
+        sessionStorage.setItem(storageKey, JSON.stringify({
+          ...stateData,
+          _timestamp: new Date().getTime(),
+          _routeId: id,
+        }));
+      } catch (error) {
+        console.error('Failed to store the blog data: ', error);
       }
     } else {
       // agar stateni set qilamasakan, sessiondan data olishga harakat qilamiz
-      const storedData = sessionStorage.getItem(`blog-post-${id}`);
-      if(storedData){
-         try {
+      const storedData = id ? (sessionStorage.getItem(`blog-post-${id}`) || findRelevantBlogInSession(id)) : null;
+      console.log('Stored data: ', storedData);
+  
+      if (storedData) {
+        try {
           const parsedData = JSON.parse(storedData);
           setPost(parsedData);
-         } catch(error){
-          console.error("failed to parse the stored blog data: ", error);
-         }
+        } catch (error) {
+          console.error('failed to parse the stored blog data: ', error);
+        }
       } else {
         // agar haliyam data umuman bo'lmasa, biz fetch qilishimiz keragi yo'q
         console.log('No data available for this blog post');
       }
     }
-    
   }, [id, location.state]);
 
-  const sanitizedPost = post ? sanitizeObject(post) : null;
-  
-  if(!sanitizedPost){
-    console.log("Sanitized object is failed to purify the object values. ");
-  }  
+  const findRelevantBlogInSession = (searchId: string) => {
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if(key?.startsWith('blog-post-')){
+        try {
+          const storedData =sessionStorage.getItem(key);
+          if(!storedData) continue;
+          const data = JSON.parse(storedData);
+          if(data._routeId === searchId || (data.title && searchId.includes(data.title.toLowerCase(). replace(/\s+/g, '-')))){
+            return sessionStorage.getItem(key);
+          }
+        } catch(error){
+          console.error('Failed to parse the stored data: ', error);
+        }
+      }
+    }
+    return null;
+  }
+
+  const sanitizedPost = post ? (sanitizeObject(post) || post) : null; 
+
+  if (!sanitizedPost) {
+    console.log('Sanitized object is failed to purify the object values. ');
+    return <div>{t('ui.loading')}</div>;
+  }
 
   if (!post) return <div>Loading blog post... </div>;
+
+  const getSimplifiedPostId = () => {
+
+    if(post && (post as any)._routeId){
+      const match = (post as any)._routeId.match(/fb(\d+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }    
+    
+    if (!id) return '1';
+  
+    if (/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(id)) {
+      const match = id.match(/fb(\d+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    const pathMatch = id.match(/post-(\d+)/);
+    if(pathMatch && pathMatch[1]){
+      return pathMatch[1];
+    }
+
+    const numericMatch = id.match(/(\d+)/);
+    return numericMatch ? numericMatch[1] : '1';
+  };
+
+  const simplifiedPostId = getSimplifiedPostId();
+  console.log('Using post ID for translations:', simplifiedPostId);
 
   const scrollToTop = () => {
     console.log('Scrolling to top...');
@@ -279,18 +346,32 @@ export default function BlogDetails() {
     }
   };
 
+  const getTitle = () => {
+    const translatedTitle = t(`blog.post${simplifiedPostId}.title`);
+    return translatedTitle !== `blog.post${simplifiedPostId}.title`
+      ? translatedTitle
+      : sanitizeString(post.title);
+  };
+
+  const getSubtitle = () => {
+    const translatedSubTitle = t(`blog.post${simplifiedPostId}.subtitle`);
+    return translatedSubTitle !== `blog.post${simplifiedPostId}.subtitle`
+      ? translatedSubTitle
+      : sanitizeString(post.subtitle);
+  };
+
   return (
     <BlogContainer>
       <StyledCard variant="light" padding="lg">
         <ArticleHeader>
-          <Title>{sanitizeString(post.title)}</Title>
-          <Subtitle>{sanitizeString(post.subtitle)}</Subtitle>
+          <Title>{getTitle()}</Title>
+          <Subtitle>{getSubtitle()}</Subtitle>
           {sanitizedPost && <AuthorSectionWithShare post={sanitizedPost} />}
         </ArticleHeader>
 
         <Content>
           {sanitizedPost?.content.map((contentItem, index) => (
-            <ContentBlock key={index} item={contentItem} />
+            <ContentBlock key={index} item={contentItem} postId={simplifiedPostId} index={index} />
           ))}
         </Content>
         <TopicList>
@@ -299,13 +380,13 @@ export default function BlogDetails() {
           ))}
         </TopicList>
         <NavigationContainer>
-          <NavButton to="/">prev</NavButton>
+          <NavButton to="/">{t(`ui.prev`)}</NavButton>
           <BackToTopButton onClick={scrollToTop} type="button" aria-label="Scroll to top">
-            top
+            {t(`ui.top`)}
           </BackToTopButton>
         </NavigationContainer>
         <CommentsSection>
-          <CommentsTitle>Comments</CommentsTitle>
+          <CommentsTitle>{t(`ui.comments`)}</CommentsTitle>
           <UtterancesComment
             repo={CONFIG.utterances.config.repo}
             issueTerm={CONFIG.utterances.config['issue-term']}
@@ -317,12 +398,49 @@ export default function BlogDetails() {
   );
 }
 
-const ContentBlock = ({ item }: { item: BlogContent }) => {
+const ContentBlock = ({
+  item,
+  postId,
+  index,
+}: {
+  item: BlogContent;
+  postId: string | null;
+  index: number;
+}) => {
+  const { t } = useTranslation('blogDetails');
+
+  // const determineHeadingLevel = (level: number) => {
+  // }
+
+  const getTranslatedText = (text: string, contentType: string) => {
+    if (text && text.startsWith('blog.') && text.includes('.')) {
+      const directTranslation = t(text);
+      if (directTranslation !== text) {
+        return directTranslation;
+      }
+    }
+
+    const sectionNumber = index + 1;
+    const sectionPath = `blog.post${postId}.content.section${sectionNumber}`;
+
+    const translatedContent = t(`${sectionPath}.${contentType}`);
+    if (translatedContent !== `${sectionPath}.${contentType}`) {
+      return translatedContent;
+    }
+
+    // if not found, we return the original value
+    return sanitizeString(text || ' ');
+  };
+
   switch (item.type) {
     case 'heading':
-      return React.createElement(`h${item.level || 2}`, null, sanitizeString(item.text));
+      return React.createElement(
+        `h${item.level || 2}`,
+        null,
+        getTranslatedText(item.text, 'heading')
+      );
     case 'paragraph':
-      return <p>{sanitizeString(item.text)}</p>;
+      return <p>{getTranslatedText(item.text, 'paragraph')}</p>;
     case 'code':
       return (
         <pre>
@@ -330,24 +448,24 @@ const ContentBlock = ({ item }: { item: BlogContent }) => {
         </pre>
       );
     case 'blackquote':
-      return <blockquote>{sanitizeString(item.text)}</blockquote>;
+      return <blockquote>{getTranslatedText(item.text, 'quote')}</blockquote>;
     case 'list':
       return (
         <ul>
-          {item.items?.map((listItem: string, index: number) => (
-            <li key={index}>{sanitizeString(listItem)}</li>
+          {item.items?.map((listItem: string, itemIndex: number) => (
+            <li key={itemIndex}>{sanitizeString(listItem)}</li>
           ))}
         </ul>
       );
     case 'image':
       return (
         <img
-          src={sanitizeString(item.url ?? '')}
-          alt={sanitizeString(item.alt ?? '')}
+          src={item.url || 'image-url'}
+          alt={sanitizeString(item.alt || '')}
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       );
     default:
-      return <p>{sanitizeString(item.text)}</p>;
+      return <p>{getTranslatedText(item.text, 'paragraph')}</p>;
   }
 };

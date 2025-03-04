@@ -1,10 +1,11 @@
 export interface BlogContent {
- type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
+  type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
   text: string;
   level?: number;
   items?: string[];
   url?: string;
   alt?: string;
+  id?: string;
 }
 
 export interface BlogAuthor {
