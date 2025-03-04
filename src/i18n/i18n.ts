@@ -1,16 +1,17 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { useEffect } from "react";
-import { initReactI18next, useTranslation } from "react-i18next";
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { useEffect } from 'react';
+import { initReactI18next, useTranslation } from 'react-i18next';
 
-import enNavbar from "@/components/Common/langs/en.json";
-import uzNavbar from "@/components/Common/langs/uz.json";
-import enBlog from "@/pages/Blog/langs/en-blog.json";
-import uzBlog from "@/pages/Blog/langs/uz-blog.json";
-import enBlogDetails from "@/pages/Blog/langs/en-details.json";
-import uzBlogDetails from "@/pages/Blog/langs/uz-details.json";
-import enPortfolio from "@/pages/Portfolio/langs/en.json";
-import uzPortfolio from "@/pages/Portfolio/langs/uz.json";
+import enNavbar from '@/components/Common/langs/en.json';
+import uzNavbar from '@/components/Common/langs/uz.json';
+import enBlog from '@/pages/Blog/langs/en-blog.json';
+import uzBlog from '@/pages/Blog/langs/uz-blog.json';
+import enBlogDetails from '@/pages/BlogDetails/langs/en-details.json';
+import uzBlogDetails from '@/pages/BlogDetails/langs/uz-details.json';
+
+import enPortfolio from '@/pages/Portfolio/langs/en.json';
+import uzPortfolio from '@/pages/Portfolio/langs/uz.json';
 
 /**
  * {@link https://www.i18next.com/overview/configuration-options}
@@ -32,26 +33,26 @@ i18n
         blog: uzBlog,
         blogDetails: uzBlogDetails,
         portfolio: uzPortfolio,
-      }
+      },
     },
-    fallbackLng: "en",
+    fallbackLng: 'en',
     interpolation: {
-      escapeValue: false 
+      escapeValue: false,
     },
     ns: ['navbar', 'blog', 'portfolio'],
     defaultNS: 'navbar',
     detection: {
       order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
-    }
+      caches: ['localStorage'],
+    },
   });
 
 export default () => {
   const { i18n: i18nInstance } = useTranslation();
 
   useEffect(() => {
-    if (!["uz", "en"].includes(i18nInstance.language)) {
-      i18nInstance.changeLanguage("en");
+    if (!['uz', 'en'].includes(i18nInstance.language)) {
+      i18nInstance.changeLanguage('en');
     }
   }, []);
 };
