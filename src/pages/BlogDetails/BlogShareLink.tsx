@@ -67,6 +67,8 @@ const ShareButtons = styled.div`
 `;
 
 const ShareButton = styled.button`
+  font-family: Arial, Cantarell, 'Helvetica Neue', sans-serif;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,6 +110,7 @@ const DropdownMenu = styled.div`
 `;
 
 const DropdownItem = styled.button`
+  font-family: Arial, Cantarell, 'Helvetica Neue', sans-serif;
   display: flex;
   align-items: center;
   gap: 0.75rem;

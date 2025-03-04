@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
-import AuthorSectionWithShare from '../Blog/BlogShareLink';
+import AuthorSectionWithShare from "@/pages/BlogDetails/BlogShareLink";
 import { BlogPost } from '@/types/blog';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getThemeStyles } from '@/themes';
@@ -9,7 +9,7 @@ import UtterancesComment from '@/components/Comment/UtteranceComment';
 import { sanitizeObject, sanitizeString } from '@/utils/security';
 import { CONFIG } from '@/config/site.config';
 import { useTranslation } from 'react-i18next';
-import ContentBlock from '../Blog/ContentBlock';
+import ContentBlock from './ContentBlock';
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -322,7 +322,6 @@ export default function BlogDetails() {
   };
 
   const simplifiedPostId = getSimplifiedPostId();
-  console.log('Using post ID for translations:', simplifiedPostId);
 
   const scrollToTop = () => {
     console.log('Scrolling to top...');
