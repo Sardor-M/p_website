@@ -8,11 +8,42 @@ export interface BlogContent {
   id?: string;
 }
 
+export interface FirebaseBlogContent {
+  html: string;
+  blocks?: any[];
+  entityMap?: Record<string, any>;
+}
+
 export interface BlogAuthor {
   name: string;
   image: string;
   bio: string;
 }
+
+export type Post = {
+  id: string;
+  title: string;
+  date: string;
+  topics: string[];
+  content: BlogContent[] | FirebaseBlogContent;
+  subtitle?: string;
+  _routeId?: string;
+  _timestamp?: number;
+  author: {
+    name: string;
+    image: string;
+    bio?: string;
+  };
+  readTime: string;
+}
+
+export type DisplayBlogPost = {
+  id: string;
+  title: string;
+  date: string;
+  topics: string[];
+  content: BlogContent[] | FirebaseBlogContent;
+};
 
 export interface BlogPost {
   id: number;
@@ -22,10 +53,11 @@ export interface BlogPost {
   author: BlogAuthor;
   readTime: string;
   topics: string[];
-  content: BlogContent[];
+  content: BlogContent[] | FirebaseBlogContent;
   createdAt: string;
   updatedAt: string;
   description?: string;
+  tags?: string[]
 }
 
 export interface Group {
@@ -40,7 +72,7 @@ export type FilterType = {
 };
 
 export type BlogResponse = {
-  items: BlogPost[];
+  data: BlogPost[];
   meta: {
     total: number;
     page: number;

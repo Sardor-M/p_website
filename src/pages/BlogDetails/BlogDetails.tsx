@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
-import AuthorSectionWithShare from "@/pages/BlogDetails/BlogShareLink";
-import { BlogPost } from '@/types/blog';
+import AuthorSectionWithShare from '@/pages/BlogDetails/BlogShareLink';
+import { BlogContent, FirebaseBlogContent, Post } from '@/types/blog';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getThemeStyles } from '@/themes';
 import UtterancesComment from '@/components/Comment/UtteranceComment';
@@ -10,6 +10,7 @@ import { sanitizeObject, sanitizeString } from '@/utils/security';
 import { CONFIG } from '@/config/site.config';
 import { useTranslation } from 'react-i18next';
 import ContentBlock from './ContentBlock';
+import { Loading } from '@/components/Loading';
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -128,8 +129,6 @@ const Content = styled.div`
 
 const TopicList = styled.div`
   padding-top: 7px;
-  // border-top: 0.2px solid rgb(211, 211, 211);
-  // border-bottom: 0.2px solid rgb(211, 211, 211);
   display: flex;
   gap: 0.5rem;
   margin: 1rem 0;
@@ -147,7 +146,6 @@ const StyledTag = styled.span`
 
 const CommentsSection = styled.div`
   margin-top: 2rem;
-  // padding-top: 2rem;
   border-top: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#f0f0f0')};
 `;
 
@@ -210,23 +208,22 @@ const BackToTopButton = styled.button`
 `;
 
 export default function BlogDetails() {
-  const [post, setPost] = useState<BlogPost | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const theme = useTheme();
   const { t } = useTranslation('blogDetails');
 
-  const generateStorageKey = (blogData: BlogPost) => {
+  const generateStorageKey = (blogData: Post) => {
     if (blogData && blogData.id) {
       return `blog-post-${blogData.id}`;
     }
-
-    // fallback to use the url id
+    // fallback to id
     return `blog-post-${id}`;
   };
 
   useEffect(() => {
-    const stateData = location.state?.blogData;
+    const stateData = location.state?.blogData as Post | undefined;
     if (stateData) {
       setPost(stateData || null);
 
@@ -244,21 +241,20 @@ export default function BlogDetails() {
         console.error('Failed to store the blog data: ', error);
       }
     } else {
-      // agar stateni set qilamasakan, sessiondan data olishga harakat qilamiz
+      // sessiondann datani olish
       const storedData = id
         ? sessionStorage.getItem(`blog-post-${id}`) || findRelevantBlogInSession(id)
         : null;
-      console.log('Stored data: ', storedData);
+      // console.log('Stored data: ', storedData);
 
       if (storedData) {
         try {
-          const parsedData = JSON.parse(storedData);
+          const parsedData = JSON.parse(storedData) as Post;
           setPost(parsedData);
         } catch (error) {
           console.error('failed to parse the stored blog data: ', error);
         }
       } else {
-        // agar haliyam data umuman bo'lmasa, biz fetch qilishimiz keragi yo'q
         console.log('No data available for this blog post');
       }
     }
@@ -286,18 +282,31 @@ export default function BlogDetails() {
     return null;
   };
 
-  const sanitizedPost = post ? sanitizeObject(post) || post : null;
+  // post datani sanitizatsiya qiladi
+  const getSanitizedPost = (): Post | null => {
+    if (!post) return null;
+
+    try {
+      const sanitized = sanitizeObject(post) as Post | null;
+      return sanitized || post;
+    } catch (error) {
+      console.error('Failed to sanitize post:', error);
+      return post;
+    }
+  };
+
+  const sanitizedPost = getSanitizedPost();
 
   if (!sanitizedPost) {
     console.log('Sanitized object is failed to purify the object values. ');
     return <div>{t('ui.loading')}</div>;
   }
 
-  if (!post) return <div>Loading blog post... </div>;
+  if (!post) return <Loading />;
 
   const getSimplifiedPostId = () => {
-    if (post && (post as any)._routeId) {
-      const match = (post as any)._routeId.match(/fb(\d+)/);
+    if (post && post._routeId) {
+      const match = post._routeId.match(/fb(\d+)/);
       if (match && match[1]) {
         return match[1];
       }
@@ -324,7 +333,7 @@ export default function BlogDetails() {
   const simplifiedPostId = getSimplifiedPostId();
 
   const scrollToTop = () => {
-    console.log('Scrolling to top...');
+    //console.log('Scrolling to top...');
 
     // we first search the mainContent element
     const mainContent = document.querySelector('main');
@@ -364,7 +373,36 @@ export default function BlogDetails() {
     const translatedSubTitle = t(`blog.post${simplifiedPostId}.subtitle`);
     return translatedSubTitle !== `blog.post${simplifiedPostId}.subtitle`
       ? translatedSubTitle
-      : sanitizeString(post.subtitle);
+      : sanitizeString(post.subtitle || '');
+  };
+
+  function isFirebaseBlogContent(
+    content: BlogContent[] | FirebaseBlogContent
+  ): content is FirebaseBlogContent {
+    return !Array.isArray(content) && content && typeof content === 'object' && 'html' in content;
+  }
+
+  // AuthorSectionWithShare uchun post obyektini tayyorlash
+  const createPostForAuthorSection = (): Post => {
+    return {
+      ...sanitizedPost,
+      author: sanitizedPost.author || { name: 'Anonymous' },
+      readTime: sanitizedPost.readTime || '5 min',
+    } as Post;
+  };
+
+  const renderContent = () => {
+    if (!sanitizedPost.content) return <div>No content available</div>;
+
+    if (Array.isArray(sanitizedPost.content)) {
+      return sanitizedPost.content.map((contentItem: BlogContent, index: number) => (
+        <ContentBlock key={index} item={contentItem} postId={simplifiedPostId} index={index} />
+      ));
+    } else if (isFirebaseBlogContent(sanitizedPost.content)) {
+      return <div dangerouslySetInnerHTML={{ __html: sanitizedPost.content.html }} />;
+    }
+
+    return <div>Content format not supported</div>;
   };
 
   return (
@@ -373,18 +411,15 @@ export default function BlogDetails() {
         <ArticleHeader>
           <Title>{getTitle()}</Title>
           <Subtitle>{getSubtitle()}</Subtitle>
-          {sanitizedPost && <AuthorSectionWithShare post={sanitizedPost} />}
+          {sanitizedPost && <AuthorSectionWithShare post={createPostForAuthorSection()} />}
         </ArticleHeader>
 
-        <Content>
-          {sanitizedPost?.content.map((contentItem, index) => (
-            <ContentBlock key={index} item={contentItem} postId={simplifiedPostId} index={index} />
-          ))}
-        </Content>
+        <Content>{renderContent()}</Content>
         <TopicList>
-          {sanitizedPost?.topics.map((tag) => (
-            <StyledTag key={tag}>{sanitizeString(tag)}</StyledTag>
-          ))}
+          {sanitizedPost?.topics &&
+            sanitizedPost.topics.map((tag) => (
+              <StyledTag key={tag}>{sanitizeString(tag)}</StyledTag>
+            ))}
         </TopicList>
         <NavigationContainer>
           <NavButton to="/">{t(`ui.prev`)}</NavButton>

@@ -1,7 +1,14 @@
 import styled from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import { Link } from 'react-router-dom';
-import { BlogResponse, Group } from '@/types/blog';
+import {
+  BlogContent,
+  BlogPost,
+  BlogResponse,
+  DisplayBlogPost,
+  FirebaseBlogContent,
+  Group,
+} from '@/types/blog';
 import { themeColor } from '@/themes/color';
 import { useFilter } from '@/context/FilterContext';
 import { useFetch } from '@/hooks/useFetch/useFetch';
@@ -34,7 +41,6 @@ const Section = styled.section`
   margin-top: -30px;
   display: flex;
   flex-direction: column;
-  // gap: rem;
   width: 100%;
 `;
 
@@ -45,15 +51,10 @@ const SectionTitle = styled.h2`
   margin-bottom: 8px;
 `;
 
-// const TagContainer = styled.div`
-//   display: flex;
-//   gap: 0.5rem;
-//   flex-wrap: wrap;
-// `;
-
 const BlogContainer = styled.div`
   width: 100%;
 `;
+
 const BlogGrid = styled.div`
   display: flex;
   flex-direction: column;
@@ -136,11 +137,10 @@ const GroupIcon = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  // padding: 0.3rem;
   margin: 0;
 `;
 
-const GroupCount = styled.span`s
+const GroupCount = styled.span`
   font-size: 0.8rem;
   color: ${({ theme }) => (theme.mode === 'dark' ? themeColor.text.dark : themeColor.text.light)};
   background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2d2d2d' : '#f0f0f0')};
@@ -155,7 +155,7 @@ const getIconForTag = (tag: string): string => {
     Web_Dev: '🌐',
     React: '⚛️',
     JavaScript: '📜',
-    TypeScript: '💪',
+    TypeScript: '⚒',
     Node: '🟢',
   };
 
@@ -168,20 +168,91 @@ export default function Blog() {
   );
   const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } = useFilter();
   const [groups, setGroups] = useState<Group[]>([]);
-  const {t} = useTranslation('blog');
-
-  // we get the items from the response
-  const blogs = data?.items || [];
-  // and we sanitize the object for security reasons
-  const sanitizedBlogs = blogs.length > 0 ? sanitizeObject(blogs) : [];
-  const blogsArray = Object.values(sanitizedBlogs || {});
+  const [blogsArray, setBlogsArray] = useState<DisplayBlogPost[]>([]);
+  const { t } = useTranslation('blog');
 
   useEffect(() => {
-    if (blogs.length > 0) {
-      // flatmap orqali hamma topiclarni bitta arrayga qo'shib olamiz
-      const allTags = blogs.flatMap((post) => post.topics);
-      // objectga o'tkazib olib har bir tag uchun count jhisoblaydi
-      // shu acc orqali tagni countni hisoblaymiz
+    if (data) {
+      console.log('Initial data:', data);
+
+      // we sanitize the dat to secutiy reasons
+      const sanitizedData = sanitizeObject(data) as unknown;
+      console.log('After sanitize:', sanitizedData);
+
+      // method to extract the blogs from the data
+      const extractBlogsFromData = (data: unknown): DisplayBlogPost[] => {
+        const blogs: DisplayBlogPost[] = [];
+
+        if (Array.isArray(data)) {
+          data.forEach((item) => {
+            if (isValidBlogItem(item)) {
+              blogs.push(normalizeBlogItem(item));
+            }
+          });
+        } else if (data && typeof data === 'object' && data !== null) {
+          // we check whether if it is a direct map of blog posts
+          const objectData = data as Record<string, unknown>;
+
+          // buyerda objectData ni ichidagi har bir itemni tekshiramiz
+          Object.values(objectData).forEach((item) => {
+            if (isValidBlogItem(item)) {
+              blogs.push(normalizeBlogItem(item));
+            }
+          });
+
+          // agar blogs array bosh bolsa va objectData ichida faqatgina bir item bo'lsa
+          if (blogs.length === 0 && Object.keys(objectData).length === 1) {
+            const firstValue = Object.values(objectData)[0];
+            if (firstValue && typeof firstValue === 'object' && firstValue !== null) {
+              Object.values(firstValue as Record<string, unknown>).forEach((item) => {
+                if (isValidBlogItem(item)) {
+                  blogs.push(normalizeBlogItem(item));
+                }
+              });
+            }
+          }
+        }
+
+        return blogs;
+      };
+
+      // buyerda blog itemni tekshiramiz
+      const isValidBlogItem = (item: unknown): boolean => {
+        if (!item || typeof item !== 'object') return false;
+
+        const blogItem = item as Partial<BlogPost>;
+        return !!(
+          blogItem.id !== undefined &&
+          blogItem.title &&
+          blogItem.date &&
+          (blogItem.topics || blogItem.tags)
+        );
+      };
+
+      const normalizeBlogItem = (item: unknown): DisplayBlogPost => {
+        const blogItem = item as Partial<BlogPost>;
+        return {
+          id: String(blogItem.id),
+          title: blogItem.title || '',
+          date: blogItem.date || '',
+          topics: blogItem.topics || blogItem.tags || [],
+          content: blogItem.content || [],
+        };
+      };
+
+      const extractedBlogs = extractBlogsFromData(sanitizedData);
+
+      setBlogsArray(extractedBlogs);
+      console.log('Final blogsArray:', extractedBlogs);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (blogsArray.length > 0) {
+      // hamma topiclarni bir arrayga joylashtiramiz
+      const allTags = blogsArray.flatMap((post) => post.topics);
+
+      // occurenceni hisoblaymiz
       const tagCounts = allTags.reduce(
         (acc, tag) => {
           acc[tag] = (acc[tag] || 0) + 1;
@@ -193,27 +264,27 @@ export default function Blog() {
       const newGroups: Group[] = [
         {
           name: 'All',
-          count: blogs.length,
+          count: blogsArray.length,
           icon: '📑',
         },
         ...Object.entries(tagCounts).map(([tag, count]) => ({
           name: tag,
           count,
-          icon: getIconForTag(tag), // helper method bu
+          icon: getIconForTag(tag),
         })),
       ];
 
       setGroups(newGroups);
     }
-  }, [blogs]);
+  }, [blogsArray]);
 
+  // filter qilamiz
   const filteredPosts = blogsArray.filter((post) => {
     const matchedTag = selectedTag ? post.topics.includes(selectedTag) : true;
     const matchedGroup = selectedGroup === 'All' ? true : post.topics.includes(selectedGroup);
     return matchedTag && matchedGroup;
   });
 
-  // we handle the group selection
   const handleGroupClick = (group: string) => {
     if (group === selectedGroup) {
       setSelectedGroup('All');
@@ -221,13 +292,8 @@ export default function Blog() {
       setSelectedGroup(group);
     }
 
-    // here we reset the tag selection when changing to groups
     setSelectedTag(null);
   };
-
-  // const tagsData = Array.from(
-  //   new Set(sample_fake_blogs.flatMap((post) => post.tags))
-  // );
 
   if (loading) {
     return <Loading />;
@@ -235,6 +301,12 @@ export default function Blog() {
 
   if (error) {
     return <Error message={error.message} />;
+  }
+
+  function isFirebaseBlogContent(
+    content: BlogContent[] | FirebaseBlogContent
+  ): content is FirebaseBlogContent {
+    return !Array.isArray(content) && content && typeof content === 'object' && 'html' in content;
   }
 
   return (
@@ -253,45 +325,47 @@ export default function Blog() {
             </GroupItem>
           ))}
         </GroupsContainer>
-        {/* <TagContainer>
-          <TagFilterSystem
-            tags={tagsData}
-            selectedTag={selectedTag}
-            onTagSelect={setSelectedTag}
-          />
-        </TagContainer> */}
         <BlogContainer>
           <BlogGrid>
-            {filteredPosts.map((post) => (
-              <StyledLink key={`blog-${post.id}`} to={`/${post.id}`} state={{ blogData: post }}>
-                <BlogPostCard variant="light" padding="sm" hoverable={true}>
-                  <BlogTitle>{post.title}</BlogTitle>
-                  <BlogDate>{formatDate(post.date)}</BlogDate>
-                  <BlogDescription>{post.content[0].text}</BlogDescription>
-                  <TagList>
-                    {post.topics.map((tag, index) => (
-                      <Tag
-                        key={`${post.id}-${tag}-${index}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedTag(tag);
-                          setSelectedGroup('All');
-                        }}
-                      >
-                        {tag}
-                      </Tag>
-                    ))}
-                  </TagList>
-                </BlogPostCard>
-              </StyledLink>
-            ))}
+            {filteredPosts.length > 0 ? (
+              filteredPosts.map((post) => (
+                <StyledLink key={`blog-${post.id}`} to={`/${post.id}`} state={{ blogData: post }}>
+                  <BlogPostCard variant="light" padding="sm" hoverable={true}>
+                    <BlogTitle>{post.title}</BlogTitle>
+                    <BlogDate>{formatDate(post.date)}</BlogDate>
+                    <BlogDescription>
+                      {Array.isArray(post.content) && post.content[0]?.text
+                        ? post.content[0].text
+                        : isFirebaseBlogContent(post.content) && post.content.html
+                          ? post.content.html.substring(0, 200).replace(/<[^>]*>/g, '') + '...'
+                          : 'No content'}
+                    </BlogDescription>
+                    <TagList>
+                      {post.topics.map((tag, index) => (
+                        <Tag
+                          key={`${post.id}-${tag}-${index}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedTag(tag);
+                            setSelectedGroup('All');
+                          }}
+                        >
+                          {tag}
+                        </Tag>
+                      ))}
+                    </TagList>
+                  </BlogPostCard>
+                </StyledLink>
+              ))
+            ) : (
+              <div>No blog posts found. Try adjusting your filters.</div>
+            )}
           </BlogGrid>
         </BlogContainer>
       </Section>
     </Container>
   );
 }
-
 
 // const GROUPS: Group[] = [
 //   {
