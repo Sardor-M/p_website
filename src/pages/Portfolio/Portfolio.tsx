@@ -1,17 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
-import { ExternalLink, Code, Server } from 'lucide-react';
-import StyledCard from '@/components/Card/StyledCard';
+import { ExternalLink, LinkIcon } from 'lucide-react';
 import { GithubFilled } from '@ant-design/icons';
 import { getThemeStyles } from '@/themes';
 import { useTranslation } from 'react-i18next';
-
-type SkillSection = {
-  id: string;
-  title: string;
-  icon: React.ReactNode;
-  skills: string[];
-};
 
 const PortfolioContainer = styled.div`
   padding: 2rem;
@@ -29,58 +20,9 @@ const SectionTitle = styled.h2`
   margin-bottom: 1.5rem;
   ${({ theme }) => getThemeStyles(theme, 'text')};
 `;
-
-const SkillsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1.6rem;
-  margin-bottom: 2rem;
-  width: 100%;
-`;
-
-const ProjectsGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-`;
-
-const LinkIcon = styled.a`
-  color: ${({ theme }) => theme.textColor};
-  transition: color 0.2s;
-
-  &:hover {
-    color: ${({ theme }) => theme.primary};
-  }
-`;
-
-const IconContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-`;
-
-const SkillCategory = styled.div`
-  margin-bottom: 1rem;
-`;
-
-const SkillTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-`;
-
-const SkillList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const SkillItem = styled.li`
-  padding: 0.5rem 0;
+const SectionDescription = styled.p`
   color: ${({ theme }) => theme.textMuted};
+  margin-bottom: 1.5rem;
 `;
 
 const TagList = styled.div`
@@ -98,30 +40,64 @@ const Tag = styled.span`
   color: ${({ theme }) => theme.tagText};
 `;
 
-const Portfolio: React.FC = () => {
-  const generateId = () => `_${Math.random().toString(36).substring(2, 11)}`;
-  const {t} = useTranslation('portfolio');
+const PortfolioViewport = styled.div`
+  width: 100%;
+  position: relative;
+  height: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  border: 1px solid ${({ theme }) => theme.borderColor || '#e5e5e5'};
+`;
 
-  const skillSections: SkillSection[] = [
-    {
-      id: generateId(),
-      title: t('skillCategories.frontend'),
-      icon: <Code size={20} />,
-      skills: ['React.js', 'Next.js', 'TypeScript', 'Styled Components', 'Tailwind CSS'],
-    },
-    {
-      id: generateId(),
-      title: t('skillCategories.backend'),
-      icon: <Server size={20} />,
-      skills: ['Node.js', 'Express.js', 'REST APIs', 'MySql'],
-    },
-    // {
-    //   id: generateId(),
-    //   title: "Database",
-    //   icon: <Database size={20} />,
-    //   skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Prisma ORM'],
-    // }
-  ];
+const DesignEmbed = styled.iframe`
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+`;
+
+const ProjectCards = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+`;
+
+const ProjectCard = styled.div`
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.cardBg || '#f9f9f9'};
+  border: 1px solid ${({ theme }) => theme.borderColor || '#e5e5e5'};
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const ProjectTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  ${({ theme }) => getThemeStyles(theme, 'text')};
+`;
+
+const ProjectDescription = styled.p`
+  color: ${({ theme }) => theme.textMuted};
+  margin-bottom: 1rem;
+`;
+
+const ProjectLinks = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+export default function Portfolio() {
+  const { t } = useTranslation('portfolio');
 
   const projects = [
     {
@@ -143,60 +119,51 @@ const Portfolio: React.FC = () => {
   return (
     <PortfolioContainer>
       <Section>
-        <SectionTitle>{t('sections.skills')}</SectionTitle>
-        <SkillsGrid>
-          {skillSections.map((section) => (
-            <StyledCard key={section.id} variant="light" padding="md">
-              <SkillCategory>
-                <SkillTitle>
-                  {section.icon}
-                  {section.title}
-                </SkillTitle>
-                <SkillList>
-                  {section.skills.map((skill) => (
-                    <SkillItem key={`${section.id}_${skill}`}>{skill}</SkillItem>
-                  ))}
-                </SkillList>
-              </SkillCategory>
-            </StyledCard>
-          ))}
-        </SkillsGrid>
+        <SectionTitle>{t('sections.portfolio.title')}</SectionTitle>
+        <SectionDescription>{t('sections.portfolio.desc')}</SectionDescription>
+        <PortfolioViewport>
+          <DesignEmbed
+            className="notion-asset-object-fit"
+            // src="https://www.canva.com/design/DAGZvqsfOYw/7-7c1qdzYGkuiglz7xbh6Q/view?embed"
+            // shuyerda canvadagi portfolio pptni embed wilib qoshiyim kerak
+            src="" 
+            title="ppt"
+            frameBorder="0"
+            allowFullScreen
+            loading="lazy"
+            scrolling="auto"
+          />
+        </PortfolioViewport>
       </Section>
 
       <Section>
-        <SectionTitle>{t('sections.projects')}</SectionTitle>
-        <ProjectsGrid>
+        <SectionTitle>{t('projects.linkTitle')}</SectionTitle>
+        <ProjectCards>
           {projects.map((project) => (
-            <StyledCard key={project.title} variant="light" padding="md" hoverable>
-              <h3
-                style={{
-                  fontSize: '1.3rem',
-                  fontWeight: 600,
-                  marginBottom: '0.5rem',
-                }}
-              >
-                {project.title}
-              </h3>
-              <p style={{ color: 'inherit', marginBottom: '1rem' }}>{project.description}</p>
+            <ProjectCard key={project.title}>
+              <ProjectTitle>{project.title}</ProjectTitle>
+              <ProjectDescription>{project.description}</ProjectDescription>
               <TagList>
                 {project.tags.map((tag) => (
                   <Tag key={tag}>{tag}</Tag>
                 ))}
               </TagList>
-              <IconContainer>
-                <LinkIcon href={project.github} target="_blank" rel="noopener noreferrer">
-                  <GithubFilled size={20} />
-                </LinkIcon>
-                <LinkIcon href={project.demo} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink size={20} />
-                </LinkIcon>
-              </IconContainer>
-            </StyledCard>
+              <ProjectLinks>
+                <a href={project.github} target="_blank" rel="noopener noreferrer">
+                  <LinkIcon>
+                    <GithubFilled style={{ fontSize: '20px' }} />
+                  </LinkIcon>
+                </a>
+                <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                  <LinkIcon>
+                    <ExternalLink size={20} />
+                  </LinkIcon>
+                </a>
+              </ProjectLinks>
+            </ProjectCard>
           ))}
-        </ProjectsGrid>
+        </ProjectCards>
       </Section>
     </PortfolioContainer>
   );
-};
-
-export default Portfolio;
+}

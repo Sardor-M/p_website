@@ -1,14 +1,12 @@
 {
   "sections": {
-    "skills": "Texnik Ko'nikmalar",
-    "projects": "Tanlangan Loyihalar"
-  },
-  "skillCategories": {
-    "frontend": "Frontend",
-    "backend": "Backend",
-    "database": "Ma'lumotlar bazasi"
+    "portfolio": {
+      "title": "Portfolio Detaillarni",
+      "desc": "Ishlagan loyihalarimning ro'yhati."
+    }
   },
   "projects": {
+    "linkTitle": "Project Links",
     "blog": {
       "title": "Shaxsiy Blog",
       "description": "React va TypeScript yordamida yaratilgan statik blog platformasi. Xususiyatlar jumlasiga markdown qo'llab-quvvatlash va izoh tizimi kiradi."

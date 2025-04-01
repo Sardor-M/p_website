@@ -1,13 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { BlogContent } from '@/types/blog';
 import { sanitizeString } from '@/utils/security';
-
-interface ContentBlockProps {
-  item: BlogContent;
-  postId: string | null;
-  index: number;
-}
+import CodeBlock from './CodeBlock';
+import { ContentBlockProps } from '@/types/blog';
 
 const ContentBlock: React.FC<ContentBlockProps> = ({ item, postId, index }) => {
   const { t } = useTranslation('blogDetails');
@@ -73,31 +68,75 @@ const ContentBlock: React.FC<ContentBlockProps> = ({ item, postId, index }) => {
     return sanitizeString(text || ' ');
   };
 
+  const extractLanguageFromContent = (content: string): string => {
+    const firstLine = content.split('\n')[0].toLowerCase();
+
+    const langaugeMap = {
+      js: ['js', 'js'],
+      typescript: ['ts', 'ts'],
+      java: ['java'],
+      python: ['py', 'py'],
+      sql: ['sql'],
+      mysql: ['mysql'],
+      bash: ['bash', 'sh'],
+      cmd: ['cmd', 'batch'],
+    };
+
+    for (const [language, indicators] of Object.entries(langaugeMap)) {
+      if (indicators.some((indicator) => firstLine.includes(indicator))) {
+        return language;
+      }
+    }
+
+    return 'text';
+  };
+
   switch (item.type) {
     case 'heading':
       return React.createElement(
         `h${determineHeadingLevel(item.level)}`,
         null,
-        getTranslatedText(item.text, 'heading')
+        getTranslatedText(item.text || '', 'heading')
       );
     case 'paragraph':
-      return <p>{getTranslatedText(item.text, 'paragraph')}</p>;
+      return <p>{getTranslatedText(item.text || '', 'paragraph')}</p>;
     case 'code':
-      return (
-        <pre>
-          <code>{sanitizeString(item.text)}</code>
-        </pre>
-      );
-    case 'blackquote':
-      return <blockquote>{getTranslatedText(item.text, 'quote')}</blockquote>;
+      const sanitizedCode = sanitizeString(item.text || '');
+      const lang = item.language || extractLanguageFromContent(sanitizedCode);
+      return <CodeBlock language={lang}> {sanitizedCode}</CodeBlock>;
     case 'list':
-      return (
-        <ul>
-          {item.items?.map((listItem: string, itemIndex: number) => (
-            <li key={itemIndex}>{sanitizeString(listItem)}</li>
-          ))}
-        </ul>
-      );
+      // we handle the nested unordered list data:
+      const renderListItems = (items: any[]) => {
+        return (
+          <ul>
+            {items?.map((listItem: any, itemIndex: number) => (
+              <li key={itemIndex}>
+                {typeof listItem === 'string'
+                  ? sanitizeString(listItem)
+                  : listItem.text
+                    ? sanitizeString(listItem.text)
+                    : null}
+                {listItem.items && listItem.items.length > 0 && (
+                  <ul>
+                    {listItem.items.map((nestedItem: any, nestedIndex: number) => (
+                      <li key={`nested-${nestedIndex}`}>
+                        {typeof nestedItem === 'string'
+                          ? sanitizeString(nestedItem)
+                          : nestedItem.text
+                            ? sanitizeString(nestedItem.text)
+                            : null}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        );
+      };
+      return renderListItems(item.items ?? []);
+    case 'blackquote':
+      return <blockquote>{getTranslatedText(item.text || '',  'quote')}</blockquote>;
     case 'image':
       return (
         <img
@@ -107,7 +146,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({ item, postId, index }) => {
         />
       );
     default:
-      return <p>{getTranslatedText(item.text, 'paragraph')}</p>;
+      return <p>{getTranslatedText(item.text || "", 'paragraph')}</p>;
   }
 };
 
