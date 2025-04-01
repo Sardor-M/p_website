@@ -1,12 +1,9 @@
-export interface BlogContent {
-  type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
-  text: string;
-  level?: number;
-  items?: string[];
-  url?: string;
-  alt?: string;
-  id?: string;
-}
+export type ListItem = 
+  | string 
+  | {
+      text: string;
+      items?: ListItem[];
+    };
 
 export interface FirebaseBlogContent {
   html: string;
@@ -14,10 +11,21 @@ export interface FirebaseBlogContent {
   entityMap?: Record<string, any>;
 }
 
-export interface BlogAuthor {
+export type BlogAuthor = {
   name: string;
   image: string;
   bio: string;
+}
+
+export type ContentBlockType = {
+  type: string;
+  text?: string;
+  level?: number;
+  items?: ListItem[]; 
+  language?: string;
+  url?: string;
+  alt?: string;
+  id?: string;
 }
 
 export type Post = {
@@ -25,7 +33,7 @@ export type Post = {
   title: string;
   date: string;
   topics: string[];
-  content: BlogContent[] | FirebaseBlogContent;
+  content: ContentBlockType[] | FirebaseBlogContent;
   subtitle?: string;
   _routeId?: string;
   _timestamp?: number;
@@ -40,12 +48,13 @@ export type Post = {
 export type DisplayBlogPost = {
   id: string;
   title: string;
+  subtitle?:string;
   date: string;
   topics: string[];
-  content: BlogContent[] | FirebaseBlogContent;
+  content: ContentBlockType[] | FirebaseBlogContent;
 };
 
-export interface BlogPost {
+export type BlogPost = {
   id: number;
   title: string;
   subtitle: string;
@@ -53,14 +62,14 @@ export interface BlogPost {
   author: BlogAuthor;
   readTime: string;
   topics: string[];
-  content: BlogContent[] | FirebaseBlogContent;
+  content: ContentBlockType[] | FirebaseBlogContent;
   createdAt: string;
   updatedAt: string;
   description?: string;
   tags?: string[]
 }
 
-export interface Group {
+export type Group = {
   name: string;
   count: number;
   icon?: string;
@@ -81,20 +90,8 @@ export type BlogResponse = {
   };
 };
 
-
-// export type ContentBlockItem = {
-//   type: 'heading' | 'paragraph' | 'code' | 'blackquote' | 'list' | 'image';
-//   text: string;
-//   level?: number;
-//   items?: string[];
-//   url?: string;
-//   alt?: string;
-// }
-
-
-// export type BlogProps = {
-//   selectedTag: string | null;
-//   setSelectedTag: (tag: string | null) => void;
-//   selectedGroup: string;
-//   setSelectedGroup: (group: string) => void;
-// }
+export type ContentBlockProps = {
+  item: ContentBlockType;
+  postId: string | null;
+  index: number;
+}

@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import AuthorSectionWithShare from '@/pages/BlogDetails/BlogShareLink';
-import { BlogContent, FirebaseBlogContent, Post } from '@/types/blog';
+import { ContentBlockType, FirebaseBlogContent, Post } from '@/types/blog';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getThemeStyles } from '@/themes';
 import UtterancesComment from '@/components/Comment/UtteranceComment';
 import { sanitizeObject, sanitizeString } from '@/utils/security';
 import { CONFIG } from '@/config/site.config';
 import { useTranslation } from 'react-i18next';
-import ContentBlock from './ContentBlock';
 import { Loading } from '@/components/Loading';
+import ContentBlock from './ContentBlock';
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -82,19 +82,7 @@ const Content = styled.div`
   }
 
   pre {
-    background: ${({ theme }) => (theme.mode === 'dark' ? '#1E1E1E' : '#f8f8f8')};
-    padding: 1.25rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-size: 0.875rem;
-    line-height: 1.6;
-    margin: 1.5rem 0;
-
-    code {
-      background: none;
-      padding: 0;
-      font-size: inherit;
-    }
+    position: relative;
   }
 
   blockquote {
@@ -377,7 +365,7 @@ export default function BlogDetails() {
   };
 
   function isFirebaseBlogContent(
-    content: BlogContent[] | FirebaseBlogContent
+    content: ContentBlockType[] | FirebaseBlogContent
   ): content is FirebaseBlogContent {
     return !Array.isArray(content) && content && typeof content === 'object' && 'html' in content;
   }
@@ -395,7 +383,7 @@ export default function BlogDetails() {
     if (!sanitizedPost.content) return <div>No content available</div>;
 
     if (Array.isArray(sanitizedPost.content)) {
-      return sanitizedPost.content.map((contentItem: BlogContent, index: number) => (
+      return sanitizedPost.content.map((contentItem: ContentBlockType, index: number) => (
         <ContentBlock key={index} item={contentItem} postId={simplifiedPostId} index={index} />
       ));
     } else if (isFirebaseBlogContent(sanitizedPost.content)) {

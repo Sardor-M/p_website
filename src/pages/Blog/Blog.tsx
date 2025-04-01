@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import { Link } from 'react-router-dom';
 import {
-  BlogContent,
   BlogPost,
   BlogResponse,
+  ContentBlockType,
   DisplayBlogPost,
   FirebaseBlogContent,
   Group,
@@ -17,8 +17,8 @@ import { API_ENDPOINTS } from '@/api/api.config';
 import { formatDate } from '@/utils/fomatDate';
 import { Loading } from '@/components/Loading';
 import { Error } from '@/components/Error';
-import { sanitizeObject } from '@/utils/security';
 import { useTranslation } from 'react-i18next';
+import { sanitizeObject } from '@/utils/security';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -68,15 +68,20 @@ const BlogTitle = styled.h3`
   margin: 0;
 `;
 
+const BlogSubtitle = styled.h4`
+  font-size: 1rem;
+  margin: 0;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+`;
+
 const BlogDate = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => (theme.mode === 'dark' ? 'rgb(138, 138, 138)' : 'rgb(154, 154, 154) ')};
   margin-bottom: 0.8rem;
   font-weight: 500;
-`;
-
-const BlogDescription = styled.p`
-  margin-top: 0.5rem;
 `;
 
 const TagList = styled.div`
@@ -171,9 +176,10 @@ export default function Blog() {
   const [blogsArray, setBlogsArray] = useState<DisplayBlogPost[]>([]);
   const { t } = useTranslation('blog');
 
+
   useEffect(() => {
     if (data) {
-      console.log('Initial data:', data);
+      // console.log('Initial data:', data);
 
       // we sanitize the dat to secutiy reasons
       const sanitizedData = sanitizeObject(data) as unknown;
@@ -224,6 +230,7 @@ export default function Blog() {
         return !!(
           blogItem.id !== undefined &&
           blogItem.title &&
+          blogItem.subtitle &&
           blogItem.date &&
           (blogItem.topics || blogItem.tags)
         );
@@ -234,6 +241,7 @@ export default function Blog() {
         return {
           id: String(blogItem.id),
           title: blogItem.title || '',
+          subtitle: blogItem.subtitle || '',
           date: blogItem.date || '',
           topics: blogItem.topics || blogItem.tags || [],
           content: blogItem.content || [],
@@ -303,12 +311,6 @@ export default function Blog() {
     return <Error message={error.message} />;
   }
 
-  function isFirebaseBlogContent(
-    content: BlogContent[] | FirebaseBlogContent
-  ): content is FirebaseBlogContent {
-    return !Array.isArray(content) && content && typeof content === 'object' && 'html' in content;
-  }
-
   return (
     <Container>
       <Section>
@@ -333,13 +335,7 @@ export default function Blog() {
                   <BlogPostCard variant="light" padding="sm" hoverable={true}>
                     <BlogTitle>{post.title}</BlogTitle>
                     <BlogDate>{formatDate(post.date)}</BlogDate>
-                    <BlogDescription>
-                      {Array.isArray(post.content) && post.content[0]?.text
-                        ? post.content[0].text
-                        : isFirebaseBlogContent(post.content) && post.content.html
-                          ? post.content.html.substring(0, 200).replace(/<[^>]*>/g, '') + '...'
-                          : 'No content'}
-                    </BlogDescription>
+                    <BlogSubtitle>{post.subtitle}</BlogSubtitle>
                     <TagList>
                       {post.topics.map((tag, index) => (
                         <Tag

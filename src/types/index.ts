@@ -14,3 +14,13 @@ export type FetchOptions<TBody = unknown> = {
   headers?: HeadersInit;
   body?: TBody;
 }
+
+export type SupportedLanguage =
+  | 'javascript'
+  | 'typescript'
+  | 'java'
+  | 'python'
+  | 'sql'
+  | 'mysql'
+  | 'bash'
+  | 'cmd';
