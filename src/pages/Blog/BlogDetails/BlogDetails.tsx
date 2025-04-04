@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
-import AuthorSectionWithShare from '@/pages/BlogDetails/BlogShareLink';
-import { ContentBlockType, FirebaseBlogContent, Post } from '@/types/blog';
+import AuthorSectionWithShare from '@/pages/Blog/BlogDetails/BlogShareLink';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getThemeStyles } from '@/themes';
 import UtterancesComment from '@/components/Comment/UtteranceComment';
-import { sanitizeObject, sanitizeString } from '@/utils/security';
+import { sanitizeObject } from '@/utils/security';
 import { CONFIG } from '@/config/site.config';
 import { useTranslation } from 'react-i18next';
 import { Loading } from '@/components/Loading';
-import ContentBlock from './ContentBlock';
+import { BlogPost } from '@/types/blog';
+import { createBlogContentUtils } from './blogContentUtil';
 
 const BlogContainer = styled.div`
   margin-top: -36px;
@@ -156,7 +156,7 @@ const NavButton = styled(Link)`
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.7rem;
-  ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])}
+  ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])};
   border-radius: 8px;
   text-decoration: none;
   font-size: 0.9rem;
@@ -175,17 +175,16 @@ const BackToTopButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  inline-padding: -10px;
   padding: 0.5rem 0.7rem;
   font-size: 0.9rem;
   font-weight: 400;
-  ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])}
+  ${({ theme }) => getThemeStyles(theme, ['hover', 'text'])};
   border-radius: 8px;
   border: none;
   transition: all 0.2s ease;
 
   &:hover {
-    ${({ theme }) => getThemeStyles(theme, 'hover')}
+    ${({ theme }) => getThemeStyles(theme, 'hover')};
     transform: translateY(-1px);
   }
 
@@ -196,57 +195,17 @@ const BackToTopButton = styled.button`
 `;
 
 export default function BlogDetails() {
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<BlogPost | null>(null);
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const theme = useTheme();
-  const { t } = useTranslation('blogDetails');
 
-  const generateStorageKey = (blogData: Post) => {
+  const generateStorageKey = (blogData: BlogPost) => {
     if (blogData && blogData.id) {
       return `blog-post-${blogData.id}`;
     }
-    // fallback to id
     return `blog-post-${id}`;
   };
-
-  useEffect(() => {
-    const stateData = location.state?.blogData as Post | undefined;
-    if (stateData) {
-      setPost(stateData || null);
-
-      try {
-        const storageKey = generateStorageKey(stateData);
-        sessionStorage.setItem(
-          storageKey,
-          JSON.stringify({
-            ...stateData,
-            _timestamp: new Date().getTime(),
-            _routeId: id,
-          })
-        );
-      } catch (error) {
-        console.error('Failed to store the blog data: ', error);
-      }
-    } else {
-      // sessiondann datani olish
-      const storedData = id
-        ? sessionStorage.getItem(`blog-post-${id}`) || findRelevantBlogInSession(id)
-        : null;
-      // console.log('Stored data: ', storedData);
-
-      if (storedData) {
-        try {
-          const parsedData = JSON.parse(storedData) as Post;
-          setPost(parsedData);
-        } catch (error) {
-          console.error('failed to parse the stored blog data: ', error);
-        }
-      } else {
-        console.log('No data available for this blog post');
-      }
-    }
-  }, [id, location.state]);
 
   const findRelevantBlogInSession = (searchId: string) => {
     for (let i = 0; i < sessionStorage.length; i++) {
@@ -270,70 +229,62 @@ export default function BlogDetails() {
     return null;
   };
 
-  // post datani sanitizatsiya qiladi
-  const getSanitizedPost = (): Post | null => {
-    if (!post) return null;
 
-    try {
-      const sanitized = sanitizeObject(post) as Post | null;
-      return sanitized || post;
-    } catch (error) {
-      console.error('Failed to sanitize post:', error);
-      return post;
-    }
-  };
+  useEffect(() => {
+    const stateData = location.state?.blogData as BlogPost | undefined;
+    if (stateData) {
+      setPost(stateData || null);
 
-  const sanitizedPost = getSanitizedPost();
+      try {
+        const storageKey = generateStorageKey(stateData);
+        sessionStorage.setItem(
+          storageKey,
+          JSON.stringify({
+            ...stateData,
+            _timestamp: new Date().getTime(),
+            _routeId: id,
+          })
+        );
+      } catch (error) {
+        console.error('Failed to store the blog data: ', error);
+      }
+    } else {
+      // fallback method
+      const storedData = id
+        ? sessionStorage.getItem(`blog-post-${id}`) || findRelevantBlogInSession(id)
+        : null;
 
-  if (!sanitizedPost) {
-    console.log('Sanitized object is failed to purify the object values. ');
-    return <div>{t('ui.loading')}</div>;
-  }
-
-  if (!post) return <Loading />;
-
-  const getSimplifiedPostId = () => {
-    if (post && post._routeId) {
-      const match = post._routeId.match(/fb(\d+)/);
-      if (match && match[1]) {
-        return match[1];
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData) as BlogPost;
+          setPost(parsedData);
+        } catch (error) {
+          console.error('Failed to parse the stored blog data: ', error);
+        }
+      } else {
+        console.log('No data available for this blog post');
       }
     }
+  }, [id, location.state]);
 
-    if (!id) return '1';
+  const sanitizedPost = post ? (sanitizeObject(post) as BlogPost | null) : null;
 
-    if (/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(id)) {
-      const match = id.match(/fb(\d+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-
-    const pathMatch = id.match(/post-(\d+)/);
-    if (pathMatch && pathMatch[1]) {
-      return pathMatch[1];
-    }
-
-    const numericMatch = id.match(/(\d+)/);
-    return numericMatch ? numericMatch[1] : '1';
-  };
-
-  const simplifiedPostId = getSimplifiedPostId();
+  const contentDetails = useMemo(() => {
+    if (!sanitizedPost) return null;
+    return createBlogContentUtils(sanitizedPost);
+  }, [sanitizedPost]);
 
   const scrollToTop = () => {
-    //console.log('Scrolling to top...');
-
-    // we first search the mainContent element
+    // we find the main content and go top
     const mainContent = document.querySelector('main');
 
     if (mainContent) {
-      // then we scroll the main content to top
       mainContent.scrollTop = 0;
       console.log('Found main content, scrolling to top');
     } else {
       console.log('MainContent element not found');
 
-      // fallback case
+      // fallback case (incase)
       const possibleContainers = [
         document.querySelector('.MainContent'),
         document.querySelector("[role='main']"),
@@ -343,87 +294,49 @@ export default function BlogDetails() {
       for (const container of possibleContainers) {
         if (container) {
           container.scrollTop = 0;
-          console.log('we found a alternative container, now scrolling to top');
+          console.log('Found an alternative container, now scrolling to top');
           break;
         }
       }
     }
   };
 
-  const getTitle = () => {
-    const translatedTitle = t(`blog.post${simplifiedPostId}.title`);
-    return translatedTitle !== `blog.post${simplifiedPostId}.title`
-      ? translatedTitle
-      : sanitizeString(post.title);
-  };
-
-  const getSubtitle = () => {
-    const translatedSubTitle = t(`blog.post${simplifiedPostId}.subtitle`);
-    return translatedSubTitle !== `blog.post${simplifiedPostId}.subtitle`
-      ? translatedSubTitle
-      : sanitizeString(post.subtitle || '');
-  };
-
-  function isFirebaseBlogContent(
-    content: ContentBlockType[] | FirebaseBlogContent
-  ): content is FirebaseBlogContent {
-    return !Array.isArray(content) && content && typeof content === 'object' && 'html' in content;
-  }
-
-  // AuthorSectionWithShare uchun post obyektini tayyorlash
-  const createPostForAuthorSection = (): Post => {
-    return {
-      ...sanitizedPost,
-      author: sanitizedPost.author || { name: 'Anonymous' },
-      readTime: sanitizedPost.readTime || '5 min',
-    } as Post;
-  };
-
-  const renderContent = () => {
-    if (!sanitizedPost.content) return <div>No content available</div>;
-
-    if (Array.isArray(sanitizedPost.content)) {
-      return sanitizedPost.content.map((contentItem: ContentBlockType, index: number) => (
-        <ContentBlock key={index} item={contentItem} postId={simplifiedPostId} index={index} />
-      ));
-    } else if (isFirebaseBlogContent(sanitizedPost.content)) {
-      return <div dangerouslySetInnerHTML={{ __html: sanitizedPost.content.html }} />;
-    }
-
-    return <div>Content format not supported</div>;
-  };
-
   return (
-    <BlogContainer>
-      <StyledCard variant="light" padding="lg">
-        <ArticleHeader>
-          <Title>{getTitle()}</Title>
-          <Subtitle>{getSubtitle()}</Subtitle>
-          {sanitizedPost && <AuthorSectionWithShare post={createPostForAuthorSection()} />}
-        </ArticleHeader>
+    <>
+      {!post && <Loading />}
+      {!sanitizedPost && post && <Loading />}
+      {sanitizedPost && contentDetails && (
+        <BlogContainer>
+          <StyledCard variant="light" padding="lg">
+            <ArticleHeader>
+              <Title>{contentDetails.getTitle()}</Title>
+              <Subtitle>{contentDetails.getSubtitle()}</Subtitle>
+              <AuthorSectionWithShare post={contentDetails.createPostForAuthorSection()} />
+            </ArticleHeader>
 
-        <Content>{renderContent()}</Content>
-        <TopicList>
-          {sanitizedPost?.topics &&
-            sanitizedPost.topics.map((tag) => (
-              <StyledTag key={tag}>{sanitizeString(tag)}</StyledTag>
-            ))}
-        </TopicList>
-        <NavigationContainer>
-          <NavButton to="/">{t(`ui.prev`)}</NavButton>
-          <BackToTopButton onClick={scrollToTop} type="button" aria-label="Scroll to top">
-            {t(`ui.top`)}
-          </BackToTopButton>
-        </NavigationContainer>
-        <CommentsSection>
-          <CommentsTitle>{t(`ui.comments`)}</CommentsTitle>
-          <UtterancesComment
-            repo={CONFIG.utterances.config.repo}
-            issueTerm={CONFIG.utterances.config['issue-term']}
-            theme={theme.mode === 'dark' ? 'github-dark' : 'github-light'}
-          />
-        </CommentsSection>
-      </StyledCard>
-    </BlogContainer>
+            <Content>{contentDetails.renderContent()}</Content>
+            <TopicList>
+              {contentDetails.getTopics().map((tag, index) => (
+                <StyledTag key={`${tag}-${index}`}>{tag}</StyledTag>
+              ))}
+            </TopicList>
+            <NavigationContainer>
+              <NavButton to="/">Previous</NavButton>
+              <BackToTopButton onClick={scrollToTop} type="button" aria-label="Scroll to top">
+                Back to Top
+              </BackToTopButton>
+            </NavigationContainer>
+            <CommentsSection>
+              <CommentsTitle>Comments</CommentsTitle>
+              <UtterancesComment
+                repo={CONFIG.utterances.config.repo}
+                issueTerm={CONFIG.utterances.config['issue-term']}
+                theme={theme.mode === 'dark' ? 'github-dark' : 'github-light'}
+              />
+            </CommentsSection>
+          </StyledCard>
+        </BlogContainer>
+      )}
+    </>
   );
 }

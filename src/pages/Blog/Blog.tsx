@@ -1,14 +1,7 @@
 import styled from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import { Link } from 'react-router-dom';
-import {
-  BlogPost,
-  BlogResponse,
-  ContentBlockType,
-  DisplayBlogPost,
-  FirebaseBlogContent,
-  Group,
-} from '@/types/blog';
+import { BlogPost, DisplayBlogPost, Group } from '@/types/blog';
 import { themeColor } from '@/themes/color';
 import { useFilter } from '@/context/FilterContext';
 import { useFetch } from '@/hooks/useFetch/useFetch';
@@ -168,7 +161,7 @@ const getIconForTag = (tag: string): string => {
 };
 
 export default function Blog() {
-  const { data, loading, error } = useFetch<BlogResponse>(
+  const { data, loading, error } = useFetch<BlogPost>(
     `${API_ENDPOINTS.BASE_URL}${API_ENDPOINTS.BLOG.GET_ALL}`
   );
   const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } = useFilter();
@@ -176,14 +169,10 @@ export default function Blog() {
   const [blogsArray, setBlogsArray] = useState<DisplayBlogPost[]>([]);
   const { t } = useTranslation('blog');
 
-
   useEffect(() => {
     if (data) {
-      // console.log('Initial data:', data);
-
-      // we sanitize the dat to secutiy reasons
+      // we sanitize the data to security reasons
       const sanitizedData = sanitizeObject(data) as unknown;
-      console.log('After sanitize:', sanitizedData);
 
       // method to extract the blogs from the data
       const extractBlogsFromData = (data: unknown): DisplayBlogPost[] => {
@@ -226,32 +215,49 @@ export default function Blog() {
       const isValidBlogItem = (item: unknown): boolean => {
         if (!item || typeof item !== 'object') return false;
 
-        const blogItem = item as Partial<BlogPost>;
+        const blogItem = item as Record<string, any>;
+        if (blogItem.id === undefined) return false;
+
         return !!(
-          blogItem.id !== undefined &&
-          blogItem.title &&
-          blogItem.subtitle &&
-          blogItem.date &&
-          (blogItem.topics || blogItem.tags)
+          blogItem.title ||
+          blogItem.subtitle ||
+          blogItem.dataStructures ||
+          blogItem.date ||
+          blogItem.createdAt
         );
       };
 
       const normalizeBlogItem = (item: unknown): DisplayBlogPost => {
-        const blogItem = item as Partial<BlogPost>;
+        const blogItem = item as Record<string, any>;
+      
+        const topics = blogItem.metadata?.topics || [];
+        const authorName = blogItem.metadata?.author?.name || 'Sardor-M';
+      
+        const normalizedMetadata = {
+          author: {
+            name: authorName,
+            bio: blogItem.metadata?.author?.bio || ''
+          },
+          topics: topics
+        };
+      
         return {
           id: String(blogItem.id),
           title: blogItem.title || '',
           subtitle: blogItem.subtitle || '',
-          date: blogItem.date || '',
-          topics: blogItem.topics || blogItem.tags || [],
-          content: blogItem.content || [],
+          date: blogItem.date || blogItem.createdAt || '',
+          topics: topics,
+          introduction: blogItem.introduction || '',
+          dataStructures: blogItem.dataStructures || [],
+          metadata: normalizedMetadata,
+          readTime: blogItem.readTime || '5 min read',
         };
       };
 
       const extractedBlogs = extractBlogsFromData(sanitizedData);
 
       setBlogsArray(extractedBlogs);
-      console.log('Final blogsArray:', extractedBlogs);
+      // console.log('Final blogsArray:', extractedBlogs);
     }
   }, [data]);
 

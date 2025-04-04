@@ -3,7 +3,7 @@ import Layout from "@/components/Layout/Layout";
 import Portfolio from "@/pages/Portfolio/Portfolio";
 import { AppProps } from "@/types";
 import Blog from "@/pages/Blog/Blog";
-import BlogDetails from "@/pages/BlogDetails/BlogDetails";
+import BlogDetails from "@/pages/Blog/BlogDetails/BlogDetails";
 import { FilterProvider } from "@/context/FilterContext";
 
 export default function AppRoutes({ onToggleTheme, theme }: AppProps) {

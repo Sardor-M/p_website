@@ -1,20 +1,11 @@
 import { CONFIG } from '@/config/site.config';
 import { getThemeStyles } from '@/themes';
+import { BlogPost } from '@/types/blog';
 import { formatDate } from '@/utils/fomatDate';
 import { CheckCircleFilled, LinkedinFilled, TwitterCircleFilled } from '@ant-design/icons';
 import { Link, Share } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-
-type Post = {
-  title: string;
-  author: {
-    name: string;
-    image: string;
-  };
-  date: string;
-  readTime: string;
-};
 
 const AuthorSection = styled.div`
   display: flex;
@@ -148,12 +139,12 @@ const CopyNotification = styled.div`
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 `;
 
-function AuthorSectionWithShare({ post }: { post: Post }) {
+function AuthorSectionWithShare({ post }: { post: BlogPost }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCopyNotification, setShowCopyNotification] = useState(false);
   const [authorImg, setAuthorImg] = useState(
-    post.author.image || 'https://avatars.githubusercontent.com/u/65296404?v=4'
+    post.metadata.author.name || 'https://avatars.githubusercontent.com/u/65296404?v=4'
   );
 
   const handleCopyLink = () => {
@@ -165,7 +156,7 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
 
   const handleShare = (platform: 'twitter' | 'linkedin') => {
     const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(post.title);
+    const title = encodeURIComponent(post.title || '');
 
     const shareUrls = {
       twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
@@ -194,13 +185,13 @@ function AuthorSectionWithShare({ post }: { post: Post }) {
       <AuthorBlock>
         <AuthorImage
           src={authorImg}
-          alt={post.author.name || 'Author'}
+          alt={post.metadata.author.name || 'Author'}
           onError={() => setAuthorImg(CONFIG.profile.imageUrl)}
         />
         <AuthorInfo>
-          <AuthorName>{post.author.name}</AuthorName>
+          <AuthorName>{post.metadata.author.name}</AuthorName>
           <PostMeta>
-            <span>{formatDate(post.date, { includeTime: true })}</span>
+            <span>{formatDate(post.date || 'fix qilinadi', { includeTime: true })}</span>
             <span>{post.readTime}</span>
           </PostMeta>
         </AuthorInfo>
