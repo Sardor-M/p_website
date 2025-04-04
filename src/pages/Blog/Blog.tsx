@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import { Link } from 'react-router-dom';
-import { BlogPost, DisplayBlogPost, Group } from '@/types/blog';
+import { BlogPost, DisplayBlogPost, Group} from '@/types/blog';
 import { themeColor } from '@/themes/color';
 import { useFilter } from '@/context/FilterContext';
 import { useFetch } from '@/hooks/useFetch/useFetch';

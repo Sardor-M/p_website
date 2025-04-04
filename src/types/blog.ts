@@ -78,3 +78,9 @@ export type ContentBlockProps = {
   postId: string | null;
   index: number;
 };
+
+export type Group = {
+  name: string;
+  count: number;
+  icon?: string;
+}

@@ -7,7 +7,6 @@ import { getThemeStyles } from '@/themes';
 import UtterancesComment from '@/components/Comment/UtteranceComment';
 import { sanitizeObject } from '@/utils/security';
 import { CONFIG } from '@/config/site.config';
-import { useTranslation } from 'react-i18next';
 import { Loading } from '@/components/Loading';
 import { BlogPost } from '@/types/blog';
 import { createBlogContentUtils } from './blogContentUtil';

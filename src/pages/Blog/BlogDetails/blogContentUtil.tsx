@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { sanitizeString } from '@/utils/security';
-import CodeBlock from './CodeBlock';
+import CodeBlock from './BlogCode';
 import { BlogContentUtils, BlogPost, DataStructure, Example } from '@/types/blog';
 import { themeColor } from '@/themes/color';
 

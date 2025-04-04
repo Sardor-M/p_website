@@ -10,7 +10,7 @@ type Props = {
 
 const BlogList: React.FC<Props> = ({ posts, selectedTag }) => {
   const filteredPosts = selectedTag 
-    ? posts.filter((post) => post.topics.includes(selectedTag))
+    ? posts.filter((post) => post.metadata.topics.includes(selectedTag))
     : posts;
 
   return (
@@ -19,7 +19,7 @@ const BlogList: React.FC<Props> = ({ posts, selectedTag }) => {
         <BlogCard key={post.id}>
           <h3>{post.title}</h3>
           <p>{post.date}</p>
-          {post.topics.map((tag) => (
+          {post.metadata.topics.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}
         </BlogCard>
