@@ -228,7 +228,6 @@ export default function BlogDetails() {
     return null;
   };
 
-
   useEffect(() => {
     const stateData = location.state?.blogData as BlogPost | undefined;
     if (stateData) {
@@ -306,7 +305,13 @@ export default function BlogDetails() {
       {!sanitizedPost && post && <Loading />}
       {sanitizedPost && contentDetails && (
         <BlogContainer>
-          <StyledCard variant="light" padding="lg">
+          {/* <StyledCard variant="light" padding="lg"> */}
+          <StyledCard
+            style={{
+              variant: 'light',
+              padding: 'lg',
+            }}
+          >
             <ArticleHeader>
               <Title>{contentDetails.getTitle()}</Title>
               <Subtitle>{contentDetails.getSubtitle()}</Subtitle>

@@ -5,17 +5,17 @@ export type BlogContentUtils = {
   getTopics: () => string[];
   createPostForAuthorSection: () => BlogPost;
   renderContent: () => React.ReactNode;
-}
+};
 
 export type BlogPost = {
-  id?: string; 
+  id?: string;
   title?: string;
   subtitle?: string;
   date?: string;
   readTime?: string;
   introduction?: string;
   dataStructures?: DataStructure[];
-  metadata:  AuthorData,
+  metadata: AuthorData;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -28,7 +28,7 @@ export type DisplayBlogPost = {
   topics: string[];
   introduction: string;
   dataStructures: DataStructure[];
-  metadata: AuthorData,
+  metadata: AuthorData;
   readTime: string;
 };
 
@@ -40,7 +40,6 @@ export type AuthorData = {
   topics: string[];
 };
 
-
 export type Example = {
   description: string;
   command: string;
@@ -48,7 +47,7 @@ export type Example = {
   type?: string;
   returns?: string | string[];
   output?: string | null;
-}
+};
 
 export type DataStructure = {
   name: string;
@@ -63,7 +62,6 @@ export type DataStructure = {
   traditionalApproach?: string[];
   subSections?: DataStructure[];
 };
-
 
 export type ContentBlockProps = {
   item: {
@@ -83,4 +81,4 @@ export type Group = {
   name: string;
   count: number;
   icon?: string;
-}
+};

@@ -102,10 +102,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const BlogPostCard = styled(StyledCard)`
-  color: ${(props) => props.theme.textColor};
-`;
-
 const GroupsContainer = styled.div`
   display: flex;
   gap: 1rem;
@@ -338,7 +334,13 @@ export default function Blog() {
             {filteredPosts.length > 0 ? (
               filteredPosts.map((post) => (
                 <StyledLink key={`blog-${post.id}`} to={`/${post.id}`} state={{ blogData: post }}>
-                  <BlogPostCard variant="light" padding="sm" hoverable={true}>
+                  <StyledCard
+                    style={{
+                      variant: 'light',
+                      padding: 'sm',
+                      hoverable: true,
+                    }}
+                  >
                     <BlogTitle>{post.title}</BlogTitle>
                     <BlogDate>{formatDate(post.date)}</BlogDate>
                     <BlogSubtitle>{post.subtitle}</BlogSubtitle>
@@ -356,7 +358,7 @@ export default function Blog() {
                         </Tag>
                       ))}
                     </TagList>
-                  </BlogPostCard>
+                  </StyledCard>
                 </StyledLink>
               ))
             ) : (

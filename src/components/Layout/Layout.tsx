@@ -159,14 +159,12 @@ const RightSidebar = styled.aside`
   }
 `;
 
-// tag components (left)
 const TagSection = styled.section`
   margin: 1.5rem auto;
   padding-left: 70px;
   height: 100%;
   padding-right: 1rem;
   cursor: pointer;
-
 
   ${media.mobile} {
     padding-left: 0;
@@ -374,18 +372,31 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
             <RightSidebar>
               <AnimatedSection delay={0.3}>
                 <ProfileSection>
-                  <StyledCard key={'id'} variant="light" padding="sm" size="sm">
+                  <StyledCard
+                    key={'id'}
+                    style={{
+                      variant: 'light',
+                      padding: 'sm',
+                      size: 'sm',
+                    }}
+                  >
                     <ProfileImage src={CONFIG.profile.imageUrl} alt="Profile" />
                     <ProfileName>{CONFIG.profile.username}</ProfileName>
                     <ProfileBio>{CONFIG.profile.fullName}</ProfileBio>
-                    {/* {// tags  */}
                     <TagContainer>
                       <Tag>frontend</Tag>
                       <Tag>react-js</Tag>
                     </TagContainer>
                   </StyledCard>
                   <ContactTitle>🔗 Contact</ContactTitle>
-                  <StyledCard key={'id'} variant="light" padding="sm" size="sm">
+                  <StyledCard
+                    key={'id'}
+                    style={{
+                      variant: 'light',
+                      padding: 'sm',
+                      size: 'sm',
+                    }}
+                  >
                     <ContactList>
                       <ContactItem>
                         <GithubFilled />
