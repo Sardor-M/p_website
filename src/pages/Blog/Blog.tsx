@@ -84,7 +84,7 @@ const TagList = styled.div`
 const Tag = styled.span`
   padding: 0.25rem 0.8rem;
   font-size: 0.6rem;
-  border-radius: 6px;
+  border-radius: 12px;
   background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
   color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -127,7 +127,8 @@ const FilterContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 1.5rem 0;
-  padding-bottom: 1rem;
+  padding-bottom: 1.2rem;
+  margin-bottom: 10px;
   border-bottom: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#e5e5e5')};
 `;
 
