@@ -19,9 +19,7 @@ const TAG_LIST = [
   'JavaScript',
   'Frontend',
   'PostgreSQL',
-  'Daily',
   'TypeScript',
-  'Blog',
   'Database',
   'React',
   'Next.js',
@@ -74,8 +72,6 @@ const ContentWrapper = styled.div`
     margin-bottom: 0;
     height: auto;
   }
-  // height: calc(100vh - 60px);
-  // margin-top: 60px;
 `;
 
 const LeftSidebar = styled.aside`
@@ -86,7 +82,6 @@ const LeftSidebar = styled.aside`
   top: 60px;
   bottom: 0;
   overflow-y: auto;
-  // border-right: 0.2px solid rgb(211, 211, 211);
 
   ${media.mobile} {
     position: relative;
@@ -144,7 +139,6 @@ const RightSidebar = styled.aside`
   top: 60px;
   bottom: 0;
   overflow-y: auto;
-  // border-left: 0.2px solid rgb(211, 211, 211);
 
   ${media.mobile} {
     position: relative;

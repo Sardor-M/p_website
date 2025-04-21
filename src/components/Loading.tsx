@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 const pulseAnimation = keyframes`
   0%, 100% { 
@@ -20,11 +20,11 @@ export const LoadingContainer = styled.div`
 `;
 
 export const Spinner = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  background-color: ${({ theme }) => 
-    theme.mode === "dark" ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)"};
+  background-color: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'};
   animation: ${pulseAnimation} 1.5s ease-in-out infinite;
 `;
 

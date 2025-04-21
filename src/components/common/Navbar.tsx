@@ -8,7 +8,6 @@ import { getHoverStyles, getThemeStyles } from '@/themes';
 import { media } from '@/themes/themes/media';
 import { Button } from './Button';
 
-//shared common button styles
 const commonButtonStyles = `
   padding: 0.5rem 1rem;
   border-radius: 10px;
@@ -96,7 +95,8 @@ const NavItem = styled(Link)`
   cursor: pointer;
   ${({ theme }) => getThemeStyles(theme, 'text')};
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 300;
+  font-size: 16px;
   ${commonButtonStyles};
   border-radius: 14px;
   transition: all 0.2s ease-out;
@@ -276,7 +276,7 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
-  
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

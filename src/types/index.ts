@@ -24,3 +24,4 @@ export type SupportedLanguage =
   | 'mysql'
   | 'bash'
   | 'cmd';
+  
