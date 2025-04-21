@@ -139,12 +139,12 @@ const CopyNotification = styled.div`
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 `;
 
-function AuthorSectionWithShare({ post }: { post: BlogPost }) {
+export default function AuthorSectionWithShare({ post }: { post: BlogPost }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCopyNotification, setShowCopyNotification] = useState(false);
   const [authorImg, setAuthorImg] = useState(
-    post.metadata.author.name || 'https://avatars.githubusercontent.com/u/65296404?v=4'
+    'https://avatars.githubusercontent.com/u/65296404?v=4'
   );
 
   const handleCopyLink = () => {
@@ -230,5 +230,3 @@ function AuthorSectionWithShare({ post }: { post: BlogPost }) {
     </AuthorSection>
   );
 }
-
-export default AuthorSectionWithShare;

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import { Link } from 'react-router-dom';
 import { BlogPost, DisplayBlogPost, Group } from '@/types/blog';
-import { themeColor } from '@/themes/color';
 import { useFilter } from '@/context/FilterContext';
 import { useFetch } from '@/hooks/useFetch/useFetch';
 import { useEffect, useState } from 'react';
@@ -20,12 +19,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 2rem;
 
-  // we hide the scrollbar for chrome and safari
   &::-webkit-scrollbar {
     display: none;
   }
 
-  // other web browsers
   -ms-overflow-style: none;
   scrollbar-width: none;
 `;
@@ -90,6 +87,15 @@ const Tag = styled.span`
   border-radius: 6px;
   background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
   color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border-left: 3px solid ${({ theme }) => (theme.mode === 'dark' ? '#3498db' : '#3498db')};
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    background-color: ${({ theme }) => (theme.mode === 'dark' ? '#383838' : 'rgb(245, 245, 245)')};
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -102,24 +108,43 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const GroupsContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
+const TopicSelect = styled.select`
+  padding: 0.5rem 0.7rem;
+  border-radius: 13px;
+  border: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#e5e5e5')};
+  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#fff')};
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#000')};
+  font-size: 0.8rem;
+  font-weight: 400;
+  cursor: pointer;
+  width: 200px;
+  appearance: none;
+  padding-right: 2.5rem;
 `;
 
-const GroupItem = styled.button<{ active: boolean }>`
+const FilterContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin: 1.5rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#e5e5e5')};
+`;
+
+const SortContainer = styled.div`
+  display: flex;
   gap: 0.5rem;
+  align-items: center;
+`;
+
+const SortButton = styled.button<{ active: boolean }>`
   padding: 0.4rem 0.6rem;
-  border-radius: 12px;
   border: none;
   background-color: ${({ active, theme }) =>
     active ? (theme.mode === 'dark' ? '#3a3a3a' : '#e5e5e5') : 'transparent'};
-  color: ${({ theme }) => (theme.mode === 'dark' ? themeColor.text.dark : themeColor.text.light)};
-  transition: all 0.2s;
+  border-radius: 6px;
+  cursor: pointer;
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#000')};
   font-size: 0.8rem;
 
   &:hover {
@@ -127,19 +152,19 @@ const GroupItem = styled.button<{ active: boolean }>`
   }
 `;
 
-const GroupIcon = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-`;
+const SelectWrapper = styled.div`
+  position: relative;
 
-const GroupCount = styled.span`
-  font-size: 0.8rem;
-  color: ${({ theme }) => (theme.mode === 'dark' ? themeColor.text.dark : themeColor.text.light)};
-  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2d2d2d' : '#f0f0f0')};
-  padding: 0.2rem 0.5rem;
-  border-radius: 8px;
+  &::after {
+    content: '▼';
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.7rem;
+    color: ${({ theme }) => (theme.mode === 'dark' ? '#888' : '#666')};
+  }
 `;
 
 const getIconForTag = (tag: string): string => {
@@ -163,6 +188,7 @@ export default function Blog() {
   const { selectedTag, setSelectedTag, selectedGroup, setSelectedGroup } = useFilter();
   const [groups, setGroups] = useState<Group[]>([]);
   const [blogsArray, setBlogsArray] = useState<DisplayBlogPost[]>([]);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const { t } = useTranslation('blog');
 
   useEffect(() => {
@@ -226,15 +252,24 @@ export default function Blog() {
       const normalizeBlogItem = (item: unknown): DisplayBlogPost => {
         const blogItem = item as Record<string, any>;
 
-        const topics = blogItem.metadata?.topics || [];
-        const authorName = blogItem.metadata?.author?.name || 'Sardor-M';
+        let topic: string = '';
+        let authorName: string = 'Sardor-M';
+        let authorBio: string = '';
+
+        if (blogItem.metadata && blogItem.metadata?.topic) {
+          topic = blogItem.metadata.topic;
+        }
+        if (blogItem.metadata && blogItem.metadata.author) {
+          authorName = blogItem.metadata.author.name;
+          authorBio = blogItem.metadata.author.bio;
+        }
 
         const normalizedMetadata = {
           author: {
             name: authorName,
-            bio: blogItem.metadata?.author?.bio || '',
+            bio: authorBio,
           },
-          topics: topics,
+          topic: topic,
         };
 
         return {
@@ -242,7 +277,7 @@ export default function Blog() {
           title: blogItem.title || '',
           subtitle: blogItem.subtitle || '',
           date: blogItem.date || blogItem.createdAt || '',
-          topics: topics,
+          topic: topic,
           introduction: blogItem.introduction || '',
           dataStructures: blogItem.dataStructures || [],
           metadata: normalizedMetadata,
@@ -260,7 +295,7 @@ export default function Blog() {
   useEffect(() => {
     if (blogsArray.length > 0) {
       // hamma topiclarni bir arrayga joylashtiramiz
-      const allTags = blogsArray.flatMap((post) => post.topics);
+      const allTags = blogsArray.flatMap((post) => post.topic);
 
       // occurenceni hisoblaymiz
       const tagCounts = allTags.reduce(
@@ -288,20 +323,22 @@ export default function Blog() {
     }
   }, [blogsArray]);
 
-  // filter qilamiz
   const filteredPosts = blogsArray.filter((post) => {
-    const matchedTag = selectedTag ? post.topics.includes(selectedTag) : true;
-    const matchedGroup = selectedGroup === 'All' ? true : post.topics.includes(selectedGroup);
+    const matchedTag = selectedTag ? post.topic.includes(selectedTag) : true;
+    const matchedGroup = selectedGroup === 'All' ? true : post.topic.includes(selectedGroup);
     return matchedTag && matchedGroup;
   });
 
-  const handleGroupClick = (group: string) => {
-    if (group === selectedGroup) {
-      setSelectedGroup('All');
-    } else {
-      setSelectedGroup(group);
-    }
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
+    const dateA = new Date(a.date || a.createdAt || '').getTime();
+    const dateB = new Date(b.date || b.createdAt || '').getTime();
 
+    return sortOrder === 'desc' ? dateA - dateB : dateB - dateA;
+  });
+
+  const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedGroup(value === 'All' ? 'All' : value);
     setSelectedTag(null);
   };
 
@@ -317,22 +354,32 @@ export default function Blog() {
     <Container>
       <Section>
         <SectionTitle>{t('blog.title')}</SectionTitle>
-        <GroupsContainer>
-          {groups.map((group) => (
-            <GroupItem
-              key={group.name}
-              active={selectedGroup === group.name}
-              onClick={() => handleGroupClick(group.name)}
-            >
-              <GroupIcon>{group.icon}</GroupIcon> {group.name}
-              <GroupCount>{group.count}</GroupCount>
-            </GroupItem>
-          ))}
-        </GroupsContainer>
+        <FilterContainer>
+          <SelectWrapper>
+            <TopicSelect value={selectedGroup} onChange={handleTopicChange}>
+              <option value="All">{t('blog.title')}</option>
+              {groups
+                .filter((group) => group.name !== 'All')
+                .map((group) => (
+                  <option key={group.name} value={group.name}>
+                    {group.icon} {group.name} ({group.count})
+                  </option>
+                ))}
+            </TopicSelect>
+          </SelectWrapper>
+          <SortContainer>
+            <SortButton active={sortOrder === 'desc'} onClick={() => setSortOrder('desc')}>
+              Decs
+            </SortButton>
+            <SortButton active={sortOrder === 'asc'} onClick={() => setSortOrder('asc')}>
+              Asc
+            </SortButton>
+          </SortContainer>
+        </FilterContainer>
         <BlogContainer>
           <BlogGrid>
-            {filteredPosts.length > 0 ? (
-              filteredPosts.map((post) => (
+            {sortedPosts.length > 0 ? (
+              sortedPosts.map((post) => (
                 <StyledLink key={`blog-${post.id}`} to={`/${post.id}`} state={{ blogData: post }}>
                   <StyledCard
                     style={{
@@ -345,18 +392,7 @@ export default function Blog() {
                     <BlogDate>{formatDate(post.date)}</BlogDate>
                     <BlogSubtitle>{post.subtitle}</BlogSubtitle>
                     <TagList>
-                      {post.topics.map((tag, index) => (
-                        <Tag
-                          key={`${post.id}-${tag}-${index}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setSelectedTag(tag);
-                            setSelectedGroup('All');
-                          }}
-                        >
-                          {tag}
-                        </Tag>
-                      ))}
+                      <Tag key={`blog-${post.id}-topic`}>{post.metadata?.topic}</Tag>
                     </TagList>
                   </StyledCard>
                 </StyledLink>

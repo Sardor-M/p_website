@@ -63,9 +63,7 @@ const CodeSyntax = styled.span`
  * This util method provides needed functions for blog display.
  *
  * @param {BlogPost} post - a blog post object to process
- * @returns {BlogContentUtils} a collection of utility functions for the blog post
  */
-
 export function createBlogContentUtils(post: BlogPost): BlogContentUtils {
   // function to highlight commands
   const highlightCommands = (text: string): React.ReactNode => {
@@ -82,24 +80,12 @@ export function createBlogContentUtils(post: BlogPost): BlogContentUtils {
   const getTitle = (): string => sanitizeString(post.title || '');
   const getSubtitle = (): string => sanitizeString(post.subtitle || '');
   const getAuthorName = (): string => {
-    const metadata = post.metadata;
-    if (!metadata) return 'Sardor-M';
-
-    if (typeof metadata === 'object' && metadata !== null) {
-      return metadata.author?.name || (metadata.author && metadata.author.name) || 'Sardor-M';
+    if (post.metadata && post.metadata.author && post.metadata.author.name) {
+      return post.metadata.author.name;
     }
+
     return 'Sardor-M';
   };
-  const getTopics = (): string[] => {
-    const metadata = post.metadata;
-    if (!metadata) return [];
-
-    if (typeof metadata === 'object' && metadata !== null && Array.isArray(metadata.topics)) {
-      return metadata.topics;
-    }
-    return [];
-  };
-
   // function to highlight technical terms and code symbols
   const highlightTechnicalTerms = (text: string): React.ReactNode => {
     if (!text) return null;
@@ -143,19 +129,26 @@ export function createBlogContentUtils(post: BlogPost): BlogContentUtils {
     );
   };
 
-  const createPostForAuthorSection = (): BlogPost => ({
-    id: post.id,
-    title: post.title || '',
-    metadata: {
-      author: {
-        name: getAuthorName(),
-        bio: '',
+  const createPostForAuthorSection = (): BlogPost => {
+    const authorName = post.metadata?.author?.name || 'Sardor-M';
+
+    return {
+      id: post.id,
+      title: post.title || '',
+      subtitle: post.subtitle || '',
+      date: post.date || '',
+      readTime: post.readTime || '',
+      introduction: post.introduction || '',
+      dataStructures: post.dataStructures || [],
+      metadata: {
+        author: {
+          name: authorName,
+          bio: post.metadata?.author?.bio || '',
+        },
+        topic: post.metadata?.topic,
       },
-      topics: getTopics(),
-    },
-    date: post.date || new Date().toISOString(),
-    readTime: post.readTime || '5 min read',
-  });
+    };
+  };
 
   const renderExample = (example: Example): React.ReactNode => {
     if (!example.command) return null;
@@ -248,9 +241,7 @@ export function createBlogContentUtils(post: BlogPost): BlogContentUtils {
         {structure.subSections && structure.subSections.length > 0 && (
           <>
             {structure.subSections.map((subSection: any, index: number) => (
-              <div key={index}>
-                {renderSection(subSection, level + 1)}
-              </div>
+              <div key={index}>{renderSection(subSection, level + 1)}</div>
             ))}
           </>
         )}
@@ -260,7 +251,7 @@ export function createBlogContentUtils(post: BlogPost): BlogContentUtils {
 
   const renderListSection = (title: string, items?: string[] | null): React.ReactNode => {
     if (!items || items.length === 0) return null;
-    
+
     return (
       <>
         <h3>{title}</h3>
@@ -305,7 +296,6 @@ export function createBlogContentUtils(post: BlogPost): BlogContentUtils {
     getTitle,
     getSubtitle,
     getAuthorName,
-    getTopics,
     createPostForAuthorSection,
     renderContent,
   };

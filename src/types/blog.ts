@@ -2,7 +2,6 @@ export type BlogContentUtils = {
   getTitle: () => string;
   getSubtitle: () => string;
   getAuthorName: () => string;
-  getTopics: () => string[];
   createPostForAuthorSection: () => BlogPost;
   renderContent: () => React.ReactNode;
 };
@@ -25,11 +24,12 @@ export type DisplayBlogPost = {
   title: string;
   subtitle: string;
   date: string;
-  topics: string[];
+  topic: string;
   introduction: string;
   dataStructures: DataStructure[];
   metadata: AuthorData;
   readTime: string;
+  createdAt?: string;
 };
 
 export type AuthorData = {
@@ -37,7 +37,7 @@ export type AuthorData = {
     name: string;
     bio?: string;
   };
-  topics: string[];
+  topic: string;
 };
 
 export type Example = {

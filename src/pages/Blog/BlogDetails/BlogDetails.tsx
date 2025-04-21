@@ -269,7 +269,17 @@ export default function BlogDetails() {
 
   const contentDetails = useMemo(() => {
     if (!sanitizedPost) return null;
-    return createBlogContentUtils(sanitizedPost);
+    return createBlogContentUtils({
+      ...sanitizeObject(sanitizedPost),
+      metadata: {
+        ...(sanitizedPost.metadata || {}),
+        author: {
+          name: sanitizedPost.metadata?.author?.name || 'Sardor-M',
+          bio: sanitizedPost.metadata?.author?.bio || '',
+        },
+        topic: sanitizedPost.metadata?.topic,
+      },
+    });
   }, [sanitizedPost]);
 
   const scrollToTop = () => {
@@ -305,7 +315,6 @@ export default function BlogDetails() {
       {!sanitizedPost && post && <Loading />}
       {sanitizedPost && contentDetails && (
         <BlogContainer>
-          {/* <StyledCard variant="light" padding="lg"> */}
           <StyledCard
             style={{
               variant: 'light',
@@ -320,9 +329,7 @@ export default function BlogDetails() {
 
             <Content>{contentDetails.renderContent()}</Content>
             <TopicList>
-              {contentDetails.getTopics().map((tag, index) => (
-                <StyledTag key={`${tag}-${index}`}>{tag}</StyledTag>
-              ))}
+              <StyledTag>{sanitizedPost.metadata.topic}</StyledTag>
             </TopicList>
             <NavigationContainer>
               <NavButton to="/">Previous</NavButton>

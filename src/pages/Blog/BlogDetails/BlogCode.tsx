@@ -109,7 +109,7 @@ const languageMap: Record<string, string> = {
   zsh: 'bash',
   mysql: 'sql',
   cmd: 'bash',
-  redis: 'bash'
+  redis: 'bash',
 };
 
 export default function CodeBlock({
