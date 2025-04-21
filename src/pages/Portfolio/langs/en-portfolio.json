@@ -8,16 +8,16 @@
   "projects": {
     "linkTitle": "Project Links",
     "blog": {
-      "title": "Personal Blog",
-      "description": "A static blog platform built with React and TypeScript. Features include markdown support and comment system."
+      "title": "tunnel_chat",
+      "description": "Tunnel Chat is a secure real-time chatting web-app for people who wants to communicate, exchange files and images securely."
     },
     "sample": {
-      "title": "Sample Project",
-      "description": "A static blog platform built with React and TypeScript. Features include markdown support and comment system."
+      "title": "run_with_us",
+      "description": "run_with_us is a running community platform where people of shared interest come together and run together by registering the events around the world."
     }
   },
   "links": {
-    "github": "GitHub Repository",
+    "github": "GitHub Repo",
     "demo": "Live Demo"
   }
 }

@@ -20,8 +20,6 @@ const getCSSProperty = (property: ThemeProperty) => {
       return 'background-color';
     case 'activeHover':
       return 'background-color';
-    case 'border':
-      return 'border-color';
     case 'shadow':
       return 'box-shadow';
     default:
@@ -40,8 +38,6 @@ const getThemeValue = (theme: Theme, property: ThemeProperty) => {
       return theme.mode === 'dark' ? themeColor.hover.dark : themeColor.hover.light;
     case 'activeHover':
       return theme.mode === 'dark' ? themeColor.activeHover.dark : themeColor.activeHover.light;
-    case 'border':
-      return theme.mode === 'dark' ? themeColor.border.dark : themeColor.border.light;
     case 'shadow':
       return theme.mode === 'dark' ? themeColor.shadow.dark : themeColor.shadow.light;
     default:
@@ -75,4 +71,9 @@ export const getHoverStyles = (theme: Theme) => `
 // tepadagidek bunga ham wrapper qo'yildi
 export const getActiveHoverStyles = (theme: Theme) => `
     background-color: ${getThemeValue(theme, 'activeHover')};
+`;
+
+// common borderlar uchun ishlatiladi
+export const getBorderStyles = (theme: Theme) => `
+  border: 1px solid ${theme.mode === 'dark' ? themeColor.border.dark : themeColor.border.light};
 `;

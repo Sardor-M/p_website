@@ -16,6 +16,7 @@ export const themeColor = {
     light: '#00000017',
   },
   border: {
+    // dark: '#505050',
     dark: '#FFFFFF1A',
     light: '#0000001A',
   },

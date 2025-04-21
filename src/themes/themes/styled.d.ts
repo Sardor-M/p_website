@@ -1,11 +1,11 @@
 import 'styled-components';
 
 declare module 'styled-components' {
-  export type DefaultTheme = {
+  export interface DefaultTheme {
     name: string;
-    mode: string;
+    mode: 'light' | 'dark' | string;
     bodyBg: string;
     textColor: string;
     cardBg: string;
-  };
+  }
 }
