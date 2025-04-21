@@ -13,24 +13,27 @@ export const sanitizeString = (str: string): string => {
  */
 export const sanitizeObject = <T extends Record<string, any>>(obj: T): T => {
   if (!obj || typeof obj !== 'object') return obj;
-  
+
   const result = { ...obj };
-  
+
   for (const key in result) {
     if (Object.prototype.hasOwnProperty.call(result, key)) {
       if (typeof result[key] === 'string') {
         result[key] = sanitizeString(result[key]) as T[Extract<keyof T, string>];
       } else if (Array.isArray(result[key])) {
-        result[key] = result[key].map((item: any) => 
-          typeof item === 'object' ? sanitizeObject(item) : 
-          typeof item === 'string' ? sanitizeString(item) : item
+        result[key] = result[key].map((item: any) =>
+          typeof item === 'object'
+            ? sanitizeObject(item)
+            : typeof item === 'string'
+              ? sanitizeString(item)
+              : item
         );
       } else if (typeof result[key] === 'object' && result[key] !== null) {
         result[key] = sanitizeObject(result[key]);
       }
     }
   }
-  
+
   return result;
 };
 
@@ -39,16 +42,34 @@ export const sanitizeObject = <T extends Record<string, any>>(obj: T): T => {
  */
 export const createSafeHtml = (html: string) => {
   if (!html) return { __html: '' };
-  
+
   const sanitizedHtml = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
-      'p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 
-      'br', 'span', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'blockquote', 'code', 'pre'
+      'p',
+      'b',
+      'i',
+      'em',
+      'strong',
+      'a',
+      'ul',
+      'ol',
+      'li',
+      'br',
+      'span',
+      'div',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'blockquote',
+      'code',
+      'pre',
     ],
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'class']
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
   });
-  
+
   return { __html: sanitizedHtml };
 };
 
@@ -58,14 +79,14 @@ export const createSafeHtml = (html: string) => {
  */
 export const safeHtml = (html: string) => {
   return {
-    dangerouslySetInnerHTML: createSafeHtml(html)
+    dangerouslySetInnerHTML: createSafeHtml(html),
   };
 };
 
 // we initialize DOMPurify with some hooks
 export const initializeDOMPurify = () => {
-    // we add a hook to add rel="noopener noreferrer" to all <a> tags
-    DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+  // we add a hook to add rel="noopener noreferrer" to all <a> tags
+  DOMPurify.addHook('afterSanitizeAttributes', (node) => {
     if (node.tagName === 'A' && node.hasAttribute('href')) {
       node.setAttribute('rel', 'noopener noreferrer');
       if (!node.getAttribute('target')) {

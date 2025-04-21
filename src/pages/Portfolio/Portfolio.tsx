@@ -126,7 +126,7 @@ export default function Portfolio() {
             className="notion-asset-object-fit"
             // src="https://www.canva.com/design/DAGZvqsfOYw/7-7c1qdzYGkuiglz7xbh6Q/view?embed"
             // shuyerda canvadagi portfolio pptni embed wilib qoshiyim kerak
-            src="" 
+            src=""
             title="ppt"
             frameBorder="0"
             allowFullScreen

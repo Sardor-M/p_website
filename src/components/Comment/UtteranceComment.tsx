@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface UtterancesProps {
+type UtterancesProps = {
   repo: string;
   issueTerm: string;
   theme: 'github-light' | 'github-dark';
-}
+};
 
 const Container = styled.div`
   width: 100%;
@@ -37,11 +37,12 @@ export default function UtterancesComment({ repo, issueTerm, theme }: Utterances
       script.async = true;
 
       script.onerror = () => {
-        console.error("Error loading Utterances script");
+        console.error('Error loading Utterances script');
         if (commentRef.current) {
-          commentRef.current.innerHTML = '<div style="color: red;">Error loading comments. Please try again later.</div>';
+          commentRef.current.innerHTML =
+            '<div style="color: red;">Error loading comments. Please try again later.</div>';
         }
-      }
+      };
 
       if (commentRef.current) {
         commentRef.current.appendChild(script);

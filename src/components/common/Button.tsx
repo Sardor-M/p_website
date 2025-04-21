@@ -4,14 +4,14 @@ import styled, { css } from 'styled-components';
 export type ButtonVariant = 'default' | 'outline' | 'ghost' | 'link';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   children: ReactNode;
   asChild?: boolean;
   href?: string;
   fullWidth?: boolean;
-}
+};
 
 const baseButtonStyles = css`
   display: inline-flex;

@@ -1,11 +1,11 @@
-import "styled-components";
+import 'styled-components';
 
-declare module "styled-components" {
-  export interface DefaultTheme {
+declare module 'styled-components' {
+  export type DefaultTheme = {
     name: string;
     mode: string;
     bodyBg: string;
     textColor: string;
     cardBg: string;
-  }
+  };
 }
