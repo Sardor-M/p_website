@@ -1,0 +1,15 @@
+{
+  "blog": {
+    "title": "Blogs",
+    "posts": {
+      "post1": {
+        "title": "Working with JSON & JSONB in PostgreSQL",
+        "subtitle": "Understanding JSON and JSONB data types in PostgreSQL"
+      },
+      "post2": {
+        "title": "Understanding the Basics of Redis",
+        "subtitle": "Redis's Key Data Structures Explained"
+      }
+    }
+  }
+}

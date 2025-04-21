@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import StyledCard from '@/components/Card/StyledCard';
 import { Link } from 'react-router-dom';
-import { BlogPost, DisplayBlogPost, Group} from '@/types/blog';
+import { BlogPost, DisplayBlogPost, Group } from '@/types/blog';
 import { themeColor } from '@/themes/color';
 import { useFilter } from '@/context/FilterContext';
 import { useFetch } from '@/hooks/useFetch/useFetch';
@@ -229,18 +229,18 @@ export default function Blog() {
 
       const normalizeBlogItem = (item: unknown): DisplayBlogPost => {
         const blogItem = item as Record<string, any>;
-      
+
         const topics = blogItem.metadata?.topics || [];
         const authorName = blogItem.metadata?.author?.name || 'Sardor-M';
-      
+
         const normalizedMetadata = {
           author: {
             name: authorName,
-            bio: blogItem.metadata?.author?.bio || ''
+            bio: blogItem.metadata?.author?.bio || '',
           },
-          topics: topics
+          topics: topics,
         };
-      
+
         return {
           id: String(blogItem.id),
           title: blogItem.title || '',
@@ -368,30 +368,3 @@ export default function Blog() {
     </Container>
   );
 }
-
-// const GROUPS: Group[] = [
-//   {
-//     name: "All",
-//     count: sample_fake_blogs.length,
-//     icon: "📑",
-//   },
-//   {
-//     name: "Frontend",
-//     count: sample_fake_blogs.filter((post) => post.topics.includes("Frontend"))
-//       .length,
-//     icon: "🎨",
-//   },
-//   {
-//     name: "Backend",
-//     count: sample_fake_blogs.filter((post) => post.topics.includes("Backend"))
-//       .length,
-//     icon: "⚙️",
-//   },
-//   {
-//     name: "Web Development",
-//     count: sample_fake_blogs.filter((post) =>
-//       post.topics.includes("Web Development")
-//     ).length,
-//     icon: "🌐",
-//   },
-// ];

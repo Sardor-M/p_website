@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { X } from "lucide-react";
-import { getThemeStyles } from "@/themes";
-import { themeColor } from "@/themes/color";
+import styled from 'styled-components';
+import { X } from 'lucide-react';
+import { getThemeStyles } from '@/themes';
+import { themeColor } from '@/themes/color';
 
 type TagsProps = {
   tags: string[];
@@ -31,20 +31,18 @@ const TagItem = styled.span<{ $isSelected: boolean }>`
   transition: all 0.2s ease;
   background-color: ${(props) =>
     props.$isSelected
-      ? props.theme.mode === "dark"
+      ? props.theme.mode === 'dark'
         ? themeColor.backgroundSpan.dark
         : themeColor.backgroundSpan.light
-      : "transparent"};
+      : 'transparent'};
   color: ${(props) => props.theme.textColor};
   border: 1px transparent
     ${(props) =>
-      props.theme.mode === "dark"
-        ? themeColor.borderSpan.dark
-        : themeColor.borderSpan.dark};
+      props.theme.mode === 'dark' ? themeColor.borderSpan.dark : themeColor.borderSpan.dark};
 
   &:hover {
     background-color: ${(props) =>
-      props.theme.mode === "dark"
+      props.theme.mode === 'dark'
         ? themeColor.backgroundSpan.dark
         : themeColor.backgroundSpan.light};
   }
@@ -58,17 +56,15 @@ const ResetButton = styled.button`
   border-radius: 10px;
   font-size: 0.875rem;
   background-color: transparent;
-  ${({ theme }) => getThemeStyles(theme, "text")};
+  ${({ theme }) => getThemeStyles(theme, 'text')};
   border: 1px
     ${(props) =>
-      props.theme.mode === "dark"
-        ? themeColor.borderSpan.dark
-        : themeColor.borderSpan.light};
+      props.theme.mode === 'dark' ? themeColor.borderSpan.dark : themeColor.borderSpan.light};
   transition: all 0.2s ease;
 
   &:hover {
     background-color: ${(props) =>
-      props.theme.mode === "dark"
+      props.theme.mode === 'dark'
         ? themeColor.backgroundSpan.dark
         : themeColor.backgroundSpan.light};
   }
@@ -79,11 +75,7 @@ const ResetButton = styled.button`
   }
 `;
 
-export default function BlogFilterTags({
-  tags,
-  selectedTag,
-  onTagSelect,
-}: TagsProps) {
+export default function BlogFilterTags({ tags, selectedTag, onTagSelect }: TagsProps) {
   return (
     <FilterContainer>
       <TagsWrapper>

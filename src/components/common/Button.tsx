@@ -21,7 +21,7 @@ const baseButtonStyles = css`
   font-weight: 500;
   transition: all 0.2s ease;
   text-decoration: none;
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -29,7 +29,7 @@ const baseButtonStyles = css`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px ${props => props.theme.focusRing || '#e5e7eb'};
+    box-shadow: 0 0 0 2px ${(props) => props.theme.focusRing || '#e5e7eb'};
   }
 `;
 
@@ -48,94 +48,93 @@ const sizeStyles = {
     padding: 1rem 1.5rem;
     font-size: 1.125rem;
     gap: 1rem;
-  `
+  `,
 };
 
 // variants
 const variantStyles = {
   default: css`
-    background-color: ${props => props.theme.primary || '#3b82f6'};
+    background-color: ${(props) => props.theme.primary || '#3b82f6'};
     color: white;
     border: none;
 
     &:hover:not(:disabled) {
-      background-color: ${props => props.theme.primaryHover || '#2563eb'};
+      background-color: ${(props) => props.theme.primaryHover || '#2563eb'};
     }
   `,
   outline: css`
     background-color: transparent;
-    border: 1.5px solid ${props => props.theme.border || '#e5e7eb'};
-    color: ${props => props.theme.text || '#374151'};
+    border: 1.5px solid ${(props) => props.theme.border || '#e5e7eb'};
+    color: ${(props) => props.theme.text || '#374151'};
 
     &:hover:not(:disabled) {
-      background-color: ${props => props.theme.hoverBg || '#f3f4f6'};
+      background-color: ${(props) => props.theme.hoverBg || '#f3f4f6'};
     }
   `,
   ghost: css`
     background-color: transparent;
     border: none;
-    color: ${props => props.theme.text || '#374151'};
+    color: ${(props) => props.theme.text || '#374151'};
 
     &:hover:not(:disabled) {
-      background-color: ${props => props.theme.hoverBg || '#f3f4f6'};
+      background-color: ${(props) => props.theme.hoverBg || '#f3f4f6'};
     }
   `,
   link: css`
     background-color: transparent;
     border: none;
-    color: ${props => props.theme.primary || '#3b82f6'};
+    color: ${(props) => props.theme.primary || '#3b82f6'};
     padding: 0;
 
     &:hover:not(:disabled) {
       text-decoration: underline;
     }
-  `
+  `,
 };
 
 // button
 const StyledButton = styled.button<ButtonProps>`
   ${baseButtonStyles}
-  ${props => sizeStyles[props.size || 'md']}
-  ${props => variantStyles[props.variant || 'default']}
-  ${props => props.fullWidth && css`width: 100%;`}
+  ${(props) => sizeStyles[props.size || 'md']}
+  ${(props) => variantStyles[props.variant || 'default']}
+  ${(props) =>
+    props.fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 // styled anchor tag
 const StyledAnchor = styled.a<ButtonProps>`
   ${baseButtonStyles}
-  ${props => sizeStyles[props.size || 'md']}
-  ${props => variantStyles[props.variant || 'default']}
-  ${props => props.fullWidth && css`width: 100%;`}
+  ${(props) => sizeStyles[props.size || 'md']}
+  ${(props) => variantStyles[props.variant || 'default']}
+  ${(props) =>
+    props.fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
-// 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
+//
+export const Button: React.FC<ButtonProps> = ({
+  children,
   variant = 'default',
   size = 'md',
   asChild,
   href,
-  ...props 
+  ...props
 }) => {
   if (asChild && href) {
     return (
-      <StyledAnchor
-        href={href}
-        variant={variant}
-        size={size}
-        {...props}
-      >
+      <StyledAnchor href={href} variant={variant} size={size} {...props}>
         {children}
       </StyledAnchor>
     );
   }
 
   return (
-    <StyledButton
-      variant={variant}
-      size={size}
-      {...props}
-    >
+    <StyledButton variant={variant} size={size} {...props}>
       {children}
     </StyledButton>
   );

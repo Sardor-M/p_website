@@ -60,8 +60,8 @@ export const themeColor = {
   redHighlightCol: '#E06C75',
 
   grayShades: {
-    lighter: '#F0F0F0',   
-    light: '#F5F5F5',     
-    borderLight: '#E0E0E0'
+    lighter: '#F0F0F0',
+    light: '#F5F5F5',
+    borderLight: '#E0E0E0',
   },
 };

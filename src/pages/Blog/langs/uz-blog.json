@@ -1,0 +1,15 @@
+{
+  "blog": {
+    "title": "Bloglar",
+    "posts": {
+      "post1": {
+        "title": "PostgreSQLda JSON & JSONB bilan ishlash",
+        "subtitle": "PostgreSQLda JSON va JSONB ma'lumot turlari bilan ishlash"
+      },
+      "post2": {
+        "title": "Understanding the basics of Redis",
+        "subtitle": "Redis's Key Data Structures Explained, Redisning Asosiy Ma'lumot Tuzilmalari"
+      }
+    }
+  }
+}
