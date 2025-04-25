@@ -84,7 +84,7 @@ const TagList = styled.div`
 const Tag = styled.span`
   padding: 0.25rem 0.8rem;
   font-size: 0.6rem;
-  border-radius: 12px;
+  border-radius: 6px;
   background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
   color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -110,7 +110,7 @@ const StyledLink = styled(Link)`
 
 const TopicSelect = styled.select`
   padding: 0.5rem 0.7rem;
-  border-radius: 13px;
+  border-radius: 12px;
   border: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#e5e5e5')};
   background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#fff')};
   color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#000')};
@@ -143,7 +143,7 @@ const SortButton = styled.button<{ active: boolean }>`
   border: none;
   background-color: ${({ active, theme }) =>
     active ? (theme.mode === 'dark' ? '#3a3a3a' : '#e5e5e5') : 'transparent'};
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
   color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#000')};
   font-size: 0.8rem;
