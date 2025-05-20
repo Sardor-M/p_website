@@ -1,13 +1,14 @@
 import { ReactNode, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Navbar from '../Common/Navbar';
-import StyledCard from '../Card/StyledCard';
+import StyledCard from '@/components/Card/StyledCard';
 import { GithubFilled, LinkedinFilled, MailFilled } from '@ant-design/icons';
 import { getHoverStyles, getThemeStyles } from '@/themes';
 import { useFilter } from '@/context/FilterContext';
 import { useLocation } from 'react-router-dom';
 import { CONFIG } from '@/config/site.config';
 import { media } from '@/themes/themes/media';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 type LayoutProps = {
   children: ReactNode;
@@ -36,18 +37,17 @@ const MaxWidthContainer = styled.div`
   flex-direction: column;
 
   ${media.mobile} {
-    padding: 5px;
+    padding: 0;
   }
 `;
 
 const LayoutContainer = styled.div`
   ${({ theme }) => getThemeStyles(theme, ['background', 'text'])};
   min-height: 100vh;
-  max-height: 100vh;
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
 
   ${media.mobile} {
@@ -64,7 +64,8 @@ const ContentWrapper = styled.div`
   flex: 1;
   position: relative;
   padding-top: 60px;
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
+  height: auto;
 
   ${media.mobile} {
     flex-direction: column;
@@ -95,15 +96,14 @@ const LeftSidebar = styled.aside`
   }
 `;
 
-const MainContent = styled.main`
-  position: fixed;
-  top: 80px;
-  left: 310px;
-  right: 360px;
+const MainContent = styled.main<{ isPortfolioPage: boolean }>`
+  position: ${(props) => (props.isPortfolioPage ? 'relative' : 'fixed')};
+  top: ${(props) => (props.isPortfolioPage ? '0' : '80px')};
+  left: ${(props) => (props.isPortfolioPage ? '0' : '310px')};
+  right: ${(props) => (props.isPortfolioPage ? '0' : '360px')};
   bottom: 0;
   overflow-y: auto;
-  padding: 1rem;
-
+  padding: ${(props) => (props.isPortfolioPage ? '40px 20px' : '1rem')};
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -116,18 +116,12 @@ const MainContent = styled.main`
     left: 0;
     right: 0;
     top: 0;
-    padding: 0;
-    padding-top: 30px;
-    margin-bottom: 0;
-    min-height: 50vh;
+    padding: ${(props) => (props.isPortfolioPage ? '20px 20px 40px' : '0')};
+    margin: 0;
+    min-height: ${(props) => (props.isPortfolioPage ? 'calc(100vh - 60px)' : '50vh')};
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-  }
-
-  ${media.tablet} {
-    left: 260px;
-    right: 260px;
   }
 `;
 
@@ -146,7 +140,6 @@ const RightSidebar = styled.aside`
     top: 0;
     padding: 2rem 1.5rem;
     margin-bottom: 0;
-    // overflow: visible;
   }
   ${media.tablet} {
     width: 270px;
@@ -330,106 +323,130 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
 
   return (
     <LayoutContainer>
-      <Navbar onToggleTheme={onToggleTheme} theme={theme} />
+      <Header onToggleTheme={onToggleTheme} theme={theme} />
       <MaxWidthContainer>
         <ContentWrapper>
-          {/* chap tomon sibebar (tags filter uchun) */}
-          {!isBlogDetailsPage && (!isMobile || (isMobile && selectedTag === '')) && (
-            <LeftSidebar>
-              <AnimatedSection delay={0.3}>
-                <TagSection>
-                  <TagTitle>📌 Tags</TagTitle>
-                  <TagList>
-                    {TAG_LIST.map((tag) => (
-                      <TagItem
-                        key={tag}
-                        onClick={() => handleTagsClick(tag)}
-                        className={tag === selectedTag ? 'active' : ''}
+          {['/about', '/projects', '/resume', '/contact'].includes(location.pathname) ? (
+            <MainContent
+              isPortfolioPage={true}
+              style={{
+                position: 'relative',
+                left: 0,
+                right: 0,
+                top: 0,
+                padding: '0',
+                minHeight: 'calc(100vh - 80px)',
+                width: '100%',
+              }}
+            >
+              <AnimatedSection delay={0.3}>{children}</AnimatedSection>
+            </MainContent>
+          ) : (
+            <>
+              {/* chap tomon sibebar (tags filter uchun) */}
+              {!isBlogDetailsPage && (!isMobile || (isMobile && selectedTag === '')) && (
+                <LeftSidebar>
+                  <AnimatedSection delay={0.3}>
+                    <TagSection>
+                      <TagTitle>📌 Tags</TagTitle>
+                      <TagList>
+                        {TAG_LIST.map((tag) => (
+                          <TagItem
+                            key={tag}
+                            onClick={() => handleTagsClick(tag)}
+                            className={tag === selectedTag ? 'active' : ''}
+                          >
+                            {' '}
+                            {tag}
+                          </TagItem>
+                        ))}
+                      </TagList>
+                    </TagSection>
+                  </AnimatedSection>
+                </LeftSidebar>
+              )}
+
+              {/* body content shu yerda  */}
+              <MainContent isPortfolioPage={false}>
+                <AnimatedSection delay={0.3}>{children}</AnimatedSection>
+              </MainContent>
+
+              {/* o'ng tomon contenti shu yerda */}
+              {!isBlogDetailsPage && (!isMobile || (isMobile && location.pathname === '/')) && (
+                <RightSidebar>
+                  <AnimatedSection delay={0.3}>
+                    <ProfileSection>
+                      <StyledCard
+                        key={'id'}
+                        style={{
+                          variant: 'light',
+                          padding: 'sm',
+                          size: 'sm',
+                        }}
                       >
-                        {' '}
-                        {tag}
-                      </TagItem>
-                    ))}
-                  </TagList>
-                </TagSection>
-              </AnimatedSection>
-            </LeftSidebar>
-          )}
-
-          {/* body content shu yerda  */}
-          <MainContent>
-            <AnimatedSection delay={0.3}>{children}</AnimatedSection>
-          </MainContent>
-
-          {/* o'ng tomon contenti shu yerda */}
-          {!isBlogDetailsPage && (!isMobile || (isMobile && location.pathname === '/')) && (
-            <RightSidebar>
-              <AnimatedSection delay={0.3}>
-                <ProfileSection>
-                  <StyledCard
-                    key={'id'}
-                    style={{
-                      variant: 'light',
-                      padding: 'sm',
-                      size: 'sm',
-                    }}
-                  >
-                    <ProfileImage src={CONFIG.profile.imageUrl} alt="Profile" />
-                    <ProfileName>{CONFIG.profile.username}</ProfileName>
-                    <ProfileBio>{CONFIG.profile.fullName}</ProfileBio>
-                    <TagContainer>
-                      <Tag>frontend</Tag>
-                      <Tag>react-js</Tag>
-                    </TagContainer>
-                  </StyledCard>
-                  <ContactTitle>🔗 Contact</ContactTitle>
-                  <StyledCard
-                    key={'id'}
-                    style={{
-                      variant: 'light',
-                      padding: 'sm',
-                      size: 'sm',
-                    }}
-                  >
-                    <ContactList>
-                      <ContactItem>
-                        <GithubFilled />
-                        <ContactItemLink
-                          href={CONFIG.profile.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          github
-                        </ContactItemLink>
-                      </ContactItem>
-                      <ContactItem>
-                        <LinkedinFilled />
-                        <ContactItemLink
-                          href={CONFIG.profile.linkedinUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          linkedin
-                        </ContactItemLink>
-                      </ContactItem>
-                      <ContactItem>
-                        <MailFilled />
-                        <ContactItemLink
-                          href={`mailto:${CONFIG.profile.email}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          gmail
-                        </ContactItemLink>
-                      </ContactItem>
-                    </ContactList>
-                  </StyledCard>
-                </ProfileSection>
-              </AnimatedSection>
-            </RightSidebar>
+                        <ProfileImage src={CONFIG.profile.imageUrl} alt="Profile" />
+                        <ProfileName>{CONFIG.profile.username}</ProfileName>
+                        <ProfileBio>{CONFIG.profile.fullName}</ProfileBio>
+                        <TagContainer>
+                          <Tag>frontend</Tag>
+                          <Tag>react-js</Tag>
+                        </TagContainer>
+                      </StyledCard>
+                      <ContactTitle>🔗 Contact</ContactTitle>
+                      <StyledCard
+                        key={'id'}
+                        style={{
+                          variant: 'light',
+                          padding: 'sm',
+                          size: 'sm',
+                        }}
+                      >
+                        <ContactList>
+                          <ContactItem>
+                            <GithubFilled />
+                            <ContactItemLink
+                              href={CONFIG.profile.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              github
+                            </ContactItemLink>
+                          </ContactItem>
+                          <ContactItem>
+                            <LinkedinFilled />
+                            <ContactItemLink
+                              href={CONFIG.profile.linkedinUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              linkedin
+                            </ContactItemLink>
+                          </ContactItem>
+                          <ContactItem>
+                            <MailFilled />
+                            <ContactItemLink
+                              href={`mailto:${CONFIG.profile.email}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              gmail
+                            </ContactItemLink>
+                          </ContactItem>
+                        </ContactList>
+                      </StyledCard>
+                    </ProfileSection>
+                  </AnimatedSection>
+                </RightSidebar>
+              )}
+            </>
           )}
         </ContentWrapper>
       </MaxWidthContainer>
+      {['/about', '/projects', '/resume', '/contact'].includes(location.pathname) ? (
+        <Footer isDarkMode={theme === 'dark'} />
+      ) : (
+        <div></div>
+      )}
     </LayoutContainer>
   );
 }

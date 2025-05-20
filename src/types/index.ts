@@ -1,6 +1,7 @@
 export type AppProps = {
   onToggleTheme: () => void;
   theme: 'light' | 'dark';
+  isDarkMode?: boolean;
 };
 
 export type FetchState<T> = {

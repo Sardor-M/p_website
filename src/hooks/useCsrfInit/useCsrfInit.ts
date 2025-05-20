@@ -1,5 +1,5 @@
-import { API_ENDPOINTS } from "@/api/api.config";
-import { useEffect, useState } from "react";
+import { API_ENDPOINTS } from '@/api/api.config';
+import { useEffect, useState } from 'react';
 
 export function useCsrfInit() {
   const [isLoaded, setIsLoaded] = useState(false);

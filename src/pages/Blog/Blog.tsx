@@ -344,7 +344,11 @@ export default function Blog() {
   };
 
   if (loading) {
-    return <Loading />;
+    return (
+      <Container style={{ position: 'relative', minHeight: 'calc(100vh - 80px)' }}>
+        <Loading />
+      </Container>
+    );
   }
 
   if (error) {

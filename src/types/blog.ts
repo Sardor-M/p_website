@@ -82,3 +82,7 @@ export type Group = {
   count: number;
   icon?: string;
 };
+
+export type DarkModeProps = {
+  isDarkMode: boolean;
+};

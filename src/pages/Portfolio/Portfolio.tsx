@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { ExternalLink } from 'lucide-react';
-import { getBorderStyles, getThemeStyles } from '@/themes';
-import { useTranslation } from 'react-i18next';
+import { ExternalLink, LinkIcon } from 'lucide-react';
 import { GithubFilled } from '@ant-design/icons';
+import { getThemeStyles } from '@/themes';
+import { useTranslation } from 'react-i18next';
 
 const PortfolioContainer = styled.div`
   padding: 2rem;
@@ -14,10 +14,10 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  padding-top: 18px;
+  padding-top: 15px;
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
   ${({ theme }) => getThemeStyles(theme, 'text')};
 `;
 const SectionDescription = styled.p`
@@ -33,14 +33,11 @@ const TagList = styled.div`
 `;
 
 const Tag = styled.span`
-  padding: 0.25rem 0.8rem;
-  font-size: 0.6rem;
-  border-radius: 6px;
-  margin: 0;
-  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
-  color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
-  text-align: center;
-  font-size: 12px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  background-color: ${({ theme }) => theme.tagBg};
+  color: ${({ theme }) => theme.tagText};
 `;
 
 const PortfolioViewport = styled.div`
@@ -50,7 +47,7 @@ const PortfolioViewport = styled.div`
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 2rem;
-  ${({ theme }) => getBorderStyles(theme)};
+  border: 1px solid ${({ theme }) => theme.borderColor || '#e5e5e5'};
 `;
 
 const DesignEmbed = styled.iframe`
@@ -63,15 +60,15 @@ const DesignEmbed = styled.iframe`
 const ProjectCards = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-top: 2rem;
 `;
 
 const ProjectCard = styled.div`
   padding: 1.5rem;
   border-radius: 8px;
-  ${({ theme }) => getThemeStyles(theme, 'background')};
-  ${({ theme }) => getBorderStyles(theme)};
+  background-color: ${({ theme }) => theme.cardBg || '#f9f9f9'};
+  border: 1px solid ${({ theme }) => theme.borderColor || '#e5e5e5'};
   transition:
     transform 0.2s,
     box-shadow 0.2s;
@@ -99,40 +96,6 @@ const ProjectLinks = styled.div`
   gap: 1rem;
 `;
 
-const LinkWrapper = styled.a`
-  display: flex-end;
-  align-items: center;
-  justify-content: center;
-  padding: 0.4rem 0.6rem;
-  border-radius: 8px;
-  background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#f5f5f5')};
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    background-color: ${({ theme }) => (theme.mode === 'dark' ? '#3D3D3D' : '#e8e8e8')};
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
-  }
-`;
-
-const GithubRepoIcon = styled(GithubFilled)`
-  font-size: 18px;
-  color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#333333')};
-`;
-
-const StyledExternalLink = styled(ExternalLink)`
-  width: 18px;
-  height: 18px;
-  color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#333333')};
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-center: center;
-  margin-bottom: 0.5rem;
-`;
-
 export default function Portfolio() {
   const { t } = useTranslation('portfolio');
 
@@ -140,16 +103,16 @@ export default function Portfolio() {
     {
       title: t('projects.blog.title'),
       description: t('projects.blog.description'),
-      tags: ['react', 'typeScript', 'styled-component', 'node js', 'socket.io'],
-      github: 'https://github.com/Sardor-M/tunnel_chat/tree/main/tunnel_chat_frontend',
-      demo: 'https://github.com/Sardor-M/tunnel_chat/tree/main/tunnel_chat_frontend',
+      tags: ['React', 'TypeScript', 'Node js', 'Tailwind CSS'],
+      github: 'http://github.com',
+      demo: 'http://demo.com',
     },
     {
       title: t('projects.sample.title'),
       description: t('projects.sample.description'),
-      tags: ['framer-motion', 'mapbox-gl', 'react-js', 'socket-io'],
-      github: 'https://github.com/Sardor-M/run_with_us/tree/main/frontend',
-      demo: 'https://github.com/Sardor-M/run_with_us/tree/main/frontend',
+      tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS'],
+      github: 'https://github.com/',
+      demo: 'https://demo.com',
     },
   ];
 
@@ -178,33 +141,25 @@ export default function Portfolio() {
         <ProjectCards>
           {projects.map((project) => (
             <ProjectCard key={project.title}>
-              <TitleRow>
-                <ProjectTitle>{project.title}</ProjectTitle>
-                <ProjectLinks>
-                  <LinkWrapper
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="View on GitHub"
-                  >
-                    <GithubRepoIcon />
-                  </LinkWrapper>
-                  <LinkWrapper
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="View Demo"
-                  >
-                    <StyledExternalLink />
-                  </LinkWrapper>
-                </ProjectLinks>
-              </TitleRow>
+              <ProjectTitle>{project.title}</ProjectTitle>
               <ProjectDescription>{project.description}</ProjectDescription>
               <TagList>
                 {project.tags.map((tag) => (
                   <Tag key={tag}>{tag}</Tag>
                 ))}
               </TagList>
+              <ProjectLinks>
+                <a href={project.github} target="_blank" rel="noopener noreferrer">
+                  <LinkIcon>
+                    <GithubFilled style={{ fontSize: '20px' }} />
+                  </LinkIcon>
+                </a>
+                <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                  <LinkIcon>
+                    <ExternalLink size={20} />
+                  </LinkIcon>
+                </a>
+              </ProjectLinks>
             </ProjectCard>
           ))}
         </ProjectCards>

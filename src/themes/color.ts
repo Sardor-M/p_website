@@ -65,4 +65,11 @@ export const themeColor = {
     light: '#F5F5F5',
     borderLight: '#E0E0E0',
   },
+
+  breakpoints: {
+    mobile: '@media (max-width: 640px)',
+    tablet: '@media (min-width: 641px) and (max-width: 1024px)',
+    laptop: '@media (min-width: 1025px) and (max-width: 1440px)',
+    desktop: '@media (min-width: 1441px)',
+  },
 };
