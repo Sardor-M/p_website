@@ -15,8 +15,14 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
 `;
 
 export const Spinner = styled.div`

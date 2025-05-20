@@ -9,7 +9,7 @@ export const cardSizes = {
   `,
   lg: css`
     min-width: 400px;
-  `
+  `,
 };
 
 export const cardPadding = {
@@ -24,7 +24,7 @@ export const cardPadding = {
   `,
   lg: css`
     padding: 1.5rem;
-  `
+  `,
 };
 
 export const cardVariants = {
@@ -33,12 +33,11 @@ export const cardVariants = {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   `,
   gray: css`
-    background-color: ${({theme}) => theme.mode === 'dark' ? '#282828' : 'white'};
-    color: ${({ theme }) => theme.mode === 'dark' ? 'white' : '#282828'};
+    background-color: ${({ theme }) => (theme.mode === 'dark' ? '#282828' : 'white')};
+    color: ${({ theme }) => (theme.mode === 'dark' ? 'white' : '#282828')};
   `,
   light: css`
-    background-color: ${({ theme }) => theme.mode === 'dark' ? '#383838' : '#FFFFFF'};
-    color: ${({ theme }) => theme.mode === 'dark' ? 'white' : '#282828'};
+    background-color: ${({ theme }) => (theme.mode === 'dark' ? '#383838' : '#FFFFFF')};
+    color: ${({ theme }) => (theme.mode === 'dark' ? 'white' : '#282828')};
   `,
 };
-

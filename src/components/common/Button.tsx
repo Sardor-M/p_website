@@ -51,7 +51,6 @@ const sizeStyles = {
   `,
 };
 
-// variants
 const variantStyles = {
   default: css`
     background-color: ${(props) => props.theme.primary || '#3b82f6'};
@@ -92,7 +91,6 @@ const variantStyles = {
   `,
 };
 
-// button
 const StyledButton = styled.button<ButtonProps>`
   ${baseButtonStyles}
   ${(props) => sizeStyles[props.size || 'md']}
@@ -104,7 +102,6 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 `;
 
-// styled anchor tag
 const StyledAnchor = styled.a<ButtonProps>`
   ${baseButtonStyles}
   ${(props) => sizeStyles[props.size || 'md']}

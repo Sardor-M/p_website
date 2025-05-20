@@ -1,11 +1,11 @@
 {
-    "navbar": {
-      "logo": "sardor-m blog",
-      "blogs": "Blogs",
-      "portfolio": "Portfolio",
-      "languages": {
-        "english": "en",
-        "uzbek": "uz"
-      }
+  "navbar": {
+    "logo": "sardor-m blog",
+    "blogs": "Blogs",
+    "about": "About Me",
+    "languages": {
+      "english": "en",
+      "uzbek": "uz"
     }
   }
+}
