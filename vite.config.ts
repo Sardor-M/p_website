@@ -4,7 +4,11 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/p_website_frontend/',
+  root: './',
+  server: {
+    port: 5173,
+    open: true,
+  },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
   },
