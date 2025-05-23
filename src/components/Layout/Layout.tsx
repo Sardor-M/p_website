@@ -6,9 +6,9 @@ import { getHoverStyles, getThemeStyles } from '@/themes';
 import { useFilter } from '@/context/FilterContext';
 import { useLocation } from 'react-router-dom';
 import { CONFIG } from '@/config/site.config';
-import { media } from '@/themes/themes/media';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { themeColor } from '@/themes/color';
 
 type LayoutProps = {
   children: ReactNode;
@@ -36,7 +36,7 @@ const MaxWidthContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     padding: 0;
   }
 `;
@@ -50,7 +50,7 @@ const LayoutContainer = styled.div`
   overflow: auto;
   position: relative;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     max-height: none;
     min-height: 100vh;
     height: auto;
@@ -67,7 +67,7 @@ const ContentWrapper = styled.div`
   min-height: calc(100vh - 60px);
   height: auto;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     flex-direction: column;
     min-height: 100vh;
     margin-bottom: 0;
@@ -84,14 +84,14 @@ const LeftSidebar = styled.aside`
   bottom: 0;
   overflow-y: auto;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     position: relative;
     width: 100%;
     top: 0;
     padding: 2rem 1.5rem;
     margin-bottom: 1rem;
   }
-  ${media.tablet} {
+  ${themeColor.breakpoints.tablet} {
     width: 250px;
   }
 `;
@@ -111,7 +111,7 @@ const MainContent = styled.main<{ isPortfolioPage: boolean }>`
   }
   scrollbar-width: none;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     position: relative;
     left: 0;
     right: 0;
@@ -134,14 +134,14 @@ const RightSidebar = styled.aside`
   bottom: 0;
   overflow-y: auto;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     position: relative;
     width: 100%;
     top: 0;
     padding: 2rem 1.5rem;
     margin-bottom: 0;
   }
-  ${media.tablet} {
+  ${themeColor.breakpoints.tablet} {
     width: 270px;
   }
 `;
@@ -153,7 +153,7 @@ const TagSection = styled.section`
   padding-right: 1rem;
   cursor: pointer;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     padding-left: 0;
     margin: 0.5rem auto;
   }
@@ -194,7 +194,7 @@ const ProfileSection = styled.section`
   margin-top: 30px;
   max-width: 280px;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     max-width: 100%;
     margin-top: 15px;
   }

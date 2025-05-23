@@ -472,23 +472,11 @@ export default function ContactMe({ isDarkMode }: DarkModeProps) {
                 isDarkMode={isDarkMode}
               />
             </FormGroup>
-
-            {/* <div
-              ref={submitButtonRef}
-              style={{
-                transitionDelay: '700ms',
-                transform: 'translateY(20px)',
-                opacity: 0,
-                transition: 'transform 0.6s ease, opacity 0.6s ease',
-              }}
-              className="visible"
-            > */}
             <div ref={submitButtonRef}>
               <SubmitButton type="submit" isDarkMode={isDarkMode} disabled={isSubmitting}>
                 {isSubmitting ? 'Sending Message...' : 'Send Message'}
               </SubmitButton>
             </div>
-
             <SuccessMessage isDarkMode={isDarkMode} visible={isSubmitted}>
               Your message has been sent successfully. I'll get back to you soon!
             </SuccessMessage>
