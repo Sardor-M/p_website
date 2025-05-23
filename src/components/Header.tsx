@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Sun, Moon, Languages, X, Menu, FileTextIcon, BookIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { getHoverStyles, getThemeStyles } from '@/themes';
-import { media } from '@/themes/themes/media';
 import { Button } from '@/components/Common/Button';
 import { GithubOutlined, LinkedinOutlined } from '@ant-design/icons';
+import { themeColor } from '@/themes/color';
 
 const commonButtonStyles = `
   padding: 0.5rem 1rem;
@@ -16,7 +16,8 @@ const commonButtonStyles = `
 `;
 
 const Nav = styled.nav<{ isPortfolioPage?: boolean; isScrolled?: boolean }>`
-  padding: 16px 80px;
+  padding: 14px 90px 14px 75px;
+  display: flex;
   ${({ theme, isPortfolioPage, isScrolled }) =>
     isPortfolioPage
       ? `background-color: ${
@@ -40,7 +41,7 @@ const Nav = styled.nav<{ isPortfolioPage?: boolean; isScrolled?: boolean }>`
     isPortfolioPage ? 'none' : '0 1px 2px 0 rgba(0, 0, 0, 0.05)'};
   transition: all 0.3s ease;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     padding: 10px 0px;
   }
 `;
@@ -59,10 +60,10 @@ const NavContainer = styled.div<{ isPortfolioPage?: boolean }>`
       padding: 0px 0px;
     `}
 
-  ${media.tablet} {
+  ${themeColor.breakpoints.tablet} {
     padding: 0 40px;
   }
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     padding: 0 16px;
     justify-content: space-between;
   }
@@ -75,8 +76,9 @@ const Logo = styled(Link)`
   ${({ theme }) => getThemeStyles(theme, 'text')};
   text-decoration: none;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     font-size: 1.1rem;
+    margin-left: 0.5rem;
   }
 `;
 
@@ -88,11 +90,11 @@ const NavList = styled.ul<{ isOpen?: boolean; isPortfolioMode?: boolean }>`
   padding: 0;
   margin-left: 4rem;
 
-  ${media.tablet} {
+  ${themeColor.breakpoints.tablet} {
     margin-left: 2rem;
   }
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     position: fixed;
     top: 60px;
     left: 0;
@@ -161,7 +163,7 @@ const NavItem = styled(Link)<{ isPortfolioItem?: boolean; $isDarkMode?: boolean 
     display: ${(props) => (props.isPortfolioItem ? 'none' : 'block')};
   }
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     padding: ${(props) => (props.isPortfolioItem ? '0.75rem 1rem' : '1rem 4px')};
     width: 100%;
     display: block;
@@ -185,8 +187,8 @@ const NavLinksPortfolio = styled.div`
   gap: 10px;
   align-items: center;
 
-  ${media.mobile} {
-    gap: 15px;
+  ${themeColor.breakpoints.mobile} {
+    padding-right;
     justify-content: flex-end;
     width: 100%;
   }
@@ -198,14 +200,16 @@ const Controls = styled.div`
   align-items: center;
   z-index: 1001;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     gap: 0.1rem;
     margin-left: auto;
   }
 `;
 
 const ThemeToggle = styled(Button)`
-  ${commonButtonStyles};
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  transition: all 0.2s ease-out;
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -213,7 +217,19 @@ const ThemeToggle = styled(Button)`
   ${({ theme }) => getThemeStyles(theme, 'text')};
   z-index: 1001;
 
-  ${media.mobile} {
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? getThemeStyles(theme, 'background') : getThemeStyles(theme, 'hover')};
+
+    svg {
+      color: ${({ theme }) => (theme.mode === 'dark' ? 'black' : '#282828')};
+      transition: all 0.2s ease-out;
+      transform: scale(1.1);
+    }
+  }
+
+  ${themeColor.breakpoints.mobile} {
     padding: 0.5rem;
     width: 36px;
     height: 36px;
@@ -221,12 +237,23 @@ const ThemeToggle = styled(Button)`
 `;
 
 const LanguageDropdown = styled.div`
-  padding: 0.5rem 0.7rem;
+  padding: 0.4rem 0.7rem;
   border-radius: 14px;
   position: relative;
   ${({ theme }) => getThemeStyles(theme, 'text')};
 
-  ${media.mobile} {
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? getThemeStyles(theme, 'background') : getThemeStyles(theme, 'hover')};
+
+    svg {
+      color: ${({ theme }) => (theme.mode === 'dark' ? 'black' : '#282828')};
+      transition: all 0.2s ease-out;
+      transform: scale(1.1);
+    }
+
+  ${themeColor.breakpoints.mobile} {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -242,7 +269,7 @@ const LanguageButton = styled(Button)`
   justify-content: center;
   transition: all 0.2s ease-out;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     padding: 0.5rem;
     width: 36px;
     height: 36px;
@@ -250,6 +277,9 @@ const LanguageButton = styled(Button)`
 
   &:hover {
     ${({ theme }) => getHoverStyles(theme)};
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? getThemeStyles(theme, 'background') : getThemeStyles(theme, 'hover')};
+    color: ${({ theme }) => (theme.mode === 'dark' ? 'black' : '#282828')};
     transform: translateY(-2px);
   }
 `;
@@ -259,7 +289,7 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
   top: 100%;
   right: 0;
   ${({ theme }) => getThemeStyles(theme, ['background', 'text'])};
-  border: 1px solid ${({ theme }) => getThemeStyles(theme, 'border')};
+  border: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF1A' : '#0000001A')};
   border-radius: 14px;
   padding: 0.5rem;
   display: ${({ $isVisible }) => ($isVisible ? 'flex' : 'none')};
@@ -270,22 +300,23 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
 `;
 
 const LanguageOptionButton = styled(Button)<{ $isActive?: boolean }>`
-  ${({ theme }) => getThemeStyles(theme, 'text')};
-  ${commonButtonStyles};
-  border-radius: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
   transition: all 0.2s ease-out;
   text-transform: uppercase;
   font-size: 0.875rem;
   width: 100%;
   text-align: left;
+  border: none;
   background: ${({ theme, $isActive }) =>
-    $isActive ? (theme.mode === 'dark' ? '#333333' : '#F0F0F0') : 'transparent'};
-  color: ${({ theme, $isActive }) =>
-    $isActive && theme.mode === 'dark' ? '#FFFFFF' : getThemeStyles(theme, 'text')};
+    $isActive ? (theme.mode === 'dark' ? '#ffffff1a' : '#0000001a') : 'transparent'};
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : getThemeStyles(theme, 'text'))};
 
   &:hover {
-    ${({ theme }) => getHoverStyles(theme)};
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'};
     transform: translateX(2px);
+    color: ${({ theme }) => (theme.mode === 'dark' ? 'black' : '#282828')};
   }
 `;
 
@@ -296,7 +327,7 @@ const MenuButton = styled(Button)`
   margin-left: 0.5rem;
   z-index: 1001;
 
-  ${media.mobile} {
+  ${themeColor.breakpoints.mobile} {
     display: flex;
     padding: 0.5rem 0.7rem;
     border-radius: 14px;
@@ -459,6 +490,9 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
                 <LinkedinOutlined size={20} />
                 <span className="link-text">LinkedIn</span>
               </IconLink>
+              <ThemeToggle onClick={onToggleTheme} variant="ghost">
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </ThemeToggle>
             </NavLinksPortfolio>
           ) : (
             <>
@@ -485,7 +519,7 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
                   onMouseLeave={handleMouseLeave}
                 >
                   <LanguageButton variant="ghost">
-                    <Languages size={20} />
+                    <Languages size={19} />
                   </LanguageButton>
                   <LanguageOptions $isVisible={showLanguages}>
                     <LanguageOptionButton

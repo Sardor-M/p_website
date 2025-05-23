@@ -4,7 +4,7 @@ import { AppProps } from '@/types';
 import Blog from '@/pages/Blog/Blog';
 import BlogDetails from '@/pages/Blog/BlogDetails/BlogDetails';
 import { FilterProvider } from '@/context/FilterContext';
-import Resume from '@/pages/Resume/Resume';
+// import Resume from '@/pages/Resume/Resume';
 import RootPortfolio from '@/pages/About';
 import { themeColor } from '@/themes/color';
 import styled from 'styled-components';
@@ -29,9 +29,7 @@ const Section = styled.section`
 const ResumeWrapper = (props: { isDarkMode: boolean }) => {
   return (
     <PageContainer>
-      <Section id="resume">
-        <Resume isDarkMode={props.isDarkMode} />
-      </Section>
+      <Section id="resume">{/* <Resume isDarkMode={props.isDarkMode} /> */}</Section>
     </PageContainer>
   );
 };

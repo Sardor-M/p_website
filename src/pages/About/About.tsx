@@ -2,8 +2,8 @@ import { themeColor } from '@/themes/color';
 import styled from 'styled-components';
 import { DarkModeProps } from '@/types/blog';
 import { ClockCircleOutlined, CodeOutlined, GithubOutlined } from '@ant-design/icons';
-import { useEffect, useRef, useState } from 'react';
 import { FaRunning } from 'react-icons/fa';
+import { useAboutAnimation } from '@/hooks/useAnimations/useAboutAnimation';
 
 const AboutMeContainer = styled.section<{ isDarkMode: boolean }>`
   background-color: ${(props) =>
@@ -12,37 +12,42 @@ const AboutMeContainer = styled.section<{ isDarkMode: boolean }>`
 `;
 
 const ContentWrapper = styled.div`
-  max-width: 1000px;
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px;
-
-  ${themeColor.breakpoints.mobile} {
-    padding: 0 12px;
-  }
+  margin-bottom: 0;
 `;
 
-const FullHeightSection = styled.section<{ isDarkMode: boolean; isVisible?: boolean }>`
+const FullHeightSection = styled.section<{ isDarkMode: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 20px;
-  padding-top: 30px;
-  opacity: ${(props) => (props.isVisible ? 1 : 0)};
-  transform: translateY(${(props) => (props.isVisible ? 0 : '50px')});
+  padding: 8px;
+  padding-top: 10px;
+  transform: translateY(20px);
+  opacity: 0;
   transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `;
 
 const SecondSection = styled(FullHeightSection)`
   border-radius: 10px;
+  padding-top: 10px;
+  margin-top: 20px;
+  background-color: ${(props) =>
+    props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
 `;
 
 const StatsContainer = styled.div`
@@ -57,6 +62,12 @@ const IntroSubtitle = styled.p<{ isDarkMode: boolean }>`
   letter-spacing: 3px;
   margin-bottom: 20px;
   color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)')};
+
+  ${themeColor.breakpoints.mobile} {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
 `;
 
 const IntroTitle = styled.h1<{ isDarkMode: boolean }>`
@@ -67,6 +78,8 @@ const IntroTitle = styled.h1<{ isDarkMode: boolean }>`
 
   ${themeColor.breakpoints.mobile} {
     font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 10px;
   }
 `;
 
@@ -88,6 +101,11 @@ const SkillTagsContainer = styled.div`
   justify-content: center;
   gap: 12px;
   margin-bottom: 20px;
+
+  ${themeColor.breakpoints.mobile} {
+    gap: 6px;
+    margin-bottom: 15px;
+  }
 `;
 
 const SkillTag = styled.span<{ isDarkMode: boolean }>`
@@ -96,33 +114,27 @@ const SkillTag = styled.span<{ isDarkMode: boolean }>`
   font-size: 0.8rem;
   background: ${(props) =>
     props.isDarkMode
-      ? 'linear-gradient(135deg, rgba(64, 120, 242, 0.2), rgba(64, 120, 242, 0.1))'
-      : 'linear-gradient(135deg, rgba(64, 120, 242, 0.1), rgba(235, 235, 235, 0.8))'};
+      ? 'linear-gradient(135deg, #4078f233, #4078f21a)'
+      : 'linear-gradient(135deg, #4078f21a, #ebebebcc)'};
   color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
   transition: all 0.3s ease;
-  border: 1px solid
-    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)')};
-  box-shadow: 0 2px 5px
-    ${(props) => (props.isDarkMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.05)')};
-
+  border: 1px solid ${(props) => (props.isDarkMode ? '#ffffff1a' : '#0000000d')};
+  box-shadow: 0 2px 5px ${(props) => (props.isDarkMode ? '#00000033' : '#0000000d')};
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 8px
-      ${(props) => (props.isDarkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)')};
+    box-shadow: 0 4px 8px ${(props) => (props.isDarkMode ? '#0000004d' : '#0000001a')};
     background: ${(props) =>
       props.isDarkMode
-        ? 'linear-gradient(135deg, rgba(64, 120, 242, 0.3), rgba(64, 120, 242, 0.15))'
-        : 'linear-gradient(135deg, rgba(64, 120, 242, 0.15), rgba(235, 235, 235, 0.9))'};
+        ? 'linear-gradient(135deg, #4078f24d, #4078f226)'
+        : 'linear-gradient(135deg, #4078f226, #ebebebe6)'};
   }
-
   ${themeColor.breakpoints.mobile} {
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    margin: 0 4px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    max-width: 100px;
-    text-align: flex-start;
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    margin: 1px;
+    border-radius: 8px;
+    max-width: 90px;
+    text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -152,7 +164,9 @@ const StatsCard = styled.div<{ isDarkMode: boolean; accentColor?: string }>`
   border-radius: 10px;
   border: 1px solid
     ${(props) => (props.isDarkMode ? themeColor.border.dark : themeColor.border.light)};
-  transition: all 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -218,60 +232,46 @@ const StatDescription = styled.p<{ isDarkMode: boolean }>`
 `;
 
 export default function AboutMe({ isDarkMode }: DarkModeProps) {
-  // const sectionHeadingRef = useElementAnimation<HTMLDivElement>();
-  // const pageTitleRef = useElementAnimation<HTMLDivElement>();
-  // const bioSectionRef = useElementAnimation<HTMLDivElement>();
-  // const educationSectionRef = useElementAnimation<HTMLDivElement>();
-
-  const useScrollVisibility = () => {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (ref.current) observer.unobserve(ref.current);
-          }
-        },
-        {
-          threshold: 0.1,
-          rootMargin: '0px',
-        }
-      );
-
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
-
-      return () => {
-        if (ref.current) observer.unobserve(ref.current);
-      };
-    }, []);
-
-    return { ref, isVisible };
-  };
-
-  const firstSection = useScrollVisibility();
-  const secondSection = useScrollVisibility();
+  const { sectionHeadingRef, pageTitleRef, aboutTextRef, skillsRef, statisticsRef } =
+    useAboutAnimation(isDarkMode);
 
   return (
     <AboutMeContainer isDarkMode={isDarkMode}>
       <ContentWrapper>
         <FullHeightSection
-          ref={firstSection.ref as React.RefObject<HTMLElement>}
+          ref={sectionHeadingRef}
           isDarkMode={isDarkMode}
-          isVisible={firstSection.isVisible}
+          style={{ transitionDelay: '0ms' }}
         >
           <IntroSubtitle isDarkMode={isDarkMode}>
             PUSHING THE BOUNDARIES OF DIGITAL EXPERIENCES
           </IntroSubtitle>
+        </FullHeightSection>
+
+        <FullHeightSection
+          ref={pageTitleRef}
+          isDarkMode={isDarkMode}
+          style={{ transitionDelay: '200ms' }}
+        >
           <IntroTitle isDarkMode={isDarkMode}>Hey, I'm Sardor</IntroTitle>
+        </FullHeightSection>
+
+        <FullHeightSection
+          ref={aboutTextRef}
+          isDarkMode={isDarkMode}
+          style={{ transitionDelay: '300ms' }}
+        >
           <IntroDescription isDarkMode={isDarkMode}>
             I love to build impactful full-stack projects with modern technologies and
             high-performance.
           </IntroDescription>
+        </FullHeightSection>
+
+        <FullHeightSection
+          ref={skillsRef}
+          isDarkMode={isDarkMode}
+          style={{ transitionDelay: '400ms' }}
+        >
           <SkillTagsContainer>
             <SkillTag isDarkMode={isDarkMode}>React</SkillTag>
             <SkillTag isDarkMode={isDarkMode}>TypeScript</SkillTag>
@@ -284,21 +284,17 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
         </FullHeightSection>
 
         <SecondSection
-          ref={secondSection.ref as React.RefObject<HTMLElement>}
+          ref={statisticsRef}
           isDarkMode={isDarkMode}
-          isVisible={secondSection.isVisible}
+          style={{ transitionDelay: '500ms' }}
         >
           <StatsContainer>
             <StatsCardGrid>
               <StatsCard
                 isDarkMode={isDarkMode}
                 accentColor="#00c853"
-                style={{
-                  opacity: secondSection.isVisible ? 1 : 0,
-                  transform: secondSection.isVisible ? 'translateY(0)' : 'translateY(30px)',
-                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                  transitionDelay: '0.3s',
-                }}
+                style={{ transitionDelay: '600ms' }}
+                className="visible"
               >
                 <div
                   style={{
@@ -322,12 +318,7 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
               <StatsCard
                 isDarkMode={isDarkMode}
                 accentColor="#FFB300"
-                style={{
-                  opacity: secondSection.isVisible ? 1 : 0,
-                  transform: secondSection.isVisible ? 'translateY(0)' : 'translateY(30px)',
-                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                  transitionDelay: '0.4s',
-                }}
+                style={{ transitionDelay: '800ms' }}
               >
                 <div
                   style={{
@@ -342,7 +333,6 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
                   <ClockCircleOutlined style={{ width: '15px', height: '15px' }} />
                   <StatTitle isDarkMode={isDarkMode}>Code Hours</StatTitle>
                 </div>
-
                 <StatValueLarge isDarkMode={isDarkMode}>2500+</StatValueLarge>
                 <StatDescription isDarkMode={isDarkMode}>
                   Hours of programming experience
@@ -352,12 +342,7 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
               <StatsCard
                 isDarkMode={isDarkMode}
                 accentColor="#FF6B6B"
-                style={{
-                  opacity: secondSection.isVisible ? 1 : 0,
-                  transform: secondSection.isVisible ? 'translateY(0)' : 'translateY(30px)',
-                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                  transitionDelay: '0.5s',
-                }}
+                style={{ transitionDelay: '1000ms' }}
               >
                 <div
                   style={{
@@ -377,15 +362,11 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
                   Commits and contributions to personal projects
                 </StatDescription>
               </StatsCard>
+
               <StatsCard
                 isDarkMode={isDarkMode}
                 accentColor="#4078f2"
-                style={{
-                  opacity: secondSection.isVisible ? 1 : 0,
-                  transform: secondSection.isVisible ? 'translateY(0)' : 'translateY(30px)',
-                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                  transitionDelay: '0.2s',
-                }}
+                style={{ transitionDelay: '1100ms' }}
               >
                 <div
                   style={{

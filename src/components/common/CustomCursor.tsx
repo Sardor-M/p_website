@@ -1,30 +1,32 @@
-import { media } from '@/themes/themes/media';
+import { themeColor } from '@/themes/color';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-type CursorDotProps =  {
+type CursorDotProps = {
   x: number;
   y: number;
   visible: boolean;
-}
+};
 
 const CursorDot = styled.div<CursorDotProps>`
   position: fixed;
   top: 0;
   left: 0;
-  width: 12px; 
+  width: 12px;
   height: 12px;
   background-color: #3083dc; /* Always blue */
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(${(props) => props.x}px, ${(props) => props.y}px);
-  transition: transform 0.1s ease-out, opacity 0.2s ease;
+  transition:
+    transform 0.1s ease-out,
+    opacity 0.2s ease;
   box-shadow: 0 0 10px 1px rgba(48, 131, 220, 0.7); /* Blue shadow */
   opacity: ${(props) => (props.visible ? 1 : 0)};
   display: none;
 
-  ${media.desktop} {
+  ${themeColor.breakpoints.laptop} {
     display: block;
   }
 `;
@@ -39,20 +41,20 @@ const CustomCursor = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       requestAnimationFrame(() => {
         setPosition({ x: e.clientX, y: e.clientY });
         if (!isVisible) setIsVisible(true);
       });
     };
-    
+
     const handleMouseLeave = () => {
       setIsVisible(false);
     };
-    
+
     const handleMouseEnter = () => {
       setIsVisible(true);
     };

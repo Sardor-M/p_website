@@ -1,22 +1,27 @@
 import styled from 'styled-components';
 import AboutMe from '@/pages/About/About';
-import Projects from '@/pages/Portfolio/Projects';
 import ContactMe from '@/pages/Contact/Contact';
 import { themeColor } from '@/themes/color';
 import { DarkModeProps } from '@/types/blog';
+import Projects from '@/pages/Portfolio/Projects';
 
 const PageContainer = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 0 16px;
+
+  ${themeColor.breakpoints.mobile} {
+    padding: 0 20px;
+  }
 `;
 
 const Section = styled.section`
-  padding: 80px 50px 60px;
+  padding: 80px 0 60px;
   min-height: 100vh;
   scroll-margin-top: 70px;
 
   ${themeColor.breakpoints.mobile} {
-    padding: 30px 2px 2px;
+    padding: 30px 0 20px;
   }
 `;
 

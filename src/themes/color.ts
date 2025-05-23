@@ -67,8 +67,8 @@ export const themeColor = {
   },
 
   breakpoints: {
-    mobile: '@media (max-width: 640px)',
-    tablet: '@media (min-width: 641px) and (max-width: 1024px)',
+    mobile: '@media (max-width: 768px)',
+    tablet: '@media (min-width: 768px) and (max-width: 1024px)',
     laptop: '@media (min-width: 1025px) and (max-width: 1440px)',
     desktop: '@media (min-width: 1441px)',
   },

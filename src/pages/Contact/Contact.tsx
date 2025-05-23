@@ -1,25 +1,23 @@
 import { Button } from '@/components/Common/Button';
+import { useContactAnimation } from '@/hooks/useAnimations/useContactAnimation';
 import { themeColor } from '@/themes/color';
 import { DarkModeProps } from '@/types/blog';
-import { useElementAnimation } from '@/utils/useAnimation';
 import { MessageOutlined } from '@ant-design/icons';
 import { MapIcon } from 'lucide-react';
 import React, { useState } from 'react';
-
 import styled from 'styled-components';
 
 const ContactContainer = styled.section<{ isDarkMode: boolean }>`
-  background-color: ${(props) => (props.isDarkMode ? '#1A1A1A' : themeColor.background.light)};
   color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-
-  ${themeColor.breakpoints.mobile} {
-    padding: 30px 2px 2px;
-  }
 `;
 
 const ContentWrapper = styled.div`
-  max-width: 1200px;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
@@ -28,14 +26,28 @@ const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
   letter-spacing: 2px;
   margin-bottom: 20px;
   color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-  opacity: 0.7;
-  transform: translateY(20px);
   opacity: 0;
+  transform: translateY(20px);
   transition: all 0.6s ease;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  align-self: left;
 
   &.visible {
     transform: translateY(0);
     opacity: 0.7;
+  }
+
+  ${themeColor.breakpoints.mobile} {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    font-size: 0.8rem;
+    align-self: left;
+    justify-self: left;
   }
 `;
 
@@ -48,6 +60,11 @@ const PageTitle = styled.h1<{ isDarkMode: boolean }>`
   opacity: 0;
   transition: all 0.6s ease;
   transition-delay: 0.2s;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  align-self: left;
 
   &.visible {
     transform: translateY(0);
@@ -55,8 +72,13 @@ const PageTitle = styled.h1<{ isDarkMode: boolean }>`
   }
 
   ${themeColor.breakpoints.mobile} {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-self: left;
+    justify-self: left;
   }
 `;
 
@@ -72,11 +94,11 @@ const ContactGrid = styled.div`
 
   ${themeColor.breakpoints.mobile} {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 10px;
   }
 `;
 
-const ContactInfo = styled.div`
+const ContactInfo = styled.div<{ isDarkMode: boolean }>`
   transform: translateY(20px);
   opacity: 0;
   transition: all 0.6s ease;
@@ -85,6 +107,24 @@ const ContactInfo = styled.div`
   &.visible {
     transform: translateY(0);
     opacity: 1;
+  }
+
+  ${themeColor.breakpoints.mobile} {
+    display: flex;
+    border-radius: 8px;
+    border: 0.8px solid
+      ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)')};
+    background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#FFFFFF')};
+    color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
+    padding: 20px;
+    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: 0 4px 12px
+    text-align: left;
+    width: 100%;
   }
 `;
 
@@ -101,13 +141,17 @@ const ContactText = styled.p<{ isDarkMode: boolean }>`
 `;
 
 const ContactMethods = styled.div`
-  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 `;
 
 const ContactMethod = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 25px;
+  width: 100%;
 `;
 
 const ContactIcon = styled.div<{ isDarkMode: boolean }>`
@@ -123,7 +167,15 @@ const ContactIcon = styled.div<{ isDarkMode: boolean }>`
   }
 `;
 
-const ContactDetails = styled.div``;
+const ContactDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+  text-align: left;
+  margin-left: 10px;
+`;
 
 const ContactLabel = styled.div<{ isDarkMode: boolean }>`
   font-size: 0.9rem;
@@ -137,32 +189,45 @@ const ContactValue = styled.div<{ isDarkMode: boolean }>`
 `;
 
 const ContactForm = styled.form<{ isDarkMode: boolean }>`
+  padding: 24px 30px;
+  border-radius: 8px;
   transform: translateY(20px);
   opacity: 0;
-  transition: all 0.6s ease;
-  transition-delay: 0.4s;
+  transition:
+    transform 0.6s ease,
+    opacity 0.6s ease;
+  border: 0.8px solid
+    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)')};
+  background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#FFFFFF')};
 
   &.visible {
     transform: translateY(0);
     opacity: 1;
   }
 
-  padding: 24px 30px;
-  background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#F9F9F9')};
-  border: 1px solid
-    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)')};
-  border-radius: 8px;
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  }
 `;
 
 const FormGroup = styled.div`
   margin-bottom: 25px;
-`;
+  transform: translateY(20px);
+  opacity: 0;
+  transition:
+    transform 0.6s ease,
+    opacity 0.6s ease;
 
+  &.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
 const Label = styled.label<{ isDarkMode: boolean }>`
   display: block;
   margin-bottom: 8px;
   font-size: 0.9rem;
-  color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.7)' : themeColor.text.light)};
+  color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.8)')};
 `;
 
 const Input = styled.input<{ isDarkMode: boolean }>`
@@ -170,19 +235,19 @@ const Input = styled.input<{ isDarkMode: boolean }>`
   padding: 12px;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid
-    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : themeColor.border.light)};
+  border: 0.3px solid
+    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};
   background-color: ${(props) => (props.isDarkMode ? '#252525' : '#FFFFFF')};
-  color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
-  transition: all 0.3s ease;
+  color: ${(props) => (props.isDarkMode ? '#FFFFFF' : '#000000')};
+  transition: border-color 0.3s ease;
 
   &::placeholder {
-    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.3)')};
+    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.5)')};
   }
 
   &:focus {
     outline: none;
-    border-color: ${(props) => (props.isDarkMode ? '#9D76FF' : themeColor.background.light)};
+    border-color: #9d76ff !important;
   }
 
   ${themeColor.breakpoints.mobile} {
@@ -195,21 +260,21 @@ const TextArea = styled.textarea<{ isDarkMode: boolean }>`
   padding: 16px;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid
-    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : themeColor.border.light)};
+  border: 0.3px solid
+    ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};
   background-color: ${(props) => (props.isDarkMode ? '#252525' : '#FFFFFF')};
-  color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
+  color: ${(props) => (props.isDarkMode ? '#FFFFFF' : '#000000')};
   min-height: 150px;
   resize: vertical;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease;
 
   &::placeholder {
-    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.3)')};
+    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.5)')};
   }
 
   &:focus {
     outline: none;
-    border-color: ${(props) => (props.isDarkMode ? '#9D76FF' : themeColor.background.light)};
+    border-color: #9d76ff !important;
   }
 
   ${themeColor.breakpoints.mobile} {
@@ -224,7 +289,7 @@ const SubmitButton = styled(Button).attrs(() => ({
   fullWidth: true,
 }))<{ isDarkMode: boolean }>`
   border-color: ${(props) => (props.isDarkMode ? '#9D76FF' : props.theme.border)};
-  color: ${(props) => (props.isDarkMode ? '#9D76FF' : props.theme.text)};
+  color: #ffffff;
   padding: 10px;
   background-color: #9d76ff;
   border-radius: 8px;
@@ -249,17 +314,25 @@ const SubmitButton = styled(Button).attrs(() => ({
 const SuccessMessage = styled.div<{ isDarkMode: boolean; visible: boolean }>`
   padding: 15px;
   border-radius: 4px;
-  background-color: rgb(235, 248, 241);
-  color: #00c853;
+  background-color: ${(props) =>
+    props.isDarkMode ? 'rgba(0, 200, 83, 0.1)' : 'rgba(0, 200, 83, 0.1)'};
+  color: ${(props) => (props.isDarkMode ? '#00C853' : '#00C853')};
+  font-size: 0.9rem;
   margin-top: 20px;
   display: ${(props) => (props.visible ? 'block' : 'none')};
 `;
 
 export default function ContactMe({ isDarkMode }: DarkModeProps) {
-  const sectionHeadingRef = useElementAnimation<HTMLHeadingElement>();
-  const pageTitleRef = useElementAnimation<HTMLHeadingElement>();
-  const contactInfoRef = useElementAnimation<HTMLDivElement>();
-  const contactFormRef = useElementAnimation<HTMLFormElement>();
+  const {
+    sectionHeadingRef,
+    pageTitleRef,
+    contactInfoRef,
+    contactFormRef,
+    nameGroupRef,
+    emailGroupRef,
+    messageGroupRef,
+    submitButtonRef,
+  } = useContactAnimation(isDarkMode);
 
   const [formState, setFormState] = useState({
     name: '',
@@ -295,22 +368,30 @@ export default function ContactMe({ isDarkMode }: DarkModeProps) {
 
       setTimeout(() => {
         setIsSubmitted(false);
-      }, 5000);
-    }, 1500);
+      }, 3000);
+    }, 1000);
   };
 
   return (
     <ContactContainer isDarkMode={isDarkMode}>
       <ContentWrapper>
-        <SectionHeading ref={sectionHeadingRef} isDarkMode={isDarkMode}>
+        <SectionHeading
+          ref={sectionHeadingRef}
+          isDarkMode={isDarkMode}
+          style={{ transitionDelay: '0ms' }}
+        >
           GET IN TOUCH
         </SectionHeading>
-        <PageTitle ref={pageTitleRef} isDarkMode={isDarkMode}>
+        <PageTitle ref={pageTitleRef} isDarkMode={isDarkMode} style={{ transitionDelay: '100ms' }}>
           Let's Connect
         </PageTitle>
 
         <ContactGrid>
-          <ContactInfo ref={contactInfoRef} className={contactInfoRef.current?.className}>
+          <ContactInfo
+            ref={contactInfoRef}
+            style={{ transitionDelay: '200ms' }}
+            isDarkMode={isDarkMode}
+          >
             <ContactText isDarkMode={isDarkMode}>
               I'm always interested in hearing about new projects and opportunities. Whether you
               have a question or just want to say hi, I'll try my best to get back to you!
@@ -341,11 +422,11 @@ export default function ContactMe({ isDarkMode }: DarkModeProps) {
 
           <ContactForm
             ref={contactFormRef}
-            className={contactFormRef.current?.className}
             onSubmit={handleSubmit}
             isDarkMode={isDarkMode}
+            style={{ transitionDelay: '300ms' }}
           >
-            <FormGroup>
+            <FormGroup ref={nameGroupRef} style={{ transitionDelay: '400ms' }}>
               <Label htmlFor="name" isDarkMode={isDarkMode}>
                 Name
               </Label>
@@ -361,7 +442,7 @@ export default function ContactMe({ isDarkMode }: DarkModeProps) {
               />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup ref={emailGroupRef} style={{ transitionDelay: '500ms' }}>
               <Label htmlFor="email" isDarkMode={isDarkMode}>
                 Email
               </Label>
@@ -377,7 +458,7 @@ export default function ContactMe({ isDarkMode }: DarkModeProps) {
               />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup ref={messageGroupRef} style={{ transitionDelay: '600ms' }}>
               <Label htmlFor="message" isDarkMode={isDarkMode}>
                 Message
               </Label>
@@ -392,9 +473,21 @@ export default function ContactMe({ isDarkMode }: DarkModeProps) {
               />
             </FormGroup>
 
-            <SubmitButton type="submit" isDarkMode={isDarkMode} disabled={isSubmitting}>
-              {isSubmitting ? 'Sending Message...' : 'Send Message'}
-            </SubmitButton>
+            {/* <div
+              ref={submitButtonRef}
+              style={{
+                transitionDelay: '700ms',
+                transform: 'translateY(20px)',
+                opacity: 0,
+                transition: 'transform 0.6s ease, opacity 0.6s ease',
+              }}
+              className="visible"
+            > */}
+            <div ref={submitButtonRef}>
+              <SubmitButton type="submit" isDarkMode={isDarkMode} disabled={isSubmitting}>
+                {isSubmitting ? 'Sending Message...' : 'Send Message'}
+              </SubmitButton>
+            </div>
 
             <SuccessMessage isDarkMode={isDarkMode} visible={isSubmitted}>
               Your message has been sent successfully. I'll get back to you soon!
