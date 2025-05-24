@@ -79,7 +79,7 @@ const LeftSidebar = styled.aside`
   width: 350px;
   padding: 2rem 1rem;
   position: fixed;
-  left: 0;
+  left: 5%;
   top: 60px;
   bottom: 0;
   overflow-y: auto;
@@ -129,7 +129,7 @@ const RightSidebar = styled.aside`
   width: 400px;
   padding: 2rem 1rem;
   position: fixed;
-  right: 0;
+  right: 5%;
   top: 60px;
   bottom: 0;
   overflow-y: auto;

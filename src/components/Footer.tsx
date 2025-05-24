@@ -5,7 +5,6 @@ const FooterWrapper = styled.div<{ isDarkMode: boolean }>`
   width: 100%;
   position: relative;
   padding: 20px;
-  margin-top: 40px;
 `;
 
 const FooterContainer = styled.footer<{ isDarkMode: boolean }>`

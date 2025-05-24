@@ -15,8 +15,8 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100vh;
+  width: 80vh;
+  height: 90vh;
   position: fixed;
   top: 0;
   left: 0;

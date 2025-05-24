@@ -16,7 +16,7 @@ const commonButtonStyles = `
 `;
 
 const Nav = styled.nav<{ isPortfolioPage?: boolean; isScrolled?: boolean }>`
-  padding: 14px 90px 14px 75px;
+  padding: 14px 155px 14px 155px;
   display: flex;
   ${({ theme, isPortfolioPage, isScrolled }) =>
     isPortfolioPage
