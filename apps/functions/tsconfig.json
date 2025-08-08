@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "outDir": "lib",
+    "sourceMap": true,
+    "target": "es2021"
+  },
+  "compileOnSave": true,
+  "include": ["src"]
+}
