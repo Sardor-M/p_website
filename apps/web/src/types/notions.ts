@@ -1,4 +1,4 @@
-import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { PageObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
 type ParagraphBlock = {
     id: string;
@@ -92,3 +92,71 @@ export type NotionBlockType =
     | TagsBlock;
 
 export type NotionBlockProps = { block: NotionBlockType };
+
+export type NotionProperty = {
+    id: string;
+    type: string;
+};
+
+export type TitleProperty = NotionProperty & {
+    type: 'title';
+    title: RichTextItemResponse[];
+};
+
+export type RichTextProperty = NotionProperty & {
+    type: 'rich_text';
+    rich_text: RichTextItemResponse[];
+};
+
+export type DateProperty = NotionProperty & {
+    type: 'date';
+    date: {
+        start: string;
+        end?: string;
+    } | null;
+};
+
+export type MultiSelectProperty = NotionProperty & {
+    type: 'multi_select';
+    multi_select: Array<{
+        id: string;
+        name: string;
+        color: string;
+    }>;
+};
+
+export type CheckboxProperty = NotionProperty & {
+    type: 'checkbox';
+    checkbox: boolean;
+};
+
+export type NotionPageProperties = {
+    Title?: TitleProperty;
+    Subtitle?: RichTextProperty;
+    Date?: DateProperty;
+    CoverImage?: RichTextProperty;
+    Tags?: MultiSelectProperty;
+    Topic?: MultiSelectProperty;
+    Slug?: RichTextProperty;
+    Introduction?: RichTextProperty;
+    'Read Time'?: RichTextProperty;
+    Author?: RichTextProperty;
+    AuthorBio?: RichTextProperty;
+    Published?: CheckboxProperty;
+};
+
+export type NotionPage = PageObjectResponse & {
+    properties: NotionPageProperties;
+};
+
+export type NotionDatabaseResponse = {
+    results: NotionPage[];
+    next_cursor?: string;
+    has_more: boolean;
+};
+
+export type NotionBlocksResponse = {
+    results: NotionBlockType[];
+    next_cursor?: string;
+    has_more: boolean;
+};

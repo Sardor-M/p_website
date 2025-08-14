@@ -1,3 +1,14 @@
+import {
+    DateProperty,
+    MultiSelectProperty,
+    NotionBlockType,
+    NotionDatabaseResponse,
+    NotionPage,
+    RichTextProperty,
+    TitleProperty,
+} from '@/types/notions';
+import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+
 const NOTION_API_KEY = import.meta.env.VITE_NOTION_API_SECRET;
 const NOTION_VERSION = '2022-06-28';
 const DATABASE_ID = import.meta.env.VITE_NOTION_BLOG_DATABASE_ID;
@@ -33,7 +44,7 @@ export type NotionPost = {
 };
 
 export type NotionPostWithContent = NotionPost & {
-    content: any[];
+    content: NotionBlockType[];
     metadata: {
         author: {
             name: string;
@@ -43,34 +54,62 @@ export type NotionPostWithContent = NotionPost & {
     };
 };
 
-async function notionApiCall(endpoint: string, options: RequestInit = {}) {
+export async function batchApiCalls(
+    requests: Array<{ endpoint: string; method?: string; body?: NotionBlockType }>
+) {
+    const promises = requests.map((req) =>
+        notionApiCall(req.endpoint, {
+            method: req.method || 'GET',
+            body: req.body ? JSON.stringify(req.body) : undefined,
+        })
+    );
+
+    return Promise.allSettled(promises);
+}
+
+export async function notionApiCall(endpoint: string, options: RequestInit = {}) {
     const isProduction = !import.meta.env.DEV;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-    if (isProduction && import.meta.env.VITE_FIREBASE_FUNCTIONS_URL) {
-        const functionUrl = `${API_BASE}`;
+    try {
+        if (isProduction && import.meta.env.VITE_FIREBASE_FUNCTIONS_URL) {
+            const functionUrl = `${API_BASE}`;
 
-        return fetch(functionUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                endpoint,
-                method: options.method || 'GET',
-                body: options.body ? JSON.parse(options.body as string) : undefined,
-            }),
-        });
-    } else {
-        /* in dev mode, we use Vite proxy from vite.config.ts */
-        return fetch(`${API_BASE}${endpoint}`, {
-            ...options,
-            headers: {
-                Authorization: `Bearer ${NOTION_API_KEY}`,
-                'Notion-Version': NOTION_VERSION,
-                'Content-Type': 'application/json',
-                ...(options.headers || {}),
-            },
-        });
+            const response = await fetch(functionUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    endpoint,
+                    method: options.method || 'GET',
+                    body: options.body ? JSON.parse(options.body as string) : undefined,
+                }),
+                signal: controller.signal,
+            });
+
+            clearTimeout(timeoutId);
+            return response;
+        } else {
+            /* in dev mode, we use Vite proxy from vite.config.ts */
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers: {
+                    Authorization: `Bearer ${NOTION_API_KEY}`,
+                    'Notion-Version': NOTION_VERSION,
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {}),
+                },
+                signal: controller.signal,
+            });
+
+            clearTimeout(timeoutId);
+            return response;
+        }
+    } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
     }
 }
 
@@ -92,16 +131,15 @@ export async function getPosts(): Promise<NotionPost[]> {
                         direction: 'descending',
                     },
                 ],
+                page_size: 50,
             }),
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Notion API error:', errorText);
             throw new Error(`Failed to fetch posts: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data: NotionDatabaseResponse = await response.json();
         const results = data.results || data;
 
         if (!Array.isArray(results)) {
@@ -109,9 +147,8 @@ export async function getPosts(): Promise<NotionPost[]> {
             return [];
         }
 
-        return results.map((page: any) => {
+        return results.map((page: NotionPage) => {
             const properties = page.properties;
-
             return {
                 id: page.id,
                 title: extractTitle(properties.Title),
@@ -166,7 +203,7 @@ export async function getPostBySlug(slug: string): Promise<NotionPostWithContent
             return null;
         }
 
-        const data = await response.json();
+        const data: NotionDatabaseResponse = await response.json();
         const results = data.results || data;
 
         if (!Array.isArray(results) || results.length === 0) {
@@ -221,8 +258,8 @@ export async function getPostById(pageId: string): Promise<NotionPostWithContent
     }
 }
 
-async function getPageBlocks(pageId: string): Promise<any[]> {
-    const blocks: any[] = [];
+async function getPageBlocks(pageId: string): Promise<NotionBlockType[]> {
+    const blocks: NotionBlockType[] = [];
     let cursor: string | undefined = undefined;
     const maxIterations = 5;
     let iterations = 0;
@@ -258,7 +295,7 @@ async function getPageBlocks(pageId: string): Promise<any[]> {
 }
 
 /* helper method to map page to post */
-function mapPageToPost(page: any): NotionPost {
+function mapPageToPost(page: NotionPage): NotionPost {
     const properties = page.properties || {};
 
     return {
@@ -280,46 +317,34 @@ function mapPageToPost(page: any): NotionPost {
     };
 }
 
-function extractTitle(property: any): string {
+function extractTitle(property: TitleProperty | undefined): string {
     if (!property) return '';
     if (property.type === 'title' && property.title) {
-        return property.title.map((text: any) => text.plain_text).join('');
-    }
-    if (Array.isArray(property)) {
-        return property.map((text: any) => text.plain_text || '').join('');
+        return property.title.map((text: RichTextItemResponse) => text.plain_text).join('');
     }
     return '';
 }
 
-function extractRichText(property: any): string {
+function extractRichText(property: RichTextProperty | undefined): string {
     if (!property) return '';
     if (property.type === 'rich_text' && property.rich_text) {
-        return property.rich_text.map((text: any) => text.plain_text).join('');
-    }
-    if (Array.isArray(property)) {
-        return property.map((text: any) => text.plain_text || '').join('');
+        return property.rich_text.map((text: RichTextItemResponse) => text.plain_text).join('');
     }
     return '';
 }
 
-function extractDate(property: any): string {
+function extractDate(property: DateProperty | undefined): string {
     if (!property) return new Date().toISOString();
     if (property.type === 'date' && property.date) {
         return property.date.start || new Date().toISOString();
     }
-    if (typeof property === 'string') {
-        return property;
-    }
     return new Date().toISOString();
 }
 
-function extractMultiSelect(property: any): string[] {
+function extractMultiSelect(property: MultiSelectProperty | undefined): string[] {
     if (!property) return [];
     if (property.type === 'multi_select' && property.multi_select) {
-        return property.multi_select.map((item: any) => item.name);
-    }
-    if (Array.isArray(property)) {
-        return property.map((item: any) => item.name || item).filter(Boolean);
+        return property.multi_select.map((item) => item.name);
     }
     return [];
 }

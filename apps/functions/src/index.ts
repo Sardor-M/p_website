@@ -6,8 +6,8 @@ const notionApiSecret = defineSecret('NOTION_API_SECRET');
 const redisUrl = defineSecret('REDIS_URL');
 
 const NOTION_VERSION = '2022-06-28';
-const CACHE_TTL = 3600; /* 1 hour */
-const LONG_CACHE_TTL = 86400; /* 24 hours for lists */
+const CACHE_TTL = 7200;
+const LONG_CACHE_TTL = 172800;
 
 type NotionProxyRequestBody = {
     endpoint: string;
@@ -22,23 +22,17 @@ const getRedisClient = (): Redis | null => {
     try {
         if (!redis && redisUrl.value()) {
             redis = new Redis(redisUrl.value(), {
-                maxRetriesPerRequest: 3,
+                maxRetriesPerRequest: 1,
                 retryStrategy: (times) => {
-                    if (times > 3) return null;
-                    return Math.min(times * 200, 2000);
+                    if (times > 1) return null;
+                    return Math.min(times * 100, 1000);
                 },
-                connectTimeout: 10000,
+                connectTimeout: 3000,
+                lazyConnect: true /* we only connect when we need to */,
+                keepAlive: 60000,
                 family: 4,
-                enableReadyCheck: true,
-                autoResubscribe: true,
-                autoResendUnfulfilledCommands: true,
-                reconnectOnError: (err) => {
-                    const targetError = 'READONLY';
-                    if (err.message.includes(targetError)) {
-                        return true;
-                    }
-                    return false;
-                },
+                enableReadyCheck: false,
+                db: 0,
             });
 
             redis.on('error', (err) => {
@@ -65,10 +59,16 @@ export const notionApiV2 = onRequest(
         secrets: [notionApiSecret, redisUrl],
         cors: true,
         maxInstances: 10,
+        concurrency: 100,
+        memory: '256MiB',
+        timeoutSeconds: 60,
     },
     async (request, response) => {
-        /* we set cache headers for CDN */
-        response.set('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+        response.set(
+            'Cache-Control',
+            'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800'
+            /* 7 days stale-while-revalidate process */
+        );
 
         if (request.method === 'OPTIONS') {
             response.status(204).send('');
@@ -166,7 +166,7 @@ export const notionApiV2 = onRequest(
     }
 );
 
-/*  we clear cache endpoint - for manual cache invalidation */
+/* we clear cache endpoint - for manual cache invalidation */
 export const clearNotionCache = onRequest(
     {
         secrets: [redisUrl],
