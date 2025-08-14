@@ -1,38 +1,88 @@
 import { themeColor } from '@/themes/color';
 import { DarkModeProps } from '@/types/blog';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import html2pdf from 'html2pdf.js';
+import { DownloadIcon } from 'lucide-react';
+
+type PDFOptions = {
+    margin: number[];
+    filename: string;
+    image: { type: string; quality: number };
+    html2canvas: {
+        scale: number;
+        useCORS: boolean;
+        letterRendering: boolean;
+        logging: boolean;
+    };
+    jsPDF: {
+        unit: string;
+        format: string;
+        orientation: string;
+    };
+    pagebreak: { mode: string[] };
+};
+
+const PDF_STYLES = {
+    FONT_SCALE: 0.75,
+    MARGINS: {
+        SMALL: '2px',
+        MEDIUM: '4px',
+        LARGE: '8px',
+        XLARGE: '10px',
+    },
+    FONT_SIZES: {
+        TITLE: '20px',
+        SECTION_HEADING: '10px',
+        SECTION_TITLE: '14px',
+        EXPERIENCE_TITLE: '12px',
+        COMPANY: '11px',
+        DATE: '10px',
+        DESCRIPTION: '10px',
+        SKILL_ITEM: '9px',
+        SKILL_CATEGORY: '11px',
+    },
+    LINE_HEIGHT: {
+        COMPACT: '1.3',
+    },
+} as const;
 
 const ResumeContainer = styled.section<{ isDarkMode: boolean }>`
     background-color: ${(props) =>
         props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    padding: 0;
 
     ${themeColor.breakpoints.mobile} {
-        padding: 20px 15px 15px;
+        padding: 0;
     }
 `;
 
 const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     opacity: 0.7;
     transform: translateY(20px);
-    opacity: 0;
     transition: all 0.6s ease;
 
     &.visible {
         transform: translateY(0);
         opacity: 0.7;
     }
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.75rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+    }
 `;
 
 const PageTitle = styled.h1<{ isDarkMode: boolean }>`
-    font-size: 3.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 40px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     transform: translateY(20px);
     opacity: 0;
@@ -45,7 +95,237 @@ const PageTitle = styled.h1<{ isDarkMode: boolean }>`
     }
 
     ${themeColor.breakpoints.mobile} {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+`;
+
+const ResumeActions = styled.div`
+    display: flex;
+    justify-content: flex-end;
+
+    ${themeColor.breakpoints.mobile} {
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+`;
+
+const DownloadButton = styled.button<{ isDarkMode: boolean }>`
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: ${(props) =>
+        props.isDarkMode ? themeColor.text.dark : themeColor.text.light};
+    color: ${(props) =>
+        props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        opacity: 0.85;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 4px 10px;
+        font-size: 0.85rem;
+        width: auto;
+        gap: 6px;
+        margin-left: auto;
+    }
+`;
+
+const ResumeSection = styled.div`
+    margin-bottom: 35px;
+
+    ${themeColor.breakpoints.mobile} {
+        margin-bottom: 22px;
+    }
+`;
+
+const ResumeSectionTitle = styled.h3<{ isDarkMode: boolean }>`
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid
+        ${(props) => (props.isDarkMode ? themeColor.border.dark : themeColor.border.light)};
+    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    font-weight: 600;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom-width: 1px;
+    }
+`;
+
+const ExperienceItem = styled.div`
+    margin-bottom: 28px;
+    padding-left: 1px;
+
+    ${themeColor.breakpoints.mobile} {
+        margin-bottom: 20px;
+        padding-left: 0;
+    }
+`;
+
+const ExperienceHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: baseline;
+
+    ${themeColor.breakpoints.mobile} {
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 8px;
+    }
+`;
+
+const ExperienceTitle = styled.h4<{ isDarkMode: boolean }>`
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.95rem;
+        margin-bottom: 3px;
+    }
+`;
+
+const ExperienceCompany = styled.h5<{ isDarkMode: boolean }>`
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 3px 0;
+    color: ${(props) => (props.isDarkMode ? '#9ca3af' : '#6b7280')};
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.85rem;
+        margin: 2px 0;
+    }
+`;
+
+const ExperienceDate = styled.span<{ isDarkMode: boolean }>`
+    font-size: 0.9rem;
+    color: ${(props) =>
+        props.isDarkMode ? `${themeColor.text.dark}99` : `${themeColor.text.light}99`};
+    font-style: normal;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.8rem;
+        margin-top: 2px;
+        display: block;
+    }
+`;
+
+const ExperienceDescription = styled.p<{ isDarkMode: boolean }>`
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 8px 0;
+    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    opacity: 0.9;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 6px 0;
+        text-align: justify;
+    }
+`;
+
+const SkillsGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding: 10px 0;
+
+    ${themeColor.breakpoints.tablet} {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 5px 0;
+    }
+`;
+
+const SkillCategory = styled.div<{ isDarkMode: boolean }>`
+    margin-bottom: 0;
+
+    ${themeColor.breakpoints.mobile} {
+        background: ${(props) =>
+            props.isDarkMode ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)'};
+        padding: 10px;
+        border-radius: 8px;
+    }
+`;
+
+const SkillCategoryTitle = styled.h4<{ isDarkMode: boolean }>`
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid
+            ${(props) => (props.isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)')};
+    }
+`;
+
+const SkillsList = styled.ul`
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    ${themeColor.breakpoints.mobile} {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+    }
+`;
+
+const SkillItem = styled.li<{ isDarkMode: boolean }>`
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    display: flex;
+    align-items: center;
+    opacity: 0.85;
+
+    &:before {
+        content: '▸';
+        margin-right: 8px;
+        color: ${(props) => (props.isDarkMode ? '#9ca3af' : '#6b7280')};
+        font-size: 0.8rem;
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+
+        &:before {
+            margin-right: 5px;
+            font-size: 0.7rem;
+        }
     }
 `;
 
@@ -61,219 +341,202 @@ const ResumeContent = styled.div`
         transform: translateY(0);
         opacity: 1;
     }
-`;
-
-const ResumeActions = styled.div`
-    display: flex;
-    gap: 20px;
-    margin-bottom: 40px;
 
     ${themeColor.breakpoints.mobile} {
-        flex-direction: column;
-        gap: 15px;
-    }
-`;
-
-const DownloadButton = styled.a<{ isDarkMode: boolean }>`
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: ${(props) =>
-        props.isDarkMode ? themeColor.text.dark : themeColor.text.light};
-    color: ${(props) =>
-        props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
-    padding: 12px 24px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-
-    &:hover {
-        opacity: 0.9;
-        transform: translateY(-2px);
-    }
-
-    svg {
-        width: 18px;
-        height: 18px;
-    }
-`;
-
-const PrintButton = styled.button<{ isDarkMode: boolean }>`
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: transparent;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-    padding: 12px 24px;
-    border-radius: 4px;
-    border: 1px solid
-        ${(props) => (props.isDarkMode ? themeColor.border.dark : themeColor.border.light)};
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-        background-color: ${(props) =>
-            props.isDarkMode ? themeColor.hover.dark : themeColor.hover.light};
-    }
-
-    svg {
-        width: 18px;
-        height: 18px;
-    }
-`;
-
-const ResumeSection = styled.div`
-    margin-bottom: 40px;
-`;
-
-const ResumeSectionTitle = styled.h3<{ isDarkMode: boolean }>`
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid
-        ${(props) => (props.isDarkMode ? themeColor.border.dark : themeColor.border.light)};
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-`;
-
-const ExperienceItem = styled.div`
-    margin-bottom: 30px;
-`;
-
-const ExperienceHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-    ${themeColor.breakpoints.mobile} {
-        flex-direction: column;
-        gap: 5px;
-    }
-`;
-
-const ExperienceTitle = styled.h4<{ isDarkMode: boolean }>`
-    font-size: 1.2rem;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-`;
-
-const ExperienceCompany = styled.h5<{ isDarkMode: boolean }>`
-    font-size: 1rem;
-    font-weight: 600;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-`;
-
-const ExperienceDate = styled.span<{ isDarkMode: boolean }>`
-    font-size: 0.9rem;
-    color: ${(props) =>
-        props.isDarkMode ? `${themeColor.text.dark}99` : `${themeColor.text.light}99`};
-`;
-
-const ExperienceDescription = styled.p<{ isDarkMode: boolean }>`
-    font-size: 1rem;
-    line-height: 1.6;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-`;
-
-const SkillsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-
-    ${themeColor.breakpoints.tablet} {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    ${themeColor.breakpoints.mobile} {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const SkillCategory = styled.div`
-    margin-bottom: 20px;
-`;
-
-const SkillCategoryTitle = styled.h4<{ isDarkMode: boolean }>`
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-`;
-
-const SkillsList = styled.ul`
-    list-style-type: none;
-    padding: 0;
-`;
-
-const SkillItem = styled.li<{ isDarkMode: boolean }>`
-    font-size: 0.95rem;
-    margin-bottom: 5px;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-    display: flex;
-    align-items: center;
-
-    &:before {
-        content: '•';
-        margin-right: 8px;
-        color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+        padding: 0;
     }
 `;
 
 export default function Resume({ isDarkMode }: DarkModeProps) {
-    const sectionHeadingRef = useElementAnimation<HTMLHeadingElement>();
-    const pageTitleRef = useElementAnimation<HTMLHeadingElement>();
-    const resumeContentRef = useElementAnimation<HTMLDivElement>();
+    const resumeRef = useRef<HTMLDivElement>(null);
 
-    const handlePrint = () => {
-        window.print();
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const elements = document.querySelectorAll(
+                '.resume-heading, .resume-title, .resume-content'
+            );
+            elements.forEach((el) => el.classList.add('visible'));
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const getPDFOptions = (): PDFOptions => ({
+        margin: [5, 10, 5, 10],
+        filename: 'sardor_resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+            scale: 2,
+            useCORS: true,
+            letterRendering: true,
+            logging: false,
+        },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait',
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+    });
+
+    const prepareElementForPDF = (element: HTMLElement): HTMLElement => {
+        const clonedElement = element.cloneNode(true) as HTMLElement;
+
+        const actionsDiv = clonedElement.querySelector('.resume-actions');
+        actionsDiv?.remove();
+
+        clonedElement.style.padding = '0';
+        clonedElement.style.backgroundColor = isDarkMode ? '#1a1a1a' : '#ffffff';
+
+        return clonedElement;
+    };
+
+    const applyGlobalFontScaling = (element: HTMLElement): void => {
+        const allElements = element.querySelectorAll('*');
+        allElements.forEach((el: Element) => {
+            const htmlEl = el as HTMLElement;
+            const computedStyle = window.getComputedStyle(htmlEl);
+            const fontSize = parseFloat(computedStyle.fontSize);
+
+            if (fontSize) {
+                htmlEl.style.fontSize = `${fontSize * PDF_STYLES.FONT_SCALE}px`;
+            }
+
+            if (htmlEl.style.marginBottom) {
+                htmlEl.style.marginBottom = PDF_STYLES.MARGINS.MEDIUM;
+            }
+            if (htmlEl.style.marginTop) {
+                htmlEl.style.marginTop = PDF_STYLES.MARGINS.SMALL;
+            }
+            if (htmlEl.style.paddingBottom) {
+                htmlEl.style.paddingBottom = PDF_STYLES.MARGINS.SMALL;
+            }
+        });
+    };
+
+    const applyHeaderStyles = (element: HTMLElement): void => {
+        const title = element.querySelector('h1') as HTMLHeadingElement | null;
+        if (title) {
+            title.style.fontSize = PDF_STYLES.FONT_SIZES.TITLE;
+            title.style.marginBottom = PDF_STYLES.MARGINS.XLARGE;
+        }
+
+        const sectionHeading = element.querySelector('h2') as HTMLHeadingElement | null;
+        if (sectionHeading) {
+            sectionHeading.style.fontSize = PDF_STYLES.FONT_SIZES.SECTION_HEADING;
+            sectionHeading.style.marginBottom = PDF_STYLES.MARGINS.LARGE;
+        }
+
+        element.querySelectorAll('h3').forEach((title: Element) => {
+            const h3Element = title as HTMLHeadingElement;
+            h3Element.style.fontSize = PDF_STYLES.FONT_SIZES.SECTION_TITLE;
+            h3Element.style.marginBottom = PDF_STYLES.MARGINS.LARGE;
+            h3Element.style.paddingBottom = PDF_STYLES.MARGINS.MEDIUM;
+        });
+
+        element.querySelectorAll('h4').forEach((title: Element) => {
+            const h4Element = title as HTMLHeadingElement;
+            h4Element.style.fontSize = PDF_STYLES.FONT_SIZES.EXPERIENCE_TITLE;
+            h4Element.style.marginBottom = PDF_STYLES.MARGINS.SMALL;
+        });
+
+        element.querySelectorAll('h5').forEach((company: Element) => {
+            const h5Element = company as HTMLHeadingElement;
+            h5Element.style.fontSize = PDF_STYLES.FONT_SIZES.COMPANY;
+            h5Element.style.margin = '0';
+        });
+    };
+
+    const applyContentStyles = (element: HTMLElement): void => {
+        element.querySelectorAll('span').forEach((date: Element) => {
+            const spanElement = date as HTMLSpanElement;
+            spanElement.style.fontSize = PDF_STYLES.FONT_SIZES.DATE;
+        });
+
+        element.querySelectorAll('p').forEach((desc: Element) => {
+            const pElement = desc as HTMLParagraphElement;
+            pElement.style.fontSize = PDF_STYLES.FONT_SIZES.DESCRIPTION;
+            pElement.style.lineHeight = PDF_STYLES.LINE_HEIGHT.COMPACT;
+            pElement.style.margin = `${PDF_STYLES.MARGINS.MEDIUM} 0`;
+        });
+
+        element.querySelectorAll('li').forEach((item: Element) => {
+            const liElement = item as HTMLLIElement;
+            liElement.style.fontSize = PDF_STYLES.FONT_SIZES.SKILL_ITEM;
+            liElement.style.marginBottom = PDF_STYLES.MARGINS.SMALL;
+        });
+    };
+
+    const applySkillSectionStyles = (element: HTMLElement): void => {
+        element.querySelectorAll('h4').forEach((cat: Element) => {
+            const h4Element = cat as HTMLHeadingElement;
+            const parentEl = h4Element.parentElement?.parentElement as HTMLElement | null;
+            if (parentEl?.className?.includes('skill')) {
+                h4Element.style.fontSize = PDF_STYLES.FONT_SIZES.SKILL_CATEGORY;
+                h4Element.style.marginBottom = PDF_STYLES.MARGINS.MEDIUM;
+            }
+        });
+
+        const skillsGrid = element.querySelector('[style*="grid"]') as HTMLElement | null;
+        if (skillsGrid) {
+            skillsGrid.style.gap = PDF_STYLES.MARGINS.XLARGE;
+        }
+    };
+
+    const compactSectionMargins = (element: HTMLElement): void => {
+        element.querySelectorAll('div').forEach((section: Element) => {
+            const divElement = section as HTMLDivElement;
+            if (divElement.style.marginBottom && parseInt(divElement.style.marginBottom) > 10) {
+                divElement.style.marginBottom = PDF_STYLES.MARGINS.XLARGE;
+            }
+        });
+    };
+
+    const handleDownloadPDF = (): void => {
+        const element = resumeRef.current;
+        if (!element) return;
+
+        try {
+            const options = getPDFOptions();
+            const clonedElement = prepareElementForPDF(element);
+
+            applyGlobalFontScaling(clonedElement);
+            applyHeaderStyles(clonedElement);
+            applyContentStyles(clonedElement);
+            applySkillSectionStyles(clonedElement);
+            compactSectionMargins(clonedElement);
+
+            /* here we  generate and download pdf */
+            html2pdf()
+                .set(options)
+                .from(clonedElement)
+                .save()
+                .catch((error: Error) => {
+                    console.error('Error generating PDF:', error);
+                    alert('Failed to generate PDF. Please try again.');
+                });
+        } catch (error) {
+            console.error('Error in PDF generation:', error);
+            alert('An error occurred while generating the PDF.');
+        }
     };
 
     return (
-        <ResumeContainer isDarkMode={isDarkMode}>
-            <SectionHeading ref={sectionHeadingRef} isDarkMode={isDarkMode}>
+        <ResumeContainer isDarkMode={isDarkMode} ref={resumeRef}>
+            <SectionHeading isDarkMode={isDarkMode} className="resume-heading visible">
                 MY RESUME
             </SectionHeading>
-            <PageTitle ref={pageTitleRef} isDarkMode={isDarkMode}>
-                Professional Experience
+            <PageTitle isDarkMode={isDarkMode} className="resume-title visible">
+                Sardor Madaminov
             </PageTitle>
-
-            <ResumeContent ref={resumeContentRef} className="resume-content">
-                <ResumeActions>
-                    <DownloadButton
-                        href="/resume.pdf"
-                        download="RishiSrihari_Resume.pdf"
-                        isDarkMode={isDarkMode}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        Download PDF
+            <ResumeContent className="resume-content visible">
+                <ResumeActions className="resume-actions">
+                    <DownloadButton onClick={handleDownloadPDF} isDarkMode={isDarkMode}>
+                        <DownloadIcon
+                            style={{ width: '14px', height: '14px', marginRight: '2px' }}
+                        />
+                        Download
                     </DownloadButton>
-                    <PrintButton onClick={handlePrint} isDarkMode={isDarkMode}>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <rect x="6" y="14" width="12" height="8"></rect>
-                        </svg>
-                        Print Resume
-                    </PrintButton>
                 </ResumeActions>
 
                 <ResumeSection>

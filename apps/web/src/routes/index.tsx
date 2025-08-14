@@ -4,32 +4,40 @@ import { AppProps } from '@/types';
 import Blog from '@/pages/Blog/Blog';
 import BlogDetails from '@/pages/Blog/BlogDetails/BlogDetails';
 import { FilterProvider } from '@/context/FilterContext';
-// import Resume from '@/pages/Resume/Resume';
 import RootPortfolio from '@/pages/About';
 import { themeColor } from '@/themes/color';
 import styled from 'styled-components';
+import Resume from '@/pages/Resume/Resume';
 
 const PageContainer = styled.div`
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
+    padding: 0;
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 0;
+        max-width: 100%;
+    }
 `;
 
 const Section = styled.section`
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 50px 60px;
+    padding: 0;
     min-height: 100vh;
     scroll-margin-top: 70px;
 
     ${themeColor.breakpoints.mobile} {
-        padding: 30px 2px 2px;
+        padding: 30px 0 20px;
+        min-height: auto;
+        overflow: visible;
     }
 `;
 
 const ResumeWrapper = (props: { isDarkMode: boolean }) => {
     return (
         <PageContainer>
-            <Section id="resume">{/* <Resume isDarkMode={props.isDarkMode} /> */}</Section>
+            <Section id="resume">
+                <Resume isDarkMode={props.isDarkMode} />
+            </Section>
         </PageContainer>
     );
 };

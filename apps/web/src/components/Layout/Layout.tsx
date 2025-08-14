@@ -75,14 +75,14 @@ const ContentWrapper = styled.div`
     ${themeColor.breakpoints.mobile} {
         flex-direction: column;
         gap: 0;
-        padding: 70px 10px 60px 10px;
+        padding: 70px 10px 90px 10px;
         min-height: auto;
     }
 `;
 
 const MainContent = styled.main<{ isPortfolioPage: boolean }>`
     flex: 1;
-    padding: ${(props) => (props.isPortfolioPage ? '40px 20px' : '0')};
+    padding: ${(props) => (props.isPortfolioPage ? '60px 20px' : '0')};
     // overflow-y: ${(props) => (props.isPortfolioPage ? 'auto' : 'visible')};
     overflow-y: visible;
     overflow-x: hidden;
