@@ -657,7 +657,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                     <ResumeSectionTitle isDarkMode={isDarkMode}>Skills</ResumeSectionTitle>
 
                     <SkillsGrid>
-                        <SkillCategory>
+                        <SkillCategory isDarkMode={isDarkMode}>
                             <SkillCategoryTitle isDarkMode={isDarkMode}>
                                 Programming Languages
                             </SkillCategoryTitle>
@@ -672,7 +672,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                             </SkillsList>
                         </SkillCategory>
 
-                        <SkillCategory>
+                        <SkillCategory isDarkMode={isDarkMode}>
                             <SkillCategoryTitle isDarkMode={isDarkMode}>
                                 Frontend
                             </SkillCategoryTitle>
@@ -685,7 +685,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                             </SkillsList>
                         </SkillCategory>
 
-                        <SkillCategory>
+                        <SkillCategory isDarkMode={isDarkMode}>
                             <SkillCategoryTitle isDarkMode={isDarkMode}>Backend</SkillCategoryTitle>
                             <SkillsList>
                                 <SkillItem isDarkMode={isDarkMode}>Node.js</SkillItem>
@@ -696,7 +696,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                             </SkillsList>
                         </SkillCategory>
 
-                        <SkillCategory>
+                        <SkillCategory isDarkMode={isDarkMode}>
                             <SkillCategoryTitle isDarkMode={isDarkMode}>
                                 Database
                             </SkillCategoryTitle>
@@ -709,7 +709,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                             </SkillsList>
                         </SkillCategory>
 
-                        <SkillCategory>
+                        <SkillCategory isDarkMode={isDarkMode}>
                             <SkillCategoryTitle isDarkMode={isDarkMode}>
                                 DevOps & Tools
                             </SkillCategoryTitle>
@@ -722,7 +722,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                             </SkillsList>
                         </SkillCategory>
 
-                        <SkillCategory>
+                        <SkillCategory isDarkMode={isDarkMode}>
                             <SkillCategoryTitle isDarkMode={isDarkMode}>Other</SkillCategoryTitle>
                             <SkillsList>
                                 <SkillItem isDarkMode={isDarkMode}>Agile Development</SkillItem>
