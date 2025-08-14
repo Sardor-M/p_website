@@ -35,7 +35,7 @@ export default function App() {
             <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
                 <GlobalStyle />
                 <CustomCursor />
-                <AppRoutes onToggleTheme={handleToggleTheme} theme={theme} />;
+                <AppRoutes onToggleTheme={handleToggleTheme} theme={theme} />
             </ThemeProvider>
         </QueryClientProvider>
     );

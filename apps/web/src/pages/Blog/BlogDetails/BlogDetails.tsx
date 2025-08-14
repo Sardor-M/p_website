@@ -16,6 +16,7 @@ const BlogContainer = styled.div`
     max-width: 720px;
     margin: 0 auto;
     padding: 3rem 0.7rem;
+    width: 100%;
 
     font-family:
         'Inter',

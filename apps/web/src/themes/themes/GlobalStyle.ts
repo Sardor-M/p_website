@@ -23,19 +23,18 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: auto;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #000; /* Ensure background is black */
   }
   
   #root {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
   }
   

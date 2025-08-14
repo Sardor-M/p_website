@@ -62,7 +62,7 @@ const ContentWrapper = styled.div`
     gap: 1.5rem;
     flex: 1;
     padding: 80px 70px 10px;
-    // min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 120px);
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
@@ -83,19 +83,13 @@ const ContentWrapper = styled.div`
 const MainContent = styled.main<{ isPortfolioPage: boolean }>`
     flex: 1;
     padding: ${(props) => (props.isPortfolioPage ? '40px 20px' : '0')};
-    overflow-y: ${(props) => (props.isPortfolioPage ? 'auto' : 'visible')};
+    // overflow-y: ${(props) => (props.isPortfolioPage ? 'auto' : 'visible')};
+    overflow-y: visible;
     overflow-x: hidden;
     min-width: 0;
     max-width: ${(props) => (props.isPortfolioPage ? '900px' : '800px')};
     margin: 0 auto;
     box-sizing: border-box;
-
-    ${(props) =>
-        props.isPortfolioPage &&
-        `
-        height: calc(100vh - 160px);
-        max-height: calc(100vh - 160px);
-    `}
 
     &::-webkit-scrollbar {
         width: 0.1px;
@@ -511,10 +505,8 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
                     )}
                 </ContentWrapper>
             </MaxWidthContainer>
-            {['/about', '/projects', '/resume', '/contact'].includes(location.pathname) ? (
+            {['/about', '/projects', '/resume', '/contact'].includes(location.pathname) && (
                 <Footer isDarkMode={theme === 'dark'} />
-            ) : (
-                <div></div>
             )}
         </LayoutContainer>
     );
