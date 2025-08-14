@@ -12,10 +12,15 @@ export const notionKeys = {
 /* we fetch all posts */
 export const useNotionPosts = () => {
     return useQuery({
-        queryKey: notionKeys.posts(),
-        queryFn: getPosts,
-        staleTime: 10 * 60 * 1000,
-        gcTime: 30 * 60 * 1000,
+        queryKey: ['notion-posts'],
+        queryFn: async () => {
+            const posts = await getPosts();
+            return posts;
+        },
+        staleTime: 1000 * 60 * 10 /* 10 minutes */,
+        gcTime: 1000 * 60 * 60 /* 1 hour */,
+        refetchOnWindowFocus: false,
+        retry: 1,
     });
 };
 
@@ -25,8 +30,8 @@ export const useNotionPostBySlug = (slug: string, enabled = true) => {
         queryKey: notionKeys.post(slug),
         queryFn: () => getPostBySlug(slug),
         enabled: enabled && !!slug,
-        staleTime: 15 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
+        staleTime: 30 * 60 * 1000,
+        gcTime: 2 * 60 * 60 * 1000,
     });
 };
 
@@ -36,8 +41,8 @@ export const useNotionPostById = (id: string, enabled = true) => {
         queryKey: notionKeys.postById(id),
         queryFn: () => getPostById(id),
         enabled: enabled && !!id,
-        staleTime: 15 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
+        staleTime: 30 * 60 * 1000,
+        gcTime: 2 * 60 * 60 * 1000,
     });
 };
 
@@ -45,18 +50,43 @@ export const usePrefetchPost = () => {
     const queryClient = useQueryClient();
 
     return (slug: string, id: string) => {
-        queryClient.prefetchQuery({
-            queryKey: notionKeys.post(slug),
-            queryFn: () => getPostBySlug(slug),
-            staleTime: 15 * 60 * 1000,
-        });
-        /* this case we only prefetch the post by its id if it exists */
-        if (id) {
+        const existingBySlug = queryClient.getQueryData(notionKeys.post(slug));
+        const existingById = queryClient.getQueryData(notionKeys.postById(id));
+
+        if (!existingBySlug) {
+            queryClient.prefetchQuery({
+                queryKey: notionKeys.post(slug),
+                queryFn: () => getPostBySlug(slug),
+                staleTime: 30 * 60 * 1000 /* 30 minutes */,
+            });
+        }
+
+        if (id && !existingById) {
             queryClient.prefetchQuery({
                 queryKey: notionKeys.postById(id),
                 queryFn: () => getPostById(id),
-                staleTime: 15 * 60 * 1000,
+                staleTime: 30 * 60 * 1000,
             });
         }
+    };
+};
+
+export const useBulkPrefetchPosts = () => {
+    const queryClient = useQueryClient();
+
+    return (posts: Array<{ slug: string; id: string }>) => {
+        posts.forEach((post, index) => {
+            setTimeout(() => {
+                const existingBySlug = queryClient.getQueryData(notionKeys.post(post.slug));
+
+                if (!existingBySlug) {
+                    queryClient.prefetchQuery({
+                        queryKey: notionKeys.post(post.slug),
+                        queryFn: () => getPostBySlug(post.slug),
+                        staleTime: 30 * 60 * 1000,
+                    });
+                }
+            }, index * 90);
+        });
     };
 };

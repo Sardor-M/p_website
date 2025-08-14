@@ -6,37 +6,40 @@ import { DarkModeProps } from '@/types/blog';
 import Projects from '@/pages/Portfolio/Projects';
 
 const PageContainer = styled.div`
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0;
-
-  ${themeColor.breakpoints.mobile} {
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 0;
-  }
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 0;
+        max-width: 100%;
+    }
 `;
 
 const Section = styled.section`
-  padding: 0;
-  min-height: 100vh;
-  scroll-margin-top: 70px;
+    padding: 0;
+    min-height: 100vh;
+    scroll-margin-top: 70px;
 
-  ${themeColor.breakpoints.mobile} {
-    padding: 30px 0 20px;
-  }
+    ${themeColor.breakpoints.mobile} {
+        padding: 30px 0 20px;
+        min-height: auto;
+        overflow: visible;
+    }
 `;
 
 export default function RootPortfolio({ isDarkMode }: DarkModeProps) {
-  return (
-    <PageContainer>
-      <Section id="about">
-        <AboutMe isDarkMode={isDarkMode} />
-      </Section>
-      <Section id="projects">
-        <Projects isDarkMode={isDarkMode} />
-      </Section>
-      <Section id="contact">
-        <ContactMe isDarkMode={isDarkMode} />
-      </Section>
-    </PageContainer>
-  );
+    return (
+        <PageContainer>
+            <Section id="about">
+                <AboutMe isDarkMode={isDarkMode} />
+            </Section>
+            <Section id="projects">
+                <Projects isDarkMode={isDarkMode} />
+            </Section>
+            <Section id="contact">
+                <ContactMe isDarkMode={isDarkMode} />
+            </Section>
+        </PageContainer>
+    );
 }

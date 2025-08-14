@@ -48,7 +48,7 @@ const NavContainer = styled.div<{ isPortfolioPage?: boolean }>`
     width: 100%;
     max-width: ${({ isPortfolioPage }) => (isPortfolioPage ? '1000px' : '1440px')};
     margin: 0 auto;
-    padding: ${({ isPortfolioPage }) => (isPortfolioPage ? '0 105px' : '0 70px')};
+    padding: ${({ isPortfolioPage }) => (isPortfolioPage ? '0 70px' : '0 70px')};
 
     ${themeColor.breakpoints.tablet} {
         padding: 0 15px;

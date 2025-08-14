@@ -8,7 +8,7 @@ import Loading from '@/components/Loading';
 import { Error } from '@/components/Error';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/themes/color';
-import { useNotionPosts, usePrefetchPost } from '@/hooks/useNotionPosts';
+import { useBulkPrefetchPosts, useNotionPosts, usePrefetchPost } from '@/hooks/useNotionPosts';
 
 type Group = {
     name: string;
@@ -263,9 +263,26 @@ export default function Blog() {
 
     const [groups, setGroups] = useState<Group[]>([]);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-    const { t } = useTranslation('blog');
+    const [prefetchedPosts, setPrefetchedPosts] = useState<Set<string>>(new Set());
 
+    const { t } = useTranslation('blog');
     const prefetchPost = usePrefetchPost();
+    const bulkPrefetchPosts = useBulkPrefetchPosts();
+
+    useEffect(() => {
+        if (blogs.length > 0 && prefetchedPosts.size === 0) {
+            const postsToPreload = blogs.slice(0, 8).map((post) => ({
+                slug: post.slug,
+                id: post.id,
+            }));
+
+            bulkPrefetchPosts(postsToPreload);
+
+            /* we mark it as prefetched */
+            const newPrefetched = new Set(blogs.slice(0, 8).map((post) => post.id));
+            setPrefetchedPosts(newPrefetched);
+        }
+    }, [blogs, bulkPrefetchPosts, prefetchedPosts.size]);
 
     useEffect(() => {
         if (blogs.length > 0) {
@@ -307,10 +324,44 @@ export default function Blog() {
         return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
     });
 
+    useEffect(() => {
+        if (sortedPosts.length > 0) {
+            const visiblePosts = sortedPosts
+                .slice(0, 6)
+                .filter((post) => !prefetchedPosts.has(post.id));
+
+            if (visiblePosts.length > 0) {
+                const timer = setTimeout(() => {
+                    const postsToPreload = visiblePosts.map((post) => ({
+                        slug: post.slug,
+                        id: post.id,
+                    }));
+
+                    bulkPrefetchPosts(postsToPreload);
+
+                    setPrefetchedPosts((prev) => {
+                        const newSet = new Set(prev);
+                        visiblePosts.forEach((post) => newSet.add(post.id));
+                        return newSet;
+                    });
+                }, 100);
+
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [sortedPosts, bulkPrefetchPosts, prefetchedPosts]);
+
     const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         setSelectedGroup(value === 'All' ? 'All' : value);
         setSelectedTag(null);
+    };
+
+    const handleMouseEnter = (slug: string, id: string) => {
+        if (!prefetchedPosts.has(id)) {
+            prefetchPost(slug, id);
+            setPrefetchedPosts((prev) => new Set(prev).add(id));
+        }
     };
 
     if (isLoading) {
@@ -346,6 +397,7 @@ export default function Blog() {
                                 ))}
                         </TopicSelect>
                     </SelectWrapper>
+
                     <SortContainer>
                         <SortButton
                             active={sortOrder === 'desc'}
@@ -368,7 +420,10 @@ export default function Blog() {
                                 <StyledLink
                                     key={`blog-${post.id}`}
                                     to={`/blog/${post.slug}`}
-                                    onMouseEnter={() => prefetchPost(post.slug, post.id)}
+                                    onMouseEnter={() => handleMouseEnter(post.slug, post.id)}
+                                    style={{
+                                        opacity: prefetchedPosts.has(post.id) ? 1 : 0.95,
+                                    }}
                                 >
                                     <StyledCard
                                         style={{

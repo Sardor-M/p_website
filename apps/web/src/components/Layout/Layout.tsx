@@ -41,17 +41,18 @@ const MaxWidthContainer = styled.div`
 const LayoutContainer = styled.div`
     ${({ theme }) => getThemeStyles(theme, ['background', 'text'])};
     min-height: 100vh;
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow: visible;
     position: relative;
 
     ${themeColor.breakpoints.mobile} {
         max-height: none;
         min-height: 100vh;
         height: auto;
-        overflow: auto;
+        overflow-y: visible;
+        overflow-x: hidden;
         padding-bottom: 0;
     }
 `;
@@ -60,8 +61,8 @@ const ContentWrapper = styled.div`
     display: flex;
     gap: 1.5rem;
     flex: 1;
-    padding: 80px 70px 20px;
-    min-height: calc(100vh - 60px);
+    padding: 80px 70px 10px;
+    // min-height: calc(100vh - 60px);
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
@@ -74,7 +75,45 @@ const ContentWrapper = styled.div`
     ${themeColor.breakpoints.mobile} {
         flex-direction: column;
         gap: 0;
-        padding: 70px 10px 10px;
+        padding: 70px 10px 60px 10px;
+        min-height: auto;
+    }
+`;
+
+const MainContent = styled.main<{ isPortfolioPage: boolean }>`
+    flex: 1;
+    padding: ${(props) => (props.isPortfolioPage ? '40px 20px' : '0')};
+    overflow-y: ${(props) => (props.isPortfolioPage ? 'auto' : 'visible')};
+    overflow-x: hidden;
+    min-width: 0;
+    max-width: ${(props) => (props.isPortfolioPage ? '900px' : '800px')};
+    margin: 0 auto;
+    box-sizing: border-box;
+
+    ${(props) =>
+        props.isPortfolioPage &&
+        `
+        height: calc(100vh - 160px);
+        max-height: calc(100vh - 160px);
+    `}
+
+    &::-webkit-scrollbar {
+        width: 0.1px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#ccc')};
+        border-radius: 0.1px;
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        padding: ${(props) => (props.isPortfolioPage ? '10px' : '0 10px')};
+        width: 100%;
+        max-height: none;
+        max-width: 100%;
+        overflow-y: visible;
+        height: auto;
+        flex-shrink: 0;
     }
 `;
 
@@ -95,32 +134,6 @@ const LeftSidebar = styled.aside`
         background: transparent;
         border-bottom: 1px solid ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : '#e5e5e5')};
         border-radius: 0;
-    }
-`;
-
-const MainContent = styled.main<{ isPortfolioPage: boolean }>`
-    flex: 1;
-    padding: ${(props) => (props.isPortfolioPage ? '40px 20px' : '0')};
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-width: 0;
-    max-width: 800px;
-    margin: 0 auto;
-    box-sizing: border-box;
-
-    &::-webkit-scrollbar {
-        width: 0.1px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#ccc')};
-        border-radius: 0.1px;
-    }
-
-    ${themeColor.breakpoints.mobile} {
-        padding: ${(props) => (props.isPortfolioPage ? '10px' : '0 10px')};
-        width: 100%;
-        max-width: 100%;
     }
 `;
 
