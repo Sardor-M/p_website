@@ -1,0 +1,40 @@
+# Robots.txt for sardor-m.dev
+User-agent: *
+
+# Allow most pages
+Allow: /
+Allow: /blog
+
+# Block these pages
+Disallow: /about
+Disallow: /resume
+Disallow: /cv
+Disallow: /contact
+
+# Block API and system endpoints
+Disallow: /api/
+Disallow: /__/
+Disallow: /.firebase/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://sardor-m.dev/sitemap.xml
+
+# Crawl delay 
+Crawl-delay: 1
+
+# Block specific bots if needed 
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /

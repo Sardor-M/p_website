@@ -9,7 +9,8 @@
         "preview": "vite preview",
         "lint": "eslint 'src/**/*.{ts,tsx}'",
         "test": "echo \"No tests specified\" && exit 0",
-        "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix"
+        "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+        "generate-sitemap": "node scripts/generate-sitemap.mjs"
     },
     "dependencies": {
         "@ant-design/icons": "^5.6.1",
@@ -38,6 +39,7 @@
         "gh-pages": "^6.3.0",
         "husky": "^8.0.3",
         "lint-staged": "^15.4.3",
+        "node-fetch": "^3.3.2",
         "ts-unused-exports": "^11.0.1",
         "vite": "^6.2.7"
     },
