@@ -70,7 +70,9 @@ export async function batchApiCalls(
 export async function notionApiCall(endpoint: string, options: RequestInit = {}) {
     const isProduction = !import.meta.env.DEV;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const timeoutId = setTimeout(() => {
+        controller.abort();
+    }, 10000);
 
     try {
         if (isProduction && import.meta.env.VITE_FIREBASE_FUNCTIONS_URL) {
@@ -107,9 +109,14 @@ export async function notionApiCall(endpoint: string, options: RequestInit = {})
             clearTimeout(timeoutId);
             return response;
         }
-    } catch (error) {
+    } catch (error: unknown) {
         clearTimeout(timeoutId);
+        if (error instanceof Error && error.name === 'AbortError') {
+            throw new Error('Request timeout after 10 seconds');
+        }
         throw error;
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
@@ -211,6 +218,7 @@ export async function getPostBySlug(slug: string): Promise<NotionPostWithContent
         }
 
         const page = results[0];
+
         const postData = mapPageToPost(page);
         const blocks = await getPageBlocks(page.id);
 
@@ -261,8 +269,8 @@ export async function getPostById(pageId: string): Promise<NotionPostWithContent
 async function getPageBlocks(pageId: string): Promise<NotionBlockType[]> {
     const blocks: NotionBlockType[] = [];
     let cursor: string | undefined = undefined;
-    const maxIterations = 5;
     let iterations = 0;
+    const maxIterations = 10;
 
     try {
         do {
@@ -272,18 +280,13 @@ async function getPageBlocks(pageId: string): Promise<NotionBlockType[]> {
             });
 
             if (!response.ok) {
-                console.error('Error fetching blocks:', response.status);
+                console.info('Error fetching blocks:', response.status);
                 break;
             }
 
             const data = await response.json();
-            const results = data.results || data;
-
-            if (Array.isArray(results)) {
-                blocks.push(...results);
-            }
-
-            cursor = data.next_cursor || undefined;
+            blocks.push(...(data.results || []));
+            cursor = data.next_cursor;
             iterations++;
         } while (cursor && iterations < maxIterations);
 
