@@ -16,7 +16,7 @@
   <br>
 </div>
 
-# 🌐 Personal Website Monorepo
+# Personal Website:
 
 A **monorepo project** my personal website project is built with a modern frontend (React + Vite + TypeScript), Firebase Cloud Functions, Redis, and Notion for data storage with the help of Notion API. This repository is organized into **apps** and **packages**, leveraging **PNPM workspaces** for dependency management.
 
@@ -75,7 +75,7 @@ personal-website-monorepo/
 - `pnpm lint` → Lint frontend code
 - `pnpm generate-sitemap` → Generate sitemap dynamically
 
-## 🔥 Backend (apps/functions)
+## Backend (apps/functions)
 
 ### Tech Stack
 
@@ -92,7 +92,7 @@ personal-website-monorepo/
 - `pnpm logs` → View function logs
 - `pnpm type-check` → Validate TypeScript types
 
-## 📚 Development Setup
+## 📚 Dev Setup
 
 ### Prerequisites
 
