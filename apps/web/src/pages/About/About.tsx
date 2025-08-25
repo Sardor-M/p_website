@@ -364,7 +364,7 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
                                     <GithubOutlined style={{ width: '15px', height: '15px' }} />
                                     <StatTitle isDarkMode={isDarkMode}>GitHub</StatTitle>
                                 </div>
-                                <StatValueLarge isDarkMode={isDarkMode}>750+</StatValueLarge>
+                                <StatValueLarge isDarkMode={isDarkMode}>1090+</StatValueLarge>
                                 <StatDescription isDarkMode={isDarkMode}>
                                     Commits and contributions to personal projects
                                 </StatDescription>
@@ -388,7 +388,7 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
                                     <FaRunning style={{ width: '15px', height: '15px' }} />
                                     <StatTitle isDarkMode={isDarkMode}>Run / Cycling</StatTitle>
                                 </div>
-                                <StatValueLarge isDarkMode={isDarkMode}>1875km</StatValueLarge>
+                                <StatValueLarge isDarkMode={isDarkMode}>1970km+</StatValueLarge>
                                 <StatDescription isDarkMode={isDarkMode}>
                                     Total distance run / cycled until now
                                 </StatDescription>
