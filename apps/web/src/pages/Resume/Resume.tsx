@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import html2pdf from 'html2pdf.js';
 import { DownloadIcon } from 'lucide-react';
+import resumeData from '@/pages/Resume/Data/resumeData.json';
 
 type PDFOptions = {
     margin: number[];
@@ -53,30 +54,41 @@ const ResumeContainer = styled.section<{ isDarkMode: boolean }>`
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     padding: 0;
 
+    font-family:
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        'Roboto',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-weight: 400;
+    letter-spacing: -0.003em;
+    color: ${({ theme }) =>
+        theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)'};
+
+    * {
+        font-family: inherit;
+    }
+
+    code,
+    pre,
+    kbd,
+    samp {
+        font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.95rem;
+        padding: 1rem 0 1rem 0;
+    }
+
     ${themeColor.breakpoints.mobile} {
         padding: 0;
-    }
-`;
-
-const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-    opacity: 0.7;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
-
-    &.visible {
-        transform: translateY(0);
-        opacity: 0.7;
-    }
-
-    ${themeColor.breakpoints.mobile} {
-        font-size: 0.75rem;
-        letter-spacing: 1.5px;
-        margin-bottom: 10px;
     }
 `;
 
@@ -173,8 +185,10 @@ const ResumeSectionTitle = styled.h3<{ isDarkMode: boolean }>`
 `;
 
 const ExperienceItem = styled.div`
-    margin-bottom: 28px;
+    margin-bottom: 10px;
     padding-left: 1px;
+    border-bottom: 0.5px solid
+        ${({ theme }) => (theme.mode === 'dark' ? themeColor.border.dark : themeColor.border.light)};
 
     ${themeColor.breakpoints.mobile} {
         margin-bottom: 20px;
@@ -185,7 +199,6 @@ const ExperienceItem = styled.div`
 const ExperienceHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
     align-items: baseline;
 
     ${themeColor.breakpoints.mobile} {
@@ -251,7 +264,7 @@ const SkillsGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
-    padding: 10px 0;
+    padding: 0;
 
     ${themeColor.breakpoints.tablet} {
         grid-template-columns: repeat(2, 1fr);
@@ -523,9 +536,6 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
 
     return (
         <ResumeContainer isDarkMode={isDarkMode} ref={resumeRef}>
-            <SectionHeading isDarkMode={isDarkMode} className="resume-heading visible">
-                MY RESUME
-            </SectionHeading>
             <PageTitle isDarkMode={isDarkMode} className="resume-title visible">
                 Sardor Madaminov
             </PageTitle>
@@ -538,200 +548,68 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
                         Download
                     </DownloadButton>
                 </ResumeActions>
-
                 <ResumeSection>
                     <ResumeSectionTitle isDarkMode={isDarkMode}>Experience</ResumeSectionTitle>
 
-                    <ExperienceItem>
-                        <ExperienceHeader>
-                            <div>
-                                <ExperienceTitle isDarkMode={isDarkMode}>
-                                    Teaching Assistant
-                                </ExperienceTitle>
-                                <ExperienceCompany isDarkMode={isDarkMode}>
-                                    UC Irvine, Donald Bren School of ICS
-                                </ExperienceCompany>
-                            </div>
-                            <ExperienceDate isDarkMode={isDarkMode}>
-                                Mar 2024 - Present
-                            </ExperienceDate>
-                        </ExperienceHeader>
-                        <ExperienceDescription isDarkMode={isDarkMode}>
-                            Teaching Assistant for Boolean Logic and Discrete Structures, delivering
-                            curriculum content to 400+ students. Collaborate on lecture and test
-                            content preparation with course staff, and host weekly office hours.
-                            Increased office hour attendance by 40% through interactive teaching
-                            methods and accessible explanations.
-                        </ExperienceDescription>
-                    </ExperienceItem>
-
-                    <ExperienceItem>
-                        <ExperienceHeader>
-                            <div>
-                                <ExperienceTitle isDarkMode={isDarkMode}>
-                                    Software Engineer
-                                </ExperienceTitle>
-                                <ExperienceCompany isDarkMode={isDarkMode}>
-                                    TechInnovate Inc.
-                                </ExperienceCompany>
-                            </div>
-                            <ExperienceDate isDarkMode={isDarkMode}>
-                                Jun 2022 - Feb 2024
-                            </ExperienceDate>
-                        </ExperienceHeader>
-                        <ExperienceDescription isDarkMode={isDarkMode}>
-                            Developed modern web applications using React, TypeScript, and Next.js.
-                            Implemented responsive designs with styled-components and Tailwind CSS.
-                            Collaborated with cross-functional teams to deliver high-quality
-                            software solutions. Optimized application performance resulting in 40%
-                            faster page load times.
-                        </ExperienceDescription>
-                    </ExperienceItem>
-
-                    <ExperienceItem>
-                        <ExperienceHeader>
-                            <div>
-                                <ExperienceTitle isDarkMode={isDarkMode}>
-                                    Frontend Developer Intern
-                                </ExperienceTitle>
-                                <ExperienceCompany isDarkMode={isDarkMode}>
-                                    WebSolutions Co.
-                                </ExperienceCompany>
-                            </div>
-                            <ExperienceDate isDarkMode={isDarkMode}>
-                                Jan 2022 - May 2022
-                            </ExperienceDate>
-                        </ExperienceHeader>
-                        <ExperienceDescription isDarkMode={isDarkMode}>
-                            Assisted in developing user interfaces for client projects. Implemented
-                            responsive designs and interactive components. Participated in code
-                            reviews and agile development processes. Contributed to the company's
-                            component library.
-                        </ExperienceDescription>
-                    </ExperienceItem>
+                    {resumeData.experiences.map((exp, index) => (
+                        <ExperienceItem key={index}>
+                            <ExperienceHeader>
+                                <div>
+                                    <ExperienceTitle isDarkMode={isDarkMode}>
+                                        {exp.title}
+                                    </ExperienceTitle>
+                                    <ExperienceCompany isDarkMode={isDarkMode}>
+                                        {exp.company}
+                                    </ExperienceCompany>
+                                </div>
+                                <ExperienceDate isDarkMode={isDarkMode}>{exp.date}</ExperienceDate>
+                            </ExperienceHeader>
+                            <ExperienceDescription isDarkMode={isDarkMode}>
+                                {exp.description}
+                            </ExperienceDescription>
+                        </ExperienceItem>
+                    ))}
                 </ResumeSection>
-
                 <ResumeSection>
                     <ResumeSectionTitle isDarkMode={isDarkMode}>Education</ResumeSectionTitle>
 
-                    <ExperienceItem>
-                        <ExperienceHeader>
-                            <div>
-                                <ExperienceTitle isDarkMode={isDarkMode}>
-                                    M.S. in Computer Science
-                                </ExperienceTitle>
-                                <ExperienceCompany isDarkMode={isDarkMode}>
-                                    University of California, Irvine
-                                </ExperienceCompany>
-                            </div>
-                            <ExperienceDate isDarkMode={isDarkMode}>2023 - 2025</ExperienceDate>
-                        </ExperienceHeader>
-                        <ExperienceDescription isDarkMode={isDarkMode}>
-                            Focus on Artificial Intelligence and Machine Learning. Relevant
-                            coursework: Advanced Algorithms, Machine Learning, Natural Language
-                            Processing, Computer Vision, and Distributed Systems.
-                        </ExperienceDescription>
-                    </ExperienceItem>
-
-                    <ExperienceItem>
-                        <ExperienceHeader>
-                            <div>
-                                <ExperienceTitle isDarkMode={isDarkMode}>
-                                    B.S. in Computer Science
-                                </ExperienceTitle>
-                                <ExperienceCompany isDarkMode={isDarkMode}>
-                                    University of California, Los Angeles
-                                </ExperienceCompany>
-                            </div>
-                            <ExperienceDate isDarkMode={isDarkMode}>2018 - 2022</ExperienceDate>
-                        </ExperienceHeader>
-                        <ExperienceDescription isDarkMode={isDarkMode}>
-                            Graduated with Honors, GPA: 3.8/4.0 Relevant coursework: Data
-                            Structures, Algorithms, Operating Systems, Database Systems, and
-                            Software Engineering.
-                        </ExperienceDescription>
-                    </ExperienceItem>
+                    {resumeData.education.map((edu, index) => (
+                        <ExperienceItem key={index}>
+                            <ExperienceHeader>
+                                <div>
+                                    <ExperienceTitle isDarkMode={isDarkMode}>
+                                        {edu.degree}
+                                    </ExperienceTitle>
+                                    <ExperienceCompany isDarkMode={isDarkMode}>
+                                        {edu.school}
+                                    </ExperienceCompany>
+                                </div>
+                                <ExperienceDate isDarkMode={isDarkMode}>{edu.date}</ExperienceDate>
+                            </ExperienceHeader>
+                            <ExperienceDescription isDarkMode={isDarkMode}>
+                                {edu.description}
+                            </ExperienceDescription>
+                        </ExperienceItem>
+                    ))}
                 </ResumeSection>
-
                 <ResumeSection>
                     <ResumeSectionTitle isDarkMode={isDarkMode}>Skills</ResumeSectionTitle>
 
                     <SkillsGrid>
-                        <SkillCategory isDarkMode={isDarkMode}>
-                            <SkillCategoryTitle isDarkMode={isDarkMode}>
-                                Programming Languages
-                            </SkillCategoryTitle>
-                            <SkillsList>
-                                <SkillItem isDarkMode={isDarkMode}>
-                                    JavaScript / TypeScript
-                                </SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Python</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Java</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>C++</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>SQL</SkillItem>
-                            </SkillsList>
-                        </SkillCategory>
-
-                        <SkillCategory isDarkMode={isDarkMode}>
-                            <SkillCategoryTitle isDarkMode={isDarkMode}>
-                                Frontend
-                            </SkillCategoryTitle>
-                            <SkillsList>
-                                <SkillItem isDarkMode={isDarkMode}>React</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Next.js</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>HTML5 / CSS3</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Tailwind CSS</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Styled Components</SkillItem>
-                            </SkillsList>
-                        </SkillCategory>
-
-                        <SkillCategory isDarkMode={isDarkMode}>
-                            <SkillCategoryTitle isDarkMode={isDarkMode}>Backend</SkillCategoryTitle>
-                            <SkillsList>
-                                <SkillItem isDarkMode={isDarkMode}>Node.js</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Express</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Django</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>RESTful APIs</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>GraphQL</SkillItem>
-                            </SkillsList>
-                        </SkillCategory>
-
-                        <SkillCategory isDarkMode={isDarkMode}>
-                            <SkillCategoryTitle isDarkMode={isDarkMode}>
-                                Database
-                            </SkillCategoryTitle>
-                            <SkillsList>
-                                <SkillItem isDarkMode={isDarkMode}>MongoDB</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>PostgreSQL</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>MySQL</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Firebase</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Redis</SkillItem>
-                            </SkillsList>
-                        </SkillCategory>
-
-                        <SkillCategory isDarkMode={isDarkMode}>
-                            <SkillCategoryTitle isDarkMode={isDarkMode}>
-                                DevOps & Tools
-                            </SkillCategoryTitle>
-                            <SkillsList>
-                                <SkillItem isDarkMode={isDarkMode}>Git / GitHub</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Docker</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>CI/CD</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>AWS</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Vercel / Netlify</SkillItem>
-                            </SkillsList>
-                        </SkillCategory>
-
-                        <SkillCategory isDarkMode={isDarkMode}>
-                            <SkillCategoryTitle isDarkMode={isDarkMode}>Other</SkillCategoryTitle>
-                            <SkillsList>
-                                <SkillItem isDarkMode={isDarkMode}>Agile Development</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>UI/UX Design</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Problem Solving</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Team Collaboration</SkillItem>
-                                <SkillItem isDarkMode={isDarkMode}>Technical Writing</SkillItem>
-                            </SkillsList>
-                        </SkillCategory>
+                        {Object.entries(resumeData.skills).map(([category, skills]) => (
+                            <SkillCategory key={category} isDarkMode={isDarkMode}>
+                                <SkillCategoryTitle isDarkMode={isDarkMode}>
+                                    {category}
+                                </SkillCategoryTitle>
+                                <SkillsList>
+                                    {skills.map((skill, index) => (
+                                        <SkillItem key={index} isDarkMode={isDarkMode}>
+                                            {skill}
+                                        </SkillItem>
+                                    ))}
+                                </SkillsList>
+                            </SkillCategory>
+                        ))}
                     </SkillsGrid>
                 </ResumeSection>
             </ResumeContent>

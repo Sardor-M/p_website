@@ -1,0 +1,63 @@
+{
+    "name": "Sardor Madaminov",
+    "experiences": [
+        {
+            "title": "Software Engineer",
+            "company": "GoStans LLC",
+            "date": "Jul 2025 - Present",
+            "description": "Leading a team of 5 developers building a comprehensive travel marketplace platform. Architected frontend infrastructure using React.js, TypeScript, and styled-components with 80+ components and 24,000+ lines of production code following Atomic Design principles. Integrated multiple payment gateways (PayPal, Visa, Mastercard) and achieved 40% development time reduction through reusable UI component library. Implemented CI/CD pipelines with GitHub Actions for zero-downtime deployments."
+        },
+        {
+            "title": "Lead Frontend Engineer",
+            "company": "KO'DJ - Koreya O'zbek Dasturchilar Jamiyati",
+            "date": "Jan 2025 - Present",
+            "description": "Built frontend architecture from scratch using React 18, TypeScript, and Ant Design. Developed responsive cross-device interfaces with KakaoMap API integration. Led a team of 4 developers, establishing code standards and documentation guidelines. Implemented real-time community features supporting 300+ active users with OAuth 2.0 authentication for secure login through Telegram, LinkedIn, and Google."
+        },
+        {
+            "title": "Software Engineer",
+            "company": "RNA Data System",
+            "date": "Feb 2024 - Jul 2025",
+            "description": "Developed comprehensive Data Management Platform with multi-tenant SaaS architecture. Built RESTful APIs using Spring Boot and MyBatis, optimized MySQL schemas reducing report generation time by 40%. Implemented dynamic grid systems using SlickGrid.js for large-scale financial data with real-time updates. Successfully delivered full-stack features improving user workflow efficiency."
+        },
+        {
+            "title": "Frontend Engineer Intern",
+            "company": "Fides Advisory Co., Ltd",
+            "date": "Mar 2023 - Jun 2023",
+            "description": "Developed corporate credit risk management platform using React.js and TypeScript. Reduced user drop-off rate by 30% through smooth state transitions. Created automated testing suite using Selenium for cross-browser compatibility. Deployed and maintained application infrastructure on AWS EC2 with PostgreSQL database integration."
+        },
+        {
+            "title": "Software Engineer Intern",
+            "company": "Daewoong Pharmaceuticals",
+            "date": "Jan 2023 - Feb 2023",
+            "description": "Maintained healthcare application bot using Node.js and Express.js. Collaborated with AI development team to debug and enhance UI features. Integrated Hangul.js for Korean language processing and Skill Server framework for conversational AI interactions."
+        },
+        {
+            "title": "Frontend Engineer Intern",
+            "company": "(주)포랩 | 4-lab",
+            "date": "Jul 2022 - Sep 2022",
+            "description": "Developed adaptive interfaces for Management System using React.js and integrated RealGrid2.js. Implemented responsive features with Redux state management and Axios for API communication. Optimized form validation and data processing using Formik."
+        }
+    ],
+    "education": [
+        {
+            "degree": "B.S. in Computer Science and Engineering",
+            "school": "Seoul National University of Science and Technology",
+            "date": "2019 - 2024",
+            "description": "Focus on Software Engineering and Web Development. Relevant coursework: Data Structures, Algorithms, Database Systems, Web Programming, and Software Engineering."
+        }
+    ],
+    "skills": {
+        "Programming Languages": ["JavaScript", "TypeScript", "Java", "SQL"],
+        "Frontend": ["React.js", "Next.js", "Styled Components", "Tailwind CSS", "Ant Design"],
+        "Backend": ["Node.js", "Express.js", "Spring Boot", "RESTful APIs", "MyBatis"],
+        "Database": ["MySQL", "PostgreSQL", "Firebase", "Redis"],
+        "DevOps & Tools": [
+            "Git / GitHub",
+            "GitHub Actions CI/CD",
+            "AWS EC2",
+            "Firebase Hosting",
+            "Docker"
+        ],
+        "Other": ["Atomic Design", "Agile Development", "Team Leadership", "OAuth 2.0", "Mapbox GL"]
+    }
+}

@@ -83,7 +83,6 @@ const ContentWrapper = styled.div`
 const MainContent = styled.main<{ isPortfolioPage: boolean }>`
     flex: 1;
     padding: ${(props) => (props.isPortfolioPage ? '60px 20px' : '0')};
-    // overflow-y: ${(props) => (props.isPortfolioPage ? 'auto' : 'visible')};
     overflow-y: visible;
     overflow-x: hidden;
     min-width: 0;
