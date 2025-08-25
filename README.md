@@ -114,29 +114,6 @@ pnpm install
 pnpm dev
 ```
 
-## 🔄 Deployment
-
-```bash
-# Deploy only frontend (Firebase Hosting)
-pnpm --filter web build && firebase deploy --only hosting
-
-# Deploy only backend (Functions)
-pnpm deploy:functions
-
-# Deploy everything
-pnpm build && firebase deploy
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repo
-2. Create a branch (`git checkout -b feature/my-feature`)
-3. Commit changes (`git commit -m 'feat: added new feature'`)
-4. Push (`git push origin feature/my-feature`)
-5. Open PR
-
 ## 📝 License
 
 This project is licensed under the **MIT License**.
