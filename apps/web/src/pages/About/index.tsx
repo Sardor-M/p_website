@@ -18,8 +18,17 @@ const PageContainer = styled.div`
 
 const Section = styled.section`
     padding: 0;
-    min-height: 100vh;
+    min-height: auto;
     scroll-margin-top: 70px;
+
+    /* only first section specific styling */
+    &:first-child {
+        min-height: 40vh;
+    }
+
+    &:not(:first-child) {
+        min-height: 100vh;
+    }
 
     ${themeColor.breakpoints.mobile} {
         padding: 30px 0 20px;

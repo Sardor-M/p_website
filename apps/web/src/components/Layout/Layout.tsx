@@ -243,7 +243,7 @@ const Tag = styled.span`
 
 const ContactTitle = styled.h2`
     font-size: 1.1rem;
-    margin-top: 40px;
+    margin-top: 5px;
     margin-bottom: 20px;
     ${({ theme }) => getThemeStyles(theme, 'text')};
     display: flex;
@@ -366,25 +366,6 @@ export default function Layout({ children, onToggleTheme, theme }: LayoutProps) 
                                 <RightSidebar>
                                     <AnimatedSection delay={0.3}>
                                         <ProfileSection>
-                                            <StyledCard
-                                                key={'id'}
-                                                style={{
-                                                    variant: 'light',
-                                                    padding: 'sm',
-                                                    size: 'sm',
-                                                }}
-                                            >
-                                                <ProfileImage
-                                                    src={CONFIG.profile.imageUrl}
-                                                    alt="Profile"
-                                                />
-                                                <ProfileName>{CONFIG.profile.username}</ProfileName>
-                                                <ProfileBio>{CONFIG.profile.fullName}</ProfileBio>
-                                                <TagContainer>
-                                                    <Tag>frontend</Tag>
-                                                    <Tag>react-js</Tag>
-                                                </TagContainer>
-                                            </StyledCard>
                                             <ContactTitle>🔗 Contact</ContactTitle>
                                             <StyledCard
                                                 key={'id'}

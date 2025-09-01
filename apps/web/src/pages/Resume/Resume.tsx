@@ -3,7 +3,7 @@ import { DarkModeProps } from '@/types/blog';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import html2pdf from 'html2pdf.js';
-import { DownloadIcon } from 'lucide-react';
+import { Download } from 'lucide-react';
 import resumeData from '@/pages/Resume/Data/resumeData.json';
 
 type PDFOptions = {
@@ -542,9 +542,7 @@ export default function Resume({ isDarkMode }: DarkModeProps) {
             <ResumeContent className="resume-content visible">
                 <ResumeActions className="resume-actions">
                     <DownloadButton onClick={handleDownloadPDF} isDarkMode={isDarkMode}>
-                        <DownloadIcon
-                            style={{ width: '14px', height: '14px', marginRight: '2px' }}
-                        />
+                        <Download style={{ width: '14px', height: '14px', marginRight: '2px' }} />
                         Download
                     </DownloadButton>
                 </ResumeActions>

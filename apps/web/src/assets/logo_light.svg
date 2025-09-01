@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200" preserveAspectRatio="xMidYMid meet">
+  <style>
+    text.banner {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      fill: #24292e; /* dark text for light background */
+      white-space: pre;
+    }
+    text.label {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 20px;
+      fill: #24292e;
+    }
+  </style>
+
+  <text class="banner" x="10" y="25"> ██████    █████    ██████    ██████     █████    ██████              ██     ██</text>
+  <text class="banner" x="10" y="45">██        ██   ██   ██   ██   ██   ██   ██   ██   ██   ██             ███   ███</text>
+  <text class="banner" x="10" y="65"> █████    ███████   ██████    ██   ██   ██   ██   ██████      ────    ██ █ █ ██</text>
+  <text class="banner" x="10" y="85">     ██   ██   ██   ██  ██    ██   ██   ██   ██   ██  ██              ██  █  ██</text>
+  <text class="banner" x="10" y="105"> ██████   ██   ██   ██   ██   ██████     █████    ██   ██             ██     ██</text>
+
+  <!-- small explicit lowercase label -->
+  <text class="label" x="10" y="145">sardor-m</text>
+</svg>
