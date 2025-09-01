@@ -7,7 +7,7 @@ import {
     RichTextProperty,
     TitleProperty,
 } from '@/types/notions';
-import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import type { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
 const NOTION_API_KEY = import.meta.env.VITE_NOTION_API_SECRET;
 const NOTION_VERSION = '2022-06-28';
