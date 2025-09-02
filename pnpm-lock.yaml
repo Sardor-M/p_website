@@ -139,6 +139,9 @@ importers:
       ts-unused-exports:
         specifier: ^11.0.1
         version: 11.0.1(typescript@5.9.2)
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
       vite:
         specifier: ^6.2.7
         version: 6.3.5(@types/node@22.18.0)(yaml@2.8.1)

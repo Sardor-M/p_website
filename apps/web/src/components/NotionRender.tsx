@@ -9,7 +9,7 @@ type NotionRendererProps = {
 export default function NotionRenderer({ content }: NotionRendererProps) {
     if (!content) return null;
 
-    const renderedContent = content.map((block) => <NotionBlock key={block.id} block={block} />);
+    const renderedContent = [];
 
     for (let i = 0; i < content.length; i++) {
         const block = content[i];
@@ -28,7 +28,7 @@ export default function NotionRenderer({ content }: NotionRendererProps) {
             const ListContainer = listType === 'numbered_list_item' ? OrderedList : List;
 
             renderedContent.push(
-                <ListContainer key={block.id}>
+                <ListContainer key={`list-${block.id}`}>
                     {listItems.map((item) => (
                         <li key={item.id}>
                             <RichText richTextArray={(item as any)[listType]?.rich_text} />

@@ -41,6 +41,7 @@
         "lint-staged": "^15.4.3",
         "node-fetch": "^3.3.2",
         "ts-unused-exports": "^11.0.1",
+        "typescript": "^5.9.2",
         "vite": "^6.2.7"
     },
     "pnpm": {

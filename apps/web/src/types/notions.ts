@@ -1,4 +1,7 @@
-import { PageObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import type {
+    PageObjectResponse,
+    RichTextItemResponse,
+} from '@notionhq/client/build/src/api-endpoints';
 
 type ParagraphBlock = {
     id: string;
