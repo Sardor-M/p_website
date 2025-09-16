@@ -15,18 +15,8 @@ import Button from '@/components/Common/Button';
 const BlogContainer = styled.div`
     max-width: 720px;
     margin: 0 auto;
-    padding: 3rem 0.7rem;
+    padding: 3rem 0rem;
     width: 100%;
-
-    font-family:
-        'Inter',
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        'Roboto',
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 
     font-size: 1.0625rem;
     line-height: 1.65;
@@ -35,15 +25,13 @@ const BlogContainer = styled.div`
     color: ${({ theme }) =>
         theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.9)'};
 
-    * {
-        font-family: inherit;
-    }
-
     code,
     pre,
     kbd,
     samp {
-        font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+        font-family:
+            'DepartureMono-Regular', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas,
+            monospace;
     }
 
     ${themeColor.breakpoints.mobile} {
@@ -76,7 +64,7 @@ const ArticleHeader = styled.header`
     margin-bottom: 0.5rem;
 
     h1 {
-        font-size: 2.25rem;
+        font-size: 1.999rem;
         font-weight: 600;
         line-height: 1.3;
         letter-spacing: -0.01em;

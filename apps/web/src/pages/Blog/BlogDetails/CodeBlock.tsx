@@ -15,7 +15,6 @@ import { themeColor } from '@/themes/color';
 const CodeBlockWrapper = styled.div`
     position: relative;
     margin: 1.5rem 0;
-    font-family: 'Fira Code', monospace;
 `;
 
 const CodeHeader = styled.div<{ language: string }>`
@@ -34,7 +33,7 @@ const CodeHeader = styled.div<{ language: string }>`
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     font-size: 0.8rem;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Geist', monospace;
 `;
 
 const LanguageLabel = styled.span`
@@ -80,6 +79,7 @@ const PreBlock = styled.pre<{ hasHeader: boolean; language: string }>`
     overflow-x: auto;
     font-size: 0.875rem;
     line-height: 1.6;
+    font-family: 'Geist', monospace;
     background: ${({ theme }) =>
         theme.mode === 'dark'
             ? themeColor.codeContent.codePreDark
@@ -89,7 +89,7 @@ const PreBlock = styled.pre<{ hasHeader: boolean; language: string }>`
         background: none !important;
         padding: 0 !important;
         font-size: 0.8rem;
-        font-family: 'Fira Code', monospace;
+        font-family: inherit !important;
         color: ${({ theme }) =>
             theme.mode === 'dark'
                 ? themeColor.codeContent.codeCodeDark

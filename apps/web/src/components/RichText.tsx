@@ -28,9 +28,9 @@ const InlineCode = styled.code`
     background: ${({ theme }) =>
         theme.mode === 'dark' ? themeColor.backgroundSpan.dark : themeColor.backgroundSpan.light};
     color: ${({ theme }) => (theme.mode === 'dark' ? themeColor.redHighlightCol : '#e01e5a')};
-    padding: 0.2em 0.4em;
+    padding: 0.2em 0.1em;
     border-radius: 3px;
-    font-size: 0.9em;
+    font-size: 0.95em;
     font-family: 'Fira Code', 'Courier New', monospace;
 `;
 

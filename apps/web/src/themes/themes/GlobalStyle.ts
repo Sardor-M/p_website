@@ -1,9 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  /* inter as primary UI font */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+ /* geist as primary code block font */
   @font-face {
-    font-family: 'DepartureMono-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2409-1@1.0/DepartureMono-Regular.woff2') format('woff2');
+    font-family: 'Geist';
+    src: url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
     font-weight: normal;
     font-style: normal;
   }
@@ -15,7 +19,8 @@ const GlobalStyle = createGlobalStyle`
   }
   
   html, body {
-    font-family: 'DepartureMono-Regular', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                 Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.5;
     font-weight: normal;
     font-style: normal;
@@ -42,9 +47,7 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: inherit;
   }
   
-  button {
-    font-family: 'DepartureMono-Regular', sans-serif;
-  }
+  button { font-family: inherit; }
 `;
 
 export default GlobalStyle;

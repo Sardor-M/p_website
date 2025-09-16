@@ -10,6 +10,9 @@ import styled from 'styled-components';
 const ContactContainer = styled.section<{ isDarkMode: boolean }>`
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     padding-top: 40px;
+    font-family:
+        'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
 
     ${themeColor.breakpoints.mobile} {
         padding-top: 5px;
@@ -23,6 +26,7 @@ const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: inherit;
 `;
 
 const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
@@ -57,7 +61,7 @@ const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
 `;
 
 const PageTitle = styled.h1<{ isDarkMode: boolean }>`
-    font-size: 3.5rem;
+    font-size: 2.8rem;
     font-weight: 700;
     margin-bottom: 20px;
     color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
@@ -134,7 +138,7 @@ const ContactInfo = styled.div<{ isDarkMode: boolean }>`
 `;
 
 const ContactText = styled.p<{ isDarkMode: boolean }>`
-    font-size: 1.2rem;
+    font-size: 0.86rem;
     line-height: 1.8;
     margin-bottom: 30px;
     color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.8)' : themeColor.text.light)};
@@ -193,12 +197,12 @@ const ContactLabel = styled.div<{ isDarkMode: boolean }>`
 `;
 
 const ContactValue = styled.div<{ isDarkMode: boolean }>`
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
 `;
 
 const ContactForm = styled.form<{ isDarkMode: boolean }>`
-    padding: 24px 30px;
+    padding: 18px 20px;
     border-radius: 8px;
     transform: translateY(20px);
     opacity: 0;
@@ -241,8 +245,8 @@ const Label = styled.label<{ isDarkMode: boolean }>`
 
 const Input = styled.input<{ isDarkMode: boolean }>`
     width: 100%;
-    padding: 12px;
-    font-size: 1rem;
+    padding: 11px;
+    font-size: 0.85rem;
     border-radius: 8px;
     border: 0.3px solid
         ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};
@@ -266,8 +270,8 @@ const Input = styled.input<{ isDarkMode: boolean }>`
 
 const TextArea = styled.textarea<{ isDarkMode: boolean }>`
     width: 100%;
-    padding: 16px;
-    font-size: 1rem;
+    padding: 11px;
+    font-size: 0.85rem;
     border-radius: 8px;
     border: 0.3px solid
         ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};

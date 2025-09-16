@@ -9,6 +9,10 @@ const ProjectsContainer = styled.section<{ isDarkMode: boolean }>`
     background-color: ${(props) =>
         props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    font-family:
+        'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
+    font-size: 1rem;
 `;
 
 const SectionWrapper = styled.div`
@@ -18,6 +22,7 @@ const SectionWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: inherit;
 `;
 
 const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
@@ -52,7 +57,7 @@ const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
 `;
 
 const PageTitle = styled.h1<{ isDarkMode: boolean }>`
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 25px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
@@ -150,7 +155,7 @@ const ProjectImage = styled.img`
 `;
 
 const ProjectInfo = styled.div<{ isDarkMode: boolean }>`
-    padding: 24px 30px;
+    padding: 18px 20px;
     background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#F9F9F9')};
     border-top: 1px solid
         ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)')};
@@ -161,7 +166,7 @@ const ProjectInfo = styled.div<{ isDarkMode: boolean }>`
 `;
 
 const ProjectCategory = styled.h4<{ isDarkMode: boolean }>`
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin-bottom: 15px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     opacity: 0;
@@ -177,7 +182,7 @@ const ProjectCategory = styled.h4<{ isDarkMode: boolean }>`
 `;
 
 const ProjectTitle = styled.h3<{ isDarkMode: boolean }>`
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     margin-bottom: 12px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     opacity: 0;
@@ -197,7 +202,7 @@ const ProjectTitle = styled.h3<{ isDarkMode: boolean }>`
 `;
 
 const ProjectDescription = styled.p<{ isDarkMode: boolean }>`
-    font-size: 1.1rem;
+    font-size: 0.84rem;
     line-height: 1.6;
     margin-bottom: 20px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
@@ -213,7 +218,7 @@ const ProjectDescription = styled.p<{ isDarkMode: boolean }>`
     }
 
     ${themeColor.breakpoints.mobile} {
-        font-size: 1rem;
+        font-size: 0.7rem;
     }
 `;
 
@@ -285,14 +290,14 @@ const ProjectLinks = styled.div`
 `;
 
 const StatLabel = styled.div<{ isDarkMode: boolean }>`
-    font-size: 0.9rem;
+    font-size: 0.84rem;
     margin-bottom: 5px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     opacity: 0.7;
 `;
 
 const StatValue = styled.div<{ isDarkMode: boolean }>`
-    font-size: 1.2rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
 `;
@@ -300,7 +305,7 @@ const StatValue = styled.div<{ isDarkMode: boolean }>`
 const TechTag = styled.span<{ isDarkMode: boolean }>`
     padding: 6px 12px;
     border-radius: 16px;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     background-color: ${(props) =>
         props.isDarkMode ? themeColor.hover.dark : themeColor.hover.light};
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
@@ -319,10 +324,11 @@ const ProjectLink = styled.a<{ isDarkMode: boolean; isUrlLink: boolean }>`
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.8rem;
     transition: all 0.3s ease;
     background-color: ${(props) =>
         props.isDarkMode ? themeColor.hover.dark : themeColor.backgroundSpan.light};
-    padding: 10px 15px;
+    padding: 10px 12px;
     border-radius: 10px;
 
     &:hover {

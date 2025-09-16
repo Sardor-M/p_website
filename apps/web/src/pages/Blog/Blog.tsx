@@ -80,6 +80,14 @@ const BlogGrid = styled.div`
 const BlogTitle = styled.h3`
     font-size: 1.2rem;
     margin: 0;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 `;
 
 const BlogSubtitle = styled.h4`
@@ -169,11 +177,11 @@ const SortContainer = styled.div`
     align-items: center;
 `;
 
-const SortButton = styled.button<{ active: boolean }>`
+const SortButton = styled.button<{ $active: boolean }>`
     padding: 0.4rem 0.6rem;
     border: none;
-    background-color: ${({ active, theme }) =>
-        active ? (theme.mode === 'dark' ? '#3a3a3a' : '#e5e5e5') : 'transparent'};
+    background-color: ${({ $active, theme }) =>
+        $active ? (theme.mode === 'dark' ? '#3a3a3a' : '#e5e5e5') : 'transparent'};
     border-radius: 12px;
     cursor: pointer;
     color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#000')};
@@ -400,13 +408,13 @@ export default function Blog() {
 
                     <SortContainer>
                         <SortButton
-                            active={sortOrder === 'desc'}
+                            $active={sortOrder === 'desc'}
                             onClick={() => setSortOrder('desc')}
                         >
                             Latest
                         </SortButton>
                         <SortButton
-                            active={sortOrder === 'asc'}
+                            $active={sortOrder === 'asc'}
                             onClick={() => setSortOrder('asc')}
                         >
                             Oldest
