@@ -17,8 +17,8 @@ export const useNotionPosts = () => {
             const posts = await getPosts();
             return posts;
         },
-        staleTime: 1000 * 60 * 10 /* 10 minutes */,
-        gcTime: 1000 * 60 * 60 /* 1 hour */,
+        staleTime: 1000 * 60 * 10 ,
+        gcTime: 1000 * 60 * 60 ,
         refetchOnWindowFocus: false,
         retry: 1,
     });
@@ -57,7 +57,7 @@ export const usePrefetchPost = () => {
             queryClient.prefetchQuery({
                 queryKey: notionKeys.post(slug),
                 queryFn: () => getPostBySlug(slug),
-                staleTime: 30 * 60 * 1000 /* 30 minutes */,
+                staleTime: 30 * 60 * 1000 ,
             });
         }
 

@@ -27,7 +27,7 @@ export const List = styled.ul`
 export const OrderedList = styled(List).attrs({ as: 'ol' })``;
 
 const Paragraph = styled.p`
-    font-size: 1.0625rem;
+    font-size: 1.065rem;
     line-height: 1.65;
     margin: 1.25rem 0;
     font-weight: 400;
@@ -43,7 +43,7 @@ const Paragraph = styled.p`
 `;
 
 const Heading1 = styled.h1`
-    font-size: 1.875rem;
+    font-size: 1.5rem;
     font-weight: 600;
     margin: 2rem 0 1rem;
     color: inherit;
@@ -55,9 +55,9 @@ const Heading1 = styled.h1`
 `;
 
 const Heading2 = styled.h2`
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 600;
-    margin: 2.5rem 0 1.25rem;
+    margin: 1.5rem 0 0rem;
     color: inherit;
 
     ${themeColor.breakpoints.mobile} {

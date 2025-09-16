@@ -87,6 +87,13 @@ const PreBlock = styled.pre`
     overflow-x: auto;
     font-size: 0.9rem;
     line-height: 1.6;
+    font-family:
+        'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga' 0;
+    tab-size: 2;
     background: ${({ theme }) =>
         theme.mode === 'dark'
             ? themeColor.codeContent.codePreDark
@@ -95,6 +102,7 @@ const PreBlock = styled.pre`
     code {
         background: none !important;
         padding: 0 !important;
+        font-family: inherit !important;
         color: ${({ theme }) =>
             theme.mode === 'dark'
                 ? themeColor.codeContent.codeTextDark

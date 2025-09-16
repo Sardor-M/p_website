@@ -15,14 +15,14 @@ const commonButtonStyles = `
   transition: all 0.2s ease-out;
 `;
 
-const Nav = styled.nav<{ isPortfolioPage?: boolean; isScrolled?: boolean }>`
+const Nav = styled.nav<{ $isPortfolioPage?: boolean; $isScrolled?: boolean }>`
     display: flex;
     justify-content: center;
     padding: 14px 0;
-    ${({ theme, isPortfolioPage, isScrolled }) =>
-        isPortfolioPage
+    ${({ theme, $isPortfolioPage, $isScrolled }) =>
+        $isPortfolioPage
             ? `background-color: ${
-                  isScrolled
+                  $isScrolled
                       ? theme.mode === 'dark'
                           ? 'rgba(28, 28, 28, 0.75)'
                           : 'rgba(248, 248, 248, 0.75)'
@@ -36,19 +36,20 @@ const Nav = styled.nav<{ isPortfolioPage?: boolean; isScrolled?: boolean }>`
     left: 0;
     right: 0;
     z-index: 1000;
-    box-shadow: ${({ isPortfolioPage }) =>
-        isPortfolioPage ? 'none' : '0 1px 2px 0 rgba(0, 0, 0, 0.05)'};
+    box-shadow: ${({ $isPortfolioPage }) =>
+        $isPortfolioPage ? 'none' : '0 0.1px 0.5px 0 rgba(0, 0, 0, 0.05)'};
     transition: all 0.3s ease;
 `;
 
-const NavContainer = styled.div<{ isPortfolioPage?: boolean }>`
+const NavContainer = styled.div<{ $isPortfolioPage?: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: ${({ isPortfolioPage }) => (isPortfolioPage ? '1000px' : '1440px')};
+    max-width: 720px;
     margin: 0 auto;
-    padding: ${({ isPortfolioPage }) => (isPortfolioPage ? '0 70px' : '0 70px')};
+    padding-left: 9px;
+    padding-right: 0;
 
     ${themeColor.breakpoints.tablet} {
         padding: 0 15px;
@@ -71,7 +72,7 @@ const Logo = styled(Link)`
     }
 `;
 
-const NavList = styled.ul<{ isOpen?: boolean; isPortfolioMode?: boolean }>`
+const NavList = styled.ul<{ $isOpen?: boolean; $isPortfolioMode?: boolean }>`
     display: flex;
     gap: 1rem;
     list-style: none;
@@ -92,17 +93,17 @@ const NavList = styled.ul<{ isOpen?: boolean; isPortfolioMode?: boolean }>`
         ${({ theme }) => getThemeStyles(theme, 'background')};
         padding: 1rem 1rem;
         margin-left: 0;
-        transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-100%)')};
-        opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-        height: ${({ isOpen }) => (isOpen ? 'auto' : 0)};
+        transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-100%)')};
+        opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+        height: ${({ $isOpen }) => ($isOpen ? 'auto' : 0)};
         transition: all 0.3s ease-in-out;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         z-index: 999;
         overflow-y: auto;
         max-height: calc(100vh - 60px);
 
-        ${({ isPortfolioMode, theme }) =>
-            isPortfolioMode &&
+        ${({ $isPortfolioMode, theme }) =>
+            $isPortfolioMode &&
             `
       background-color: ${theme.mode === 'dark' ? 'rgba(28, 28, 28, 0.95)' : 'rgba(248, 248, 248, 0.95)'};
       backdrop-filter: blur(10px);
@@ -110,13 +111,13 @@ const NavList = styled.ul<{ isOpen?: boolean; isPortfolioMode?: boolean }>`
     }
 `;
 
-const NavItem = styled(Link)<{ isPortfolioItem?: boolean; $isDarkMode?: boolean }>`
-    ${({ theme, isPortfolioItem, $isDarkMode }) =>
-        isPortfolioItem
+const NavItem = styled(Link)<{ $isPortfolioItem?: boolean; $isDarkMode?: boolean }>`
+    ${({ theme, $isPortfolioItem, $isDarkMode }) =>
+        $isPortfolioItem
             ? `color: ${$isDarkMode ? '#FFFFFF' : '#282828'};
          font-weight: 500;
          padding: 6px 12px;
-         border-radius: 6px;
+         border-radius: 1px;
          background-color: ${$isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)'};
          &:hover { 
            opacity: 0.9;
@@ -124,9 +125,9 @@ const NavItem = styled(Link)<{ isPortfolioItem?: boolean; $isDarkMode?: boolean 
          }`
             : getThemeStyles(theme, 'text')};
     text-decoration: none;
-    font-size: ${(props) => (props.isPortfolioItem ? '1rem' : '16px')};
-    ${(props) => !props.isPortfolioItem && commonButtonStyles};
-    border-radius: ${(props) => (props.isPortfolioItem ? '6px' : '14px')};
+    font-size: ${(props) => (props.$isPortfolioItem ? '1rem' : '16px')};
+    ${(props) => !props.$isPortfolioItem && commonButtonStyles};
+    border-radius: ${(props) => (props.$isPortfolioItem ? '6px' : '14px')};
     transition: all 0.2s ease-out;
     position: relative;
 
@@ -138,10 +139,10 @@ const NavItem = styled(Link)<{ isPortfolioItem?: boolean; $isDarkMode?: boolean 
 
     &:hover,
     &.active {
-        ${({ theme, isPortfolioItem }) => !isPortfolioItem && getHoverStyles(theme)};
-        transform: ${(props) => !props.isPortfolioItem && 'translateY(-3px)'};
-        box-shadow: ${({ theme, isPortfolioItem }) =>
-            !isPortfolioItem && `0 2px 8px ${getThemeStyles(theme, 'shadow')}`};
+        ${({ theme, $isPortfolioItem }) => !$isPortfolioItem && getHoverStyles(theme)};
+        transform: ${(props) => props.$isPortfolioItem && 'translateY(-3px)'};
+        box-shadow: ${({ theme, $isPortfolioItem }) =>
+            !$isPortfolioItem && `0 2px 8px ${getThemeStyles(theme, 'shadow')}`};
     }
 
     &.active::after {
@@ -154,24 +155,24 @@ const NavItem = styled(Link)<{ isPortfolioItem?: boolean; $isDarkMode?: boolean 
         height: 4px;
         border-radius: 50px;
         transition: all 0.2s ease-in-out;
-        display: ${(props) => (props.isPortfolioItem ? 'none' : 'block')};
+        display: ${(props) => (props.$isPortfolioItem ? 'none' : 'block')};
     }
 
     ${themeColor.breakpoints.mobile} {
-        padding: ${(props) => (props.isPortfolioItem ? '0.75rem 1rem' : '0.5rem 2px')};
+        padding: ${(props) => (props.$isPortfolioItem ? '0.75rem 1rem' : '0.5rem 2px')};
         width: 100%;
         display: block;
         text-align: center;
 
         &:hover,
         &.active {
-            transform: ${(props) => (props.isPortfolioItem ? 'none' : 'none')};
+            transform: ${(props) => (props.$isPortfolioItem ? 'none' : 'none')};
             box-shadow: none;
-            opacity: ${(props) => (props.isPortfolioItem ? '1' : 'inherit')};
+            opacity: ${(props) => (props.$isPortfolioItem ? '1' : 'inherit')};
             background-color: ${(props) =>
-                props.isPortfolioItem &&
+                props.$isPortfolioItem &&
                 (props.$isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)')};
-            border-radius: ${(props) => props.isPortfolioItem && '8px'};
+            border-radius: ${(props) => props.$isPortfolioItem && '8px'};
         }
         &:focus {
             outline: none;
@@ -303,16 +304,16 @@ const LanguageOptions = styled.div<{ $isVisible: boolean }>`
     display: ${({ $isVisible }) => ($isVisible ? 'flex' : 'none')};
     flex-direction: column;
     gap: 0.5rem;
-    min-width: 100px;
+    min-width: 80px;
     z-index: 10;
 `;
 
 const LanguageOptionButton = styled(Button)<{ $isActive?: boolean }>`
-    padding: 8px 12px;
+    padding: 6px 8px;
     border-radius: 8px;
     transition: all 0.2s ease-out;
     text-transform: uppercase;
-    font-size: 0.875rem;
+    font-size: 0.81rem;
     width: 100%;
     text-align: left;
     border: none;
@@ -400,7 +401,6 @@ const IconLink = styled.a<{ $isDarkMode?: boolean; $isActive?: boolean }>`
 
 const LogoContainer = styled.div`
     display: flex;
-    padding: 0 15px;
 
     ${themeColor.breakpoints.mobile} {
         padding: 0;
@@ -469,8 +469,8 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
     };
 
     return (
-        <Nav isPortfolioPage={isPortfolioPage} isScrolled={isScrolled}>
-            <NavContainer isPortfolioPage={isPortfolioPage}>
+        <Nav $isPortfolioPage={isPortfolioPage} $isScrolled={isScrolled}>
+            <NavContainer $isPortfolioPage={isPortfolioPage}>
                 {isPortfolioPage ? (
                     <div></div>
                 ) : (
@@ -519,7 +519,7 @@ export default function Navbar({ onToggleTheme, theme }: AppProps) {
                         </NavLinksPortfolio>
                     ) : (
                         <>
-                            <NavList isOpen={isMenuOpen}>
+                            <NavList $isOpen={isMenuOpen}>
                                 <li>
                                     <NavItem
                                         to="/"

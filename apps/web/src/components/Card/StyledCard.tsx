@@ -43,8 +43,8 @@ export type CardContainerProps = {
     variant: CardVariant;
     size: CardSize;
     padding: CardPadding;
-    hoverable: boolean;
-    bordered: boolean;
+    $hoverable: boolean;
+    $bordered: boolean;
 };
 
 const getCardShadow = ({ theme }: { theme: DefaultTheme }) => css`
@@ -72,8 +72,8 @@ const CardContainer = styled.div<CardContainerProps>`
         transform 0.2s ease-in-out,
         box-shadow 0.2s ease-in-out;
 
-    ${({ hoverable }) =>
-        hoverable &&
+    ${({ $hoverable }) =>
+        $hoverable &&
         css`
             &:hover {
                 ${hoverStyles}
@@ -149,8 +149,8 @@ export default function StyledCard({
             variant={style.variant}
             size={style.size ?? 'md'}
             padding={style.padding ?? 'md'}
-            hoverable={style.hoverable ?? false}
-            bordered={style.bordered ?? true}
+            $hoverable={style.hoverable ?? false}
+            $bordered={style.bordered ?? true}
             {...rest}
         >
             {(content.title || content.extra) && (

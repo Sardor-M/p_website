@@ -4,7 +4,7 @@ import styled from 'styled-components';
 type CursorDotProps = {
     x: number;
     y: number;
-    visible: boolean;
+    $visible: boolean;
 };
 
 const CursorDot = styled.div<CursorDotProps>`
@@ -22,7 +22,7 @@ const CursorDot = styled.div<CursorDotProps>`
         transform 0.1s ease-out,
         opacity 0.2s ease;
     box-shadow: 0 0 10px 1px rgba(48, 131, 220, 0.7);
-    opacity: ${(props) => (props.visible ? 1 : 0)};
+    opacity: ${(props) => (props.$visible ? 1 : 0)};
 `;
 
 export default function CustomCursor() {
@@ -72,5 +72,5 @@ export default function CustomCursor() {
 
     if (isMobile) return null;
 
-    return <CursorDot x={position.x} y={position.y} visible={isVisible} />;
+    return <CursorDot x={position.x} y={position.y} $visible={isVisible} />;
 }

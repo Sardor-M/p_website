@@ -2,7 +2,6 @@ import { themeColor } from '@/themes/color';
 import styled from 'styled-components';
 import { DarkModeProps } from '@/types/blog';
 import { useAboutAnimation } from '@/hooks/useAnimations/useAboutAnimation';
-import { ChevronsLeftRight, Contact2, Newspaper, UserRound } from 'lucide-react';
 
 const AboutMeContainer = styled.section<{ isDarkMode: boolean }>`
     background-color: ${(props) =>
@@ -12,6 +11,9 @@ const AboutMeContainer = styled.section<{ isDarkMode: boolean }>`
     display: flex;
     align-items: flex-start;
     padding-bottom: 10px;
+    font-family:
+        'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
 `;
 
 const ContentWrapper = styled.div`
@@ -21,6 +23,7 @@ const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: inherit;
 `;
 
 const FullHeightSection = styled.section<{ isDarkMode: boolean }>`
@@ -43,25 +46,31 @@ const FullHeightSection = styled.section<{ isDarkMode: boolean }>`
         opacity: 1;
         transform: translateY(0);
     }
+    font-family: inherit;
 `;
 
 const PreAscii = styled.pre<{ isDarkMode: boolean }>`
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.5rem;
-    line-height: 1;
+    font-family: inherit;
+    font-size: 0.86rem;
+    line-height: 1.1;
     color: ${(props) => (props.isDarkMode ? '#9CA3AF' : '#374151')};
     text-align: left;
     white-space: pre;
     margin-bottom: 20px;
-    letter-spacing: -1px;
+    letter-spacing: 0.5px;
+    opacity: 90px;
+    user-select: none;
 
-    @media (min-width: 768px) {
-        font-size: 0.7rem;
-        margin-bottom: 24px;
+    ${themeColor.breakpoints.tablet} {
+        font-size: 0.84rem;
+        margin-bottom: 16px;
     }
 
-    @media (min-width: 1024px) {
-        font-size: 1rem;
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.7rem;
+        margin-bottom: 24px;
+        line-height: 1.2;
+        letter-spacing: -1px;
     }
 `;
 
@@ -70,6 +79,7 @@ const IntroGreeting = styled.h1<{ isDarkMode: boolean }>`
     font-weight: 600;
     margin-bottom: 12px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    font-family: inherit;
 `;
 
 const IntroDescription = styled.p<{ isDarkMode: boolean }>`
@@ -78,6 +88,7 @@ const IntroDescription = styled.p<{ isDarkMode: boolean }>`
     margin-bottom: 0;
     color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)')};
     max-width: 600px;
+    font-family: inherit;
 `;
 
 const NavigationLinks = styled.div`
@@ -86,6 +97,7 @@ const NavigationLinks = styled.div`
     margin-top: 24px;
     align-items: center;
     flex-wrap: wrap;
+    font-family: inherit;
 `;
 
 const NavLink = styled.a<{ isDarkMode: boolean }>`
@@ -93,7 +105,7 @@ const NavLink = styled.a<{ isDarkMode: boolean }>`
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
-    font-family: 'Courier New', monospace;
+    font-family: inherit;
     text-decoration: none;
     transition: all 0.2s ease;
     color: ${(props) => (props.isDarkMode ? '#9CA3AF' : '#161616ff')};
@@ -149,19 +161,15 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
 
                     <NavigationLinks>
                         <NavLink href="#about" isDarkMode={isDarkMode}>
-                            <UserRound size={14} strokeWidth={2} />
                             ~/about
                         </NavLink>
                         <NavLink href="#projects" isDarkMode={isDarkMode}>
-                            <ChevronsLeftRight size={14} strokeWidth={2} />
-                            ~/projects
+                            ~/project
                         </NavLink>
                         <NavLink href="#contact" isDarkMode={isDarkMode}>
-                            <Contact2 size={14} strokeWidth={2} />
                             ~/contact
                         </NavLink>
                         <NavLink href="/" isDarkMode={isDarkMode}>
-                            <Newspaper size={14} strokeWidth={2} />
                             ~/blog
                         </NavLink>
                     </NavigationLinks>
