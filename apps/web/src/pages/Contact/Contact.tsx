@@ -13,9 +13,11 @@ const ContactContainer = styled.section<{ isDarkMode: boolean }>`
     font-family:
         'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
         'Courier New', monospace;
+    padding-top: 60px;
+    padding-bottom: 60px;
 
     ${themeColor.breakpoints.mobile} {
-        padding-top: 5px;
+        padding-bottom: 20px;
     }
 `;
 
@@ -33,7 +35,7 @@ const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     opacity: 0;
     transform: translateY(20px);
@@ -119,7 +121,8 @@ const ContactInfo = styled.div<{ isDarkMode: boolean }>`
     border-radius: 8px;
     border: 0.8px solid
       ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)')};
-    background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#FFFFFF')};
+    background-color: ${(props) => (props.isDarkMode ? 'transparent' : '#ffffff')};
+
     color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
     padding: 20px;
     margin-bottom: 20px;
@@ -199,15 +202,16 @@ const ContactValue = styled.div<{ isDarkMode: boolean }>`
 
 const ContactForm = styled.form<{ isDarkMode: boolean }>`
     padding: 18px 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     transform: translateY(20px);
     opacity: 0;
     transition:
         transform 0.6s ease,
-        opacity 0.6s ease;
-    border: 0.8px solid
-        ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)')};
-    background-color: ${(props) => (props.isDarkMode ? '#2A2A2A' : '#FFFFFF')};
+        opacity 0.6s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+    border: 1px solid ${(props) => (props.isDarkMode ? '#3b3b3b' : '#e5e5e5')};
+    background-color: ${(props) => (props.isDarkMode ? 'transparent' : '#ffffff')};
 
     &.visible {
         transform: translateY(0);
@@ -236,7 +240,7 @@ const Label = styled.label<{ isDarkMode: boolean }>`
     display: block;
     margin-bottom: 8px;
     font-size: 0.9rem;
-    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.8)')};
+    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.8)')};
 `;
 
 const Input = styled.input<{ isDarkMode: boolean }>`
@@ -244,9 +248,8 @@ const Input = styled.input<{ isDarkMode: boolean }>`
     padding: 11px;
     font-size: 0.85rem;
     border-radius: 8px;
-    border: 0.3px solid
-        ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};
-    background-color: ${(props) => (props.isDarkMode ? '#252525' : '#FFFFFF')};
+    border: 1px solid ${(props) => (props.isDarkMode ? '#404040' : '#dcdcdc')};
+    background-color: ${(props) => (props.isDarkMode ? '#161616' : '#FFFFFF')};
     color: ${(props) => (props.isDarkMode ? '#FFFFFF' : '#000000')};
     transition: border-color 0.3s ease;
 
@@ -256,7 +259,9 @@ const Input = styled.input<{ isDarkMode: boolean }>`
 
     &:focus {
         outline: none;
-        border-color: #9d76ff !important;
+        border-color: ${(props) => (props.isDarkMode ? '#E8A87C' : '#D97706')} !important;
+        box-shadow: 0 0 0 3px
+            ${(props) => (props.isDarkMode ? 'rgba(232, 168, 124, 0.15)' : 'rgba(217, 119, 6, 0.15)')};
     }
 
     ${themeColor.breakpoints.mobile} {
@@ -269,9 +274,8 @@ const TextArea = styled.textarea<{ isDarkMode: boolean }>`
     padding: 11px;
     font-size: 0.85rem;
     border-radius: 8px;
-    border: 0.3px solid
-        ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)')};
-    background-color: ${(props) => (props.isDarkMode ? '#252525' : '#FFFFFF')};
+    border: 1px solid ${(props) => (props.isDarkMode ? '#404040' : '#dcdcdc')};
+    background-color: ${(props) => (props.isDarkMode ? '#161616' : '#FFFFFF')};
     color: ${(props) => (props.isDarkMode ? '#FFFFFF' : '#000000')};
     min-height: 150px;
     resize: vertical;
@@ -283,7 +287,9 @@ const TextArea = styled.textarea<{ isDarkMode: boolean }>`
 
     &:focus {
         outline: none;
-        border-color: #9d76ff !important;
+        border-color: ${(props) => (props.isDarkMode ? '#E8A87C' : '#D97706')} !important;
+        box-shadow: 0 0 0 3px
+            ${(props) => (props.isDarkMode ? 'rgba(232, 168, 124, 0.15)' : 'rgba(217, 119, 6, 0.15)')};
     }
 
     ${themeColor.breakpoints.mobile} {

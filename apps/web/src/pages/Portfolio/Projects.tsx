@@ -6,6 +6,18 @@ import { useProjectCardAnimation } from '@/hooks/useAnimations/useProjectAnimati
 import { useState } from 'react';
 import { GithubOutlined, LinkOutlined } from '@ant-design/icons';
 
+
+const ProjectsContainer = styled.section<{ isDarkMode: boolean }>`
+    background-color: ${(props) =>
+        props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
+    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
+    font-family:
+        'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
+    font-size: 1rem;
+    padding-top: 30px;
+`;
+
 const SearchBar = styled.div<{ isDarkMode: boolean }>`
     width: 100%;
     margin-bottom: 30px;
@@ -178,16 +190,6 @@ const LanguageDot = styled.span<{ isDarkMode: boolean }>`
     height: 8px;
     border-radius: 50%;
     background-color: ${(props) => (props.isDarkMode ? '#E8A87C' : '#D97706')};
-`;
-
-const ProjectsContainer = styled.section<{ isDarkMode: boolean }>`
-    background-color: ${(props) =>
-        props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
-    color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-    font-family:
-        'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
-        'Courier New', monospace;
-    font-size: 1rem;
 `;
 
 const SectionWrapper = styled.div`

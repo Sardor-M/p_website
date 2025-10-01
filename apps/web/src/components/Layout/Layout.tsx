@@ -30,7 +30,8 @@ const LayoutContainer = styled.div`
     height: auto;
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: visible;
     position: relative;
 
     ${themeColor.breakpoints.mobile} {
@@ -61,7 +62,7 @@ const ContentWrapper = styled.div`
 
     ${themeColor.breakpoints.mobile} {
         padding: 70px 10px 60px 10px;
-        min-height: auto;
+        min-height: unset;
         max-width: 100%;
     }
 `;

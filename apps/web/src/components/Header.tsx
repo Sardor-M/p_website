@@ -39,6 +39,7 @@ const Nav = styled.nav<{ $isPortfolioPage?: boolean; $isScrolled?: boolean }>`
     box-shadow: ${({ $isPortfolioPage }) =>
         $isPortfolioPage ? 'none' : '0 0.1px 0.5px 0 rgba(0, 0, 0, 0.05)'};
     transition: all 0.3s ease;
+    overflow: hidden;
 `;
 
 const NavContainer = styled.div<{ $isPortfolioPage?: boolean }>`
