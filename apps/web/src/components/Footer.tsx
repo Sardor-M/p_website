@@ -16,24 +16,6 @@ const FooterWrapper = styled.div<{ $isDarkMode: boolean }>`
     }
 `;
 
-const FooterContainer = styled.footer<{ $isDarkMode: boolean }>`
-    padding: 18px 20px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 720px;
-    margin: 0 auto;
-
-    ${themeColor.breakpoints.tablet} {
-        padding: 16px 15px;
-    }
-
-    ${themeColor.breakpoints.mobile} {
-        padding: 16px 20px;
-    }
-`;
-
 const FooterText = styled.p<{ $isDarkMode: boolean }>`
     color: ${(props) => (props.$isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)')};
     font-size: 0.85rem;
@@ -43,11 +25,41 @@ const FooterText = styled.p<{ $isDarkMode: boolean }>`
     font-weight: 400;
     letter-spacing: -0.003em;
     text-align: left;
+    white-space: nowrap;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.7rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+`;
+
+const FooterContainer = styled.footer<{ $isDarkMode: boolean }>`
+    padding: 18px 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 720px;
+    margin: 0 auto;
+    gap: 12px;
+
+    ${themeColor.breakpoints.tablet} {
+        padding: 16px 15px;
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 16px 15px;
+        gap: 8px;
+    }
 `;
 
 const Icons = styled.div`
     display: flex;
     gap: 10px;
+    flex-shrink: 0;
+
     a {
         display: inline-flex;
         align-items: center;
@@ -62,8 +74,16 @@ const Icons = styled.div`
     a:hover {
         opacity: 1;
     }
-`;
 
+    ${themeColor.breakpoints.mobile} {
+        gap: 8px;
+
+        a {
+            width: 24px;
+            height: 24px;
+        }
+    }
+`;
 export default function Footer({ isDarkMode }: DarkModeProps) {
     const currentYear = new Date().getFullYear();
 

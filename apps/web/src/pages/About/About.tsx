@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { DarkModeProps } from '@/types/blog';
 import { useAboutAnimation } from '@/hooks/useAnimations/useAboutAnimation';
 
-const AboutMeContainer = styled.section<{ isDarkMode: boolean }>`
+const AboutMeContainer = styled.div<{ isDarkMode: boolean }>`
     background-color: ${(props) =>
         props.isDarkMode ? themeColor.background.dark : themeColor.background.light};
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-    min-height: 40vh;
     display: flex;
     align-items: flex-start;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid ${(props) => (props.isDarkMode ? '#333' : '#e5e5e5')};
     font-family:
         'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
         'Courier New', monospace;
@@ -49,79 +49,73 @@ const FullHeightSection = styled.section<{ isDarkMode: boolean }>`
     font-family: inherit;
 `;
 
-const PreAscii = styled.pre<{ isDarkMode: boolean }>`
-    font-family: inherit;
-    font-size: 0.86rem;
-    line-height: 1.1;
-    color: ${(props) => (props.isDarkMode ? '#9CA3AF' : '#374151')};
-    text-align: left;
-    white-space: pre;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-    opacity: 90px;
-    user-select: none;
-
-    ${themeColor.breakpoints.tablet} {
-        font-size: 0.84rem;
-        margin-bottom: 16px;
-    }
-
-    ${themeColor.breakpoints.mobile} {
-        font-size: 0.7rem;
-        margin-bottom: 24px;
-        line-height: 1.2;
-        letter-spacing: -1px;
-    }
-`;
-
 const IntroGreeting = styled.h1<{ isDarkMode: boolean }>`
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 12px;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 5px;
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
     font-family: inherit;
+    letter-spacing: -1px;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 2.2rem;
+    }
 `;
 
 const IntroDescription = styled.p<{ isDarkMode: boolean }>`
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 1.15rem;
+    line-height: 1.7;
     margin-bottom: 0;
-    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)')};
-    max-width: 600px;
+    color: ${(props) => (props.isDarkMode ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)')};
+    max-width: 650px;
     font-family: inherit;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 1rem;
+    }
 `;
 
-const NavigationLinks = styled.div`
+const NavigationLinks = styled.div<{ isDarkMode: boolean }>`
     display: flex;
-    gap: 24px;
-    margin-top: 24px;
+    gap: 32px;
+    margin-top: 20px;
     align-items: center;
     flex-wrap: wrap;
     font-family: inherit;
+
+    ${themeColor.breakpoints.mobile} {
+        gap: 24px;
+        margin-top: 15px;
+    }
 `;
 
 const NavLink = styled.a<{ isDarkMode: boolean }>`
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-family: inherit;
     text-decoration: none;
     transition: all 0.2s ease;
     color: ${(props) => (props.isDarkMode ? '#9CA3AF' : '#161616ff')};
-    font-weight: 550;
+    font-weight: 500;
     background: none;
     border: none;
     padding: 0;
 
     &:hover {
         color: ${(props) => (props.isDarkMode ? '#E5E7EB' : '#374151')};
+        transform: translateX(4px);
     }
 
     svg {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         color: ${(props) => (props.isDarkMode ? '#9CA3AF' : '#161616ff')};
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.8rem;
     }
 `;
 
@@ -130,39 +124,16 @@ export default function AboutMe({ isDarkMode }: DarkModeProps) {
 
     const displayName = import.meta.env.VITE_DISPLAY_NAME || 'DEV';
 
-    const asciiNames: Record<string, string> = {
-        DEV: `
-██████╗ ███████╗██╗   ██╗
-██╔══██╗██╔════╝██║   ██║
-██║  ██║█████╗  ██║   ██║
-██║  ██║██╔══╝  ╚██╗ ██╔╝
-██████╔╝███████╗ ╚████╔╝ 
-╚═════╝ ╚══════╝  ╚═══╝`,
-        SARDOR: `
-███████╗ █████╗ ██████╗ ██████╗  ██████╗ ██████╗ 
-██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗██╔══██╗
-███████╗███████║██████╔╝██║  ██║██║   ██║██████╔╝
-╚════██║██╔══██║██╔══██╗██║  ██║██║   ██║██╔══██╗       
-███████║██║  ██║██║  ██║██████╔╝╚██████╔╝██║  ██║
-╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝`,
-    };
-
     return (
         <AboutMeContainer isDarkMode={isDarkMode}>
             <ContentWrapper>
                 <FullHeightSection ref={sectionHeadingRef} isDarkMode={isDarkMode}>
-                    <PreAscii isDarkMode={isDarkMode}>
-                        {asciiNames[displayName] || asciiNames['DEV']}
-                    </PreAscii>
-                    <IntroGreeting isDarkMode={isDarkMode}>Hello, World! 👋</IntroGreeting>
+                    <IntroGreeting isDarkMode={isDarkMode}>{displayName} 👋</IntroGreeting>
                     <IntroDescription isDarkMode={isDarkMode}>
                         Web, systems enthusiast and curious learner.
                     </IntroDescription>
 
-                    <NavigationLinks>
-                        <NavLink href="#about" isDarkMode={isDarkMode}>
-                            ~/about
-                        </NavLink>
+                    <NavigationLinks isDarkMode={isDarkMode}>
                         <NavLink href="#projects" isDarkMode={isDarkMode}>
                             ~/project
                         </NavLink>

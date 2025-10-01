@@ -61,7 +61,7 @@ const hoverStyles = css`
 const CardContainer = styled.div<CardContainerProps>`
     border-radius: 15px;
     width: 100%;
-    margin: 10px 0;
+    margin: 6px 0;
     overflow: hidden;
 
     ${({ variant }) => cardVariants[variant]};
@@ -97,6 +97,10 @@ const CardTitle = styled.h3`
 
 const CardBody = styled.div`
     padding: 1rem;
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 0.75rem;
+    }
 `;
 
 const CardSubtitle = styled.h4`
@@ -114,9 +118,9 @@ const TagList = styled.div`
 `;
 
 const Tag = styled.span`
-    padding: 0.25rem 0.8rem;
-    font-size: 0.6rem;
-    border-radius: 6px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.65rem;
+    border-radius: 5px;
     background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
     color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
     cursor: pointer;
@@ -125,6 +129,11 @@ const Tag = styled.span`
     &:hover {
         background-color: ${({ theme }) =>
             theme.mode === 'dark' ? '#3D3D3D' : 'rgb(225, 225, 225)'};
+    }
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 0.15rem 0.5rem;
+        font-size: 0.6rem;
     }
 `;
 

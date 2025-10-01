@@ -68,17 +68,17 @@ const BlogContainer = styled.div`
 const BlogGrid = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.5rem;
     width: 100%;
     max-width: 100%;
 
     ${themeColor.breakpoints.mobile} {
-        gap: 0.8rem;
+        gap: 0.4rem;
     }
 `;
 
 const BlogTitle = styled.h3`
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin: 0;
     font-weight: 600;
     line-height: 1.4;
@@ -88,39 +88,89 @@ const BlogTitle = styled.h3`
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.95rem;
+    }
 `;
 
 const BlogSubtitle = styled.h4`
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0;
     margin-top: 0.5rem;
     font-weight: 500;
     line-height: 1.5;
     margin-bottom: 0.5rem;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.8rem;
+        margin-bottom: 0.3rem;
+    }
 `;
 
 const BlogDate = styled.p`
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: ${({ theme }) => (theme.mode === 'dark' ? 'rgb(138, 138, 138)' : 'rgb(154, 154, 154)')};
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
     font-weight: 500;
+
+    ${themeColor.breakpoints.mobile} {
+        font-size: 0.75rem;
+        margin-bottom: 0.4rem;
+    }
 `;
 
 const TagList = styled.div`
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
     flex-wrap: wrap;
+
+    ${themeColor.breakpoints.mobile} {
+        gap: 0.35rem;
+        margin-top: 0.4rem;
+    }
 `;
 
 const Tag = styled.span`
-    padding: 0.25rem 0.8rem;
+    padding: 0.2rem 0.44rem;
     font-size: 0.6rem;
     border-radius: 6px;
     background-color: ${({ theme }) => (theme.mode === 'dark' ? '#2D2D2D' : 'rgb(235, 235, 235)')};
     color: ${({ theme }) => (theme.mode === 'dark' ? '#FFFFFF' : '#000000')};
     border: 0.5px solid ${({ theme }) => (theme.mode === 'dark' ? '#444' : '#e5e5e5')};
     transition: all 0.2s ease;
+
+    ${themeColor.breakpoints.mobile} {
+        padding: 0.15rem 0.5rem;
+        font-size: 0.6rem;
+    }
+`;
+
+const BlogImage = styled.div<{ src?: string }>`
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
+    background: ${({ src, theme }) =>
+        src ? `url(${src})` : theme.mode === 'dark' ? '#2D2D2D' : '#f0f0f0'};
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+
+    ${themeColor.breakpoints.mobile} {
+        width: 70px;
+        height: 70px;
+    }
+`;
+
+const BlogContent = styled.div`
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+
+    ${themeColor.breakpoints.mobile} {
+        gap: 0.75rem;
+    }
 `;
 
 const StyledLink = styled(Link)`
@@ -227,32 +277,6 @@ const EmptyState = styled.div`
     text-align: center;
     padding: 3rem;
     color: ${({ theme }) => (theme.mode === 'dark' ? '#888' : '#666')};
-`;
-
-const BlogImage = styled.div<{ src?: string }>`
-    width: 120px;
-    height: 120px;
-    border-radius: 8px;
-    background: ${({ src, theme }) =>
-        src ? `url(${src})` : theme.mode === 'dark' ? '#2D2D2D' : '#f0f0f0'};
-    background-size: cover;
-    background-position: center;
-    flex-shrink: 0;
-
-    ${themeColor.breakpoints.mobile} {
-        width: 80px;
-        height: 80px;
-    }
-`;
-
-const BlogContent = styled.div`
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-
-    ${themeColor.breakpoints.mobile} {
-        gap: 1rem;
-    }
 `;
 
 const BlogInfo = styled.div`

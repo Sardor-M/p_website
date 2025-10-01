@@ -21,19 +21,22 @@ const Section = styled.section`
     min-height: auto;
     scroll-margin-top: 70px;
 
-    /* only first section specific styling */
     &:first-child {
-        min-height: 40vh;
+        min-height: auto;
+        padding-bottom: 30px;
     }
 
     &:not(:first-child) {
-        min-height: 100vh;
+        min-height: auto;
     }
 
     ${themeColor.breakpoints.mobile} {
-        padding: 30px 0 20px;
         min-height: auto;
         overflow: visible;
+
+        &:first-child {
+            padding-bottom: 30px;
+        }
     }
 `;
 

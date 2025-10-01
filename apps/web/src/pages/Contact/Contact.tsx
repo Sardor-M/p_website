@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 const ContactContainer = styled.section<{ isDarkMode: boolean }>`
     color: ${(props) => (props.isDarkMode ? themeColor.text.dark : themeColor.text.light)};
-    padding-top: 40px;
+    padding-top: 60px;
     font-family:
         'DepartureMono-Regular', 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
         'Courier New', monospace;
@@ -53,6 +53,7 @@ const SectionHeading = styled.h2<{ isDarkMode: boolean }>`
         display: flex;
         flex-direction: row;
         gap: 10px;
+        margin-bottom: 5px;
         width: 100%;
         font-size: 0.8rem;
         align-self: left;
@@ -65,15 +66,10 @@ const PageTitle = styled.h1<{ isDarkMode: boolean }>`
     font-weight: 700;
     margin-bottom: 20px;
     color: ${(props) => (props.isDarkMode ? '#FFFFFF' : themeColor.text.light)};
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.6s ease;
-    transition-delay: 0.2s;
     display: flex;
     flex-direction: row;
     gap: 10px;
     width: 100%;
-    align-self: left;
 
     &.visible {
         transform: translateY(0);

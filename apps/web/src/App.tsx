@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-    const [theme, setTheme] = useState<ThemeTypes>('light');
+    const [theme, setTheme] = useState<ThemeTypes>('dark');
 
     const handleToggleTheme = () => {
         setTheme((prevTheme) => {

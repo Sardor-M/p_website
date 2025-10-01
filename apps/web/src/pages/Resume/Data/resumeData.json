@@ -47,17 +47,32 @@
         }
     ],
     "skills": {
-        "Programming Languages": ["JavaScript", "TypeScript", "Java", "SQL"],
-        "Frontend": ["React.js", "Next.js", "Styled Components", "Tailwind CSS", "Ant Design"],
-        "Backend": ["Node.js", "Express.js", "Spring Boot", "RESTful APIs", "MyBatis"],
-        "Database": ["MySQL", "PostgreSQL", "Firebase", "Redis"],
+        "Frontend": [
+            "React.js",
+            "Next.js",
+            "TypeScript",
+            "JavaScript",
+            "Styled Components",
+            "Tailwind CSS",
+            "Ant Design"
+        ],
+        "Backend": [
+            "Node.js",
+            "Express.js",
+            "Spring Boot",
+            "RESTful APIs",
+            "MyBatis",
+            "MySQL",
+            "PostgreSQL",
+            "Firebase",
+            "Redis"
+        ],
         "DevOps & Tools": [
             "Git / GitHub",
             "GitHub Actions CI/CD",
             "AWS EC2",
             "Firebase Hosting",
             "Docker"
-        ],
-        "Other": ["Atomic Design", "Agile Development", "Team Leadership", "OAuth 2.0", "Mapbox GL"]
+        ]
     }
 }
